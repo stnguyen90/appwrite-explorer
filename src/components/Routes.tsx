@@ -6,6 +6,7 @@ import { Layout } from "./Layout";
 import { useQuery } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
+import { Documents } from "../pages/Documents";
 
 export const Routes = (): JSX.Element => {
   const appwrite = useAppwrite();
@@ -39,7 +40,7 @@ export const Routes = (): JSX.Element => {
       <Layout>
         <Switch>
           <Route path="/">
-            <Text>Hello</Text>
+            <Documents />
           </Route>
         </Switch>
       </Layout>

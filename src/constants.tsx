@@ -7,9 +7,11 @@ export const FetchState = {
 export const LocalStorageKey = {
   ENDPOINT: "endpoint",
   PROJECT: "project",
+  COLLECTION: "collection",
 };
 
 export const QueryKey = {
   APPWRITE: "appwrite",
   USER: "user",
+  DOCUMENTS: "documents",
 };

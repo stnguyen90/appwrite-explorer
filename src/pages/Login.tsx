@@ -24,10 +24,14 @@ import {
   ViewOffIcon,
 } from "@chakra-ui/icons";
 import { Appwrite } from "appwrite";
+import { LocalStorageKey, QueryKey } from "../constants";
+import { useQueryClient } from "react-query";
 
 export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => setShowPassword(!showPassword);
+
+  const queryClient = useQueryClient();
 
   const {
     handleSubmit,
@@ -48,8 +52,12 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
     appwrite.setEndpoint(endpoint);
     appwrite.setProject(project);
 
-    const result = appwrite.account.createSession(email, password);
-    console.log(result);
+    try {
+      await appwrite.account.createSession(email, password);
+      localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
+      localStorage.setItem(LocalStorageKey.PROJECT, project);
+      queryClient.invalidateQueries(QueryKey.USER);
+    } catch (error) {}
   };
 
   return (

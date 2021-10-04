@@ -20,5 +20,7 @@ export const Logo = forwardRef<ImageProps, "img">((props, ref) => {
     ? undefined
     : `${spin} infinite 20s linear`;
 
-  return <chakra.img animation={animation} src={logo} ref={ref} {...props} />;
+  return (
+    <chakra.img h="50%" animation={animation} src={logo} ref={ref} {...props} />
+  );
 });

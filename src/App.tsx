@@ -1,15 +1,22 @@
 import * as React from "react";
 import { ChakraProvider, CSSReset, theme } from "@chakra-ui/react";
 import { Appwrite } from "appwrite";
-import { Login } from "./pages/Login";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Routes } from "./components/Routes";
+import { AppwriteProvider } from "./contexts/appwrite";
+
+const queryClient = new QueryClient();
+const appwrite = new Appwrite();
 
 export const App = (): JSX.Element => {
-  const appwrite = new Appwrite();
-
   return (
     <ChakraProvider theme={theme}>
       <CSSReset />
-      <Login appwrite={appwrite} />
+      <AppwriteProvider value={appwrite}>
+        <QueryClientProvider client={queryClient}>
+          <Routes />
+        </QueryClientProvider>
+      </AppwriteProvider>
     </ChakraProvider>
   );
 };

@@ -1,19 +1,34 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
-export const useDocuments = (collectionId: string) => {
+export interface DocumentList {
+  documents: { [key: string]: any }[];
+  sum: number;
+}
+
+export interface ListDocumentOptions {
+  limit: number;
+  offset: number;
+}
+
+export const useDocuments = (
+  collectionId: string,
+  options: ListDocumentOptions
+): UseQueryResult<DocumentList | null, unknown> => {
   const appwrite = useAppwrite();
 
   return useQuery(
-    [QueryKey.DOCUMENTS, collectionId],
+    [QueryKey.DOCUMENTS, collectionId, options],
     async () => {
       if (!appwrite || !collectionId) return null;
 
-      const result = await appwrite.database.listDocuments<{
-        documents: { [key: string]: any }[];
-        sum: number;
-      }>(collectionId);
+      const result = await appwrite.database.listDocuments<DocumentList>(
+        collectionId,
+        [],
+        options.limit,
+        options.offset
+      );
 
       localStorage.setItem(LocalStorageKey.COLLECTION, collectionId);
       return result;

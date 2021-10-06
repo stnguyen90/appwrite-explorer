@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, Spinner } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Layout } from "./Layout";
@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 import { Documents } from "../pages/Documents";
+import { Storage } from "../pages/Storage";
 
 export const Routes = (): JSX.Element => {
   const appwrite = useAppwrite();
@@ -39,6 +40,9 @@ export const Routes = (): JSX.Element => {
     <Router>
       <Layout>
         <Switch>
+          <Route path="/storage">
+            <Storage />
+          </Route>
           <Route path="/">
             <Documents />
           </Route>

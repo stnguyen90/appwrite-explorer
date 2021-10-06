@@ -15,9 +15,11 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Editor from "@monaco-editor/react";
 import { LocalStorageKey } from "../constants";
-import { ListDocumentOptions, useDocuments } from "../hooks/useDocuments";
+import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
+import { LimitInput } from "../components/LimitInput";
+import { OffsetInput } from "../components/OffsetInput";
 
 interface IFormInput {
   collection: string;
@@ -28,7 +30,7 @@ export const Documents = (): JSX.Element => {
   const [collectionId, setCollectionId] = useState(
     localStorage.getItem(LocalStorageKey.COLLECTION) || ""
   );
-  const [options, setOptions] = useState<ListDocumentOptions>({
+  const [options, setOptions] = useState<ListDocumentsOptions>({
     limit: 25,
     offset: 0,
   });
@@ -86,35 +88,11 @@ export const Documents = (): JSX.Element => {
           <GridItem />
 
           <GridItem>
-            <FormControl isInvalid={!!errors.limit}>
-              <FormLabel htmlFor="limit">Limit</FormLabel>
-              <Input
-                id="limit"
-                placeholder="Limit"
-                {...register("limit", {
-                  min: 0,
-                  max: 100,
-                  pattern: /^[0-9]+$/i,
-                })}
-              />
-              <FormErrorMessage>
-                {errors.limit && "Limit must be from 0 to 100"}
-              </FormErrorMessage>
-            </FormControl>
+            <LimitInput register={register} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <FormControl isInvalid={!!errors.offset}>
-              <FormLabel htmlFor="offset">Offset</FormLabel>
-              <Input
-                id="offset"
-                placeholder="Offset"
-                {...register("offset", { min: 0, pattern: /^[0-9]+$/i })}
-              />
-              <FormErrorMessage>
-                {errors.offset && "Offset must be >= 0"}
-              </FormErrorMessage>
-            </FormControl>
+            <OffsetInput register={register} errors={errors} />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

@@ -7,14 +7,14 @@ export interface DocumentList {
   sum: number;
 }
 
-export interface ListDocumentOptions {
+export interface ListDocumentsOptions {
   limit: number;
   offset: number;
 }
 
 export const useDocuments = (
   collectionId: string,
-  options: ListDocumentOptions
+  options: ListDocumentsOptions
 ): UseQueryResult<DocumentList | null, unknown> => {
   const appwrite = useAppwrite();
 

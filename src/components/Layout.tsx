@@ -21,21 +21,24 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import { FiMenu, FiChevronDown } from "react-icons/fi";
-import { GrDocumentStore } from "react-icons/gr";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
 import { useAppwrite } from "../contexts/appwrite";
 import { useQueryClient } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAccount } from "../hooks/useAccount";
+import { FaDatabase, FaFile } from "react-icons/fa";
 
 interface LinkItemProps {
   name: string;
   icon: IconType;
+  to: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Documents", icon: GrDocumentStore },
+  { name: "Documents", icon: FaDatabase, to: "/" },
+  { name: "Storage", icon: FaFile, to: "/storage" },
 ];
 
 export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {
@@ -91,7 +94,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} to={link.to}>
           {link.name}
         </NavItem>
       ))}
@@ -101,11 +104,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
+  to: string;
   children: ReactText;
 }
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
   return (
-    <Link href="#" style={{ textDecoration: "none" }}>
+    <Link as={RouterLink} to={to} style={{ textDecoration: "none" }}>
       <Flex
         align="center"
         p="3"

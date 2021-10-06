@@ -14,4 +14,5 @@ export const QueryKey = {
   APPWRITE: "appwrite",
   USER: "user",
   DOCUMENTS: "documents",
+  STORAGE: "storage",
 };

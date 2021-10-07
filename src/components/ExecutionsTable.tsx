@@ -14,7 +14,6 @@ interface Data {
   $id: string;
   read: string;
   write: string;
-  name: string;
   functionId: string;
   dateCreated: string;
   trigger: string;
@@ -48,10 +47,6 @@ export const ExecutionsTable = (props: {
         accessor: "$id",
       },
       {
-        header: "Name",
-        accessor: "name",
-      },
-      {
         header: "Read Permissions",
         accessor: "read",
       },
@@ -70,6 +65,10 @@ export const ExecutionsTable = (props: {
       {
         header: "Status",
         accessor: "status",
+      },
+      {
+        header: "Exit Code",
+        accessor: "exitCode",
       },
       {
         header: "Runtime (s)",

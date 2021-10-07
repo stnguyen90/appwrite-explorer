@@ -20,6 +20,7 @@ import { ExecutionsTable } from "../components/ExecutionsTable";
 import { LocalStorageKey } from "../constants";
 import { CommonListOptions } from "../interfaces";
 import { useFunctionExecutions } from "../hooks/useFunctionExecutions";
+import { ExecuteNowModal } from "../components/ExecuteNowModal";
 
 export interface IFormInput {
   functionId: string;
@@ -112,6 +113,11 @@ export const Functions = (): JSX.Element => {
           >
             Execute Now
           </Button>
+          <ExecuteNowModal
+            functionId={functionId}
+            isOpen={isOpen}
+            onClose={onClose}
+          />
         </Flex>
       </form>
 

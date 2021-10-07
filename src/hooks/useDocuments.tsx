@@ -33,6 +33,6 @@ export const useDocuments = (
       localStorage.setItem(LocalStorageKey.COLLECTION, collectionId);
       return result;
     },
-    { enabled: !!appwrite }
+    { enabled: !!appwrite || !collectionId }
   );
 };

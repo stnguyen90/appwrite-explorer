@@ -11,7 +11,6 @@ export interface ExecutionList {
 export interface Execution {
   $id: string;
   $permissions: Permissions;
-  name: string;
   functionId: string;
   dateCreated: number;
   trigger: string;
@@ -35,7 +34,7 @@ export const useFunctionExecutions = (
   return useQuery(
     [QueryKey.FUNCTIONS, functionId, options],
     async () => {
-      if (!appwrite) return null;
+      if (!appwrite || !functionId) return null;
 
       const result = await appwrite.functions.listExecutions<ExecutionList>(
         functionId,
@@ -48,6 +47,6 @@ export const useFunctionExecutions = (
 
       return result;
     },
-    { enabled: !!appwrite }
+    { enabled: !!appwrite || !functionId }
   );
 };

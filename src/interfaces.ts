@@ -37,7 +37,6 @@ export interface ExecutionList {
 export interface Execution {
   $id: string;
   $permissions: Permissions;
-  name: string;
   functionId: string;
   dateCreated: number;
   trigger: string;

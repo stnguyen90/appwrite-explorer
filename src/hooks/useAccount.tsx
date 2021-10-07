@@ -6,7 +6,7 @@ import { User } from "../interfaces";
 export const useAccount = (): UseQueryResult<User | null> => {
   const appwrite = useAppwrite();
 
-  return useQuery<User | null>(
+  return useQuery(
     QueryKey.USER,
     async () => {
       if (!appwrite) return null;

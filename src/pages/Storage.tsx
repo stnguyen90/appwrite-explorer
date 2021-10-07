@@ -8,12 +8,13 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { ListFilesOptions, useStorage } from "../hooks/useStorage";
+import { useStorage } from "../hooks/useStorage";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { LimitInput } from "../components/LimitInput";
 import { OffsetInput } from "../components/OffsetInput";
 import { StorageTable } from "../components/StorageTable";
+import { CommonListOptions } from "../interfaces";
 
 export interface IFormInput {
   limit: number;
@@ -21,7 +22,7 @@ export interface IFormInput {
 }
 
 export const Storage = (): JSX.Element => {
-  const [options, setOptions] = useState<ListFilesOptions>({
+  const [options, setOptions] = useState<CommonListOptions>({
     limit: 25,
     offset: 0,
   });

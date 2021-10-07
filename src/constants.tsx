@@ -8,6 +8,7 @@ export const LocalStorageKey = {
   ENDPOINT: "endpoint",
   PROJECT: "project",
   COLLECTION: "collection",
+  FUNCTION: "function",
 };
 
 export const QueryKey = {
@@ -15,4 +16,5 @@ export const QueryKey = {
   USER: "user",
   DOCUMENTS: "documents",
   STORAGE: "storage",
+  FUNCTIONS: "functions",
 };

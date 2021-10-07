@@ -3,7 +3,7 @@ import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
 export interface DocumentList {
-  documents: { [key: string]: any }[];
+  documents: { [key: string]: string | number | boolean }[];
   sum: number;
 }
 

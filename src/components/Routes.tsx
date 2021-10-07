@@ -6,8 +6,9 @@ import { Layout } from "./Layout";
 import { useQuery } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
-import { Documents } from "../pages/Documents";
+import { Database } from "../pages/Database";
 import { Storage } from "../pages/Storage";
+import { Functions } from "../pages/Functions";
 
 export const Routes = (): JSX.Element => {
   const appwrite = useAppwrite();
@@ -43,8 +44,11 @@ export const Routes = (): JSX.Element => {
           <Route path="/storage">
             <Storage />
           </Route>
+          <Route path="/functions">
+            <Functions />
+          </Route>
           <Route path="/">
-            <Documents />
+            <Database />
           </Route>
         </Switch>
       </Layout>

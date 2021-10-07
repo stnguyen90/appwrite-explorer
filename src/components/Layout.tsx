@@ -30,6 +30,7 @@ import { useQueryClient } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAccount } from "../hooks/useAccount";
 import { FaDatabase, FaFile } from "react-icons/fa";
+import { BsLightningFill } from "react-icons/bs";
 
 interface LinkItemProps {
   name: string;
@@ -37,8 +38,9 @@ interface LinkItemProps {
   to: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Documents", icon: FaDatabase, to: "/" },
+  { name: "Database", icon: FaDatabase, to: "/" },
   { name: "Storage", icon: FaFile, to: "/storage" },
+  { name: "Functions", icon: BsLightningFill, to: "/functions" },
 ];
 
 export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {

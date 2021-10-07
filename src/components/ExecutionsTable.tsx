@@ -8,29 +8,32 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { File } from "../interfaces";
+import { Execution } from "../interfaces";
 
 interface Data {
   $id: string;
   read: string;
   write: string;
   name: string;
+  functionId: string;
   dateCreated: string;
-  signature: string;
-  mimeType: string;
-  sizeOriginal: number;
+  trigger: string;
+  status: string;
+  exitCode: number;
+  stdout: string;
+  stderr: string;
+  time: number;
 }
 
-export const StorageTable = (props: {
-  files: File[];
+export const ExecutionsTable = (props: {
+  executions: Execution[];
   total: number;
 }): JSX.Element => {
-  const data = props.files.map((f) => {
-    const { $permissions, dateCreated, sizeOriginal, ...rest } = f;
+  const data = props.executions.map((e) => {
+    const { $permissions, dateCreated, ...rest } = e;
     return {
       ...rest,
       dateCreated: new Date(dateCreated * 1000).toLocaleString(),
-      sizeOriginal: sizeOriginal / 1000, // KB
       read: $permissions.read.join(", "),
       write: $permissions.write.join(", "),
     };
@@ -61,18 +64,24 @@ export const StorageTable = (props: {
         accessor: "dateCreated",
       },
       {
-        header: "Signature",
-        accessor: "signature",
+        header: "Trigger",
+        accessor: "trigger",
       },
-
       {
-        header: "Mime Type",
-        accessor: "mimeType",
+        header: "Status",
+        accessor: "status",
       },
-
       {
-        header: "Size (KB)",
-        accessor: "sizeOriginal",
+        header: "Runtime (s)",
+        accessor: "time",
+      },
+      {
+        header: "Output",
+        accessor: "stdout",
+      },
+      {
+        header: "Errors",
+        accessor: "stderr",
       },
     ],
     []
@@ -81,7 +90,7 @@ export const StorageTable = (props: {
   return (
     <Table variant="striped">
       <TableCaption>
-        Showing {data.length} out of {props.total} files
+        Showing {data.length} out of {props.total} executions
       </TableCaption>
 
       <Thead>

@@ -1,36 +1,37 @@
+import React, { useState } from "react";
 import {
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  GridItem,
   Input,
   SimpleGrid,
-  GridItem,
-  Flex,
-  VStack,
   Spinner,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import Editor from "@monaco-editor/react";
-import { LocalStorageKey } from "../constants";
-import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
-import { NewDocumentModal } from "../components/NewDocumentModal";
-import { AddIcon, SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { LimitInput } from "../components/LimitInput";
 import { OffsetInput } from "../components/OffsetInput";
+import { ExecutionsTable } from "../components/ExecutionsTable";
+import { LocalStorageKey } from "../constants";
+import { CommonListOptions } from "../interfaces";
+import { useFunctionExecutions } from "../hooks/useFunctionExecutions";
 
-interface IFormInput {
-  collection: string;
+export interface IFormInput {
+  functionId: string;
   limit: number;
   offset: number;
 }
-export const Documents = (): JSX.Element => {
-  const [collectionId, setCollectionId] = useState(
-    localStorage.getItem(LocalStorageKey.COLLECTION) || ""
+
+export const Functions = (): JSX.Element => {
+  const [functionId, setFunctionId] = useState(
+    localStorage.getItem(LocalStorageKey.FUNCTION) || ""
   );
-  const [options, setOptions] = useState<ListDocumentsOptions>({
+  const [options, setOptions] = useState<CommonListOptions>({
     limit: 25,
     offset: 0,
   });
@@ -41,7 +42,7 @@ export const Documents = (): JSX.Element => {
   } = useForm<IFormInput>({
     mode: "all",
     defaultValues: {
-      collection: collectionId,
+      functionId: functionId,
       limit: options.limit,
       offset: options.offset,
     },
@@ -49,16 +50,14 @@ export const Documents = (): JSX.Element => {
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {
-      const { collection, ...rest } = values;
-      setCollectionId(collection);
-      setOptions((prevState) => {
-        return { prevState, ...rest };
-      });
+      const { functionId, ...rest } = values;
+      setFunctionId(functionId);
+      setOptions(rest);
       resolve();
     });
   };
 
-  const { isLoading, error, data } = useDocuments(collectionId, options);
+  const { isLoading, error, data } = useFunctionExecutions(functionId, options);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -67,12 +66,12 @@ export const Documents = (): JSX.Element => {
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} spacing={5}>
           <GridItem>
-            <FormControl isInvalid={!!errors.collection}>
-              <FormLabel htmlFor="collection">Collection ID</FormLabel>
+            <FormControl isInvalid={!!errors.functionId}>
+              <FormLabel htmlFor="function">Function ID</FormLabel>
               <Input
-                id="collection"
-                placeholder="Collection ID"
-                {...register("collection", {
+                id="function"
+                placeholder="Function ID"
+                {...register("functionId", {
                   required: "This is required",
                   minLength: {
                     value: 4,
@@ -81,16 +80,14 @@ export const Documents = (): JSX.Element => {
                 })}
               />
               <FormErrorMessage>
-                {errors.collection && errors.collection.message}
+                {errors.functionId && errors.functionId.message}
               </FormErrorMessage>
             </FormControl>
           </GridItem>
           <GridItem />
-
           <GridItem>
             <LimitInput register={register} errors={errors} />
           </GridItem>
-
           <GridItem>
             <OffsetInput register={register} errors={errors} />
           </GridItem>
@@ -103,7 +100,7 @@ export const Documents = (): JSX.Element => {
             isLoading={isSubmitting}
             type="submit"
           >
-            List Documents
+            List Executions
           </Button>
 
           <Button
@@ -113,30 +110,18 @@ export const Documents = (): JSX.Element => {
             colorScheme="teal"
             onClick={onOpen}
           >
-            New Document
+            Execute Now
           </Button>
-          <NewDocumentModal
-            collectionId={collectionId}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
         </Flex>
       </form>
 
       {isLoading ? (
         <Spinner />
       ) : (
-        <Editor
-          height="70vh"
-          defaultLanguage="json"
-          options={{
-            readOnly: true,
-            minimap: {
-              enabled: false,
-            },
-          }}
-          value={JSON.stringify(error ? error : data, null, 2)}
-        />
+        <ExecutionsTable
+          executions={data?.executions || []}
+          total={data?.sum || 0}
+        ></ExecutionsTable>
       )}
     </VStack>
   );

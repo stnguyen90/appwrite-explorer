@@ -1,9 +1,9 @@
-import { useQuery } from "react-query";
+import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 import { User } from "../interfaces";
 
-export const useAccount = () => {
+export const useAccount = (): UseQueryResult<User | null> => {
   const appwrite = useAppwrite();
 
   return useQuery<User | null>(

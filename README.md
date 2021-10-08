@@ -1,59 +1,79 @@
-This project was bootstrapped with
-[Create React App](https://github.com/facebook/create-react-app).
+# Appwrite Explorer
 
-## Available Scripts
+Appwrite Explorer is a tool that let's you explore different aspects of an Appwrite project from the front end. Features include:
 
-In the project directory, you can run:
+- Account
+  - [x] Sign in with Email and Password
+  - [ ] Guest Access
+  - [ ] Anonymous Access
+  - [ ] Sign in with Magic URL
+  - [ ] OAuth2 Authentication
+  - [ ] Update Account Name
+  - [ ] Update Account Password
+  - [ ] Update Account Email
+  - [ ] Update Account Preferences
+  - [ ] Email Verification
+  - [ ] Password Reset
+- Database
+  - [x] Create Document
+  - [x] List Documents
+  - [ ] Update Document
+  - [ ] Filter Documents List
+  - [ ] Search Documents
+  - [ ] Delete Document
+- Storage
+  - [x] Create File
+  - [x] List Files
+  - [ ] Create File with Permissions
+  - [ ] Download File
+  - [ ] Search Files
+  - [ ] Update File
+  - [ ] Delete File
+- Functions
+  - [x] List Executions
+  - [x] Create Execution
+- Teams
+  - [ ] List Teams
+  - [ ] Create Team
+  - [ ] Update Team
+  - [ ] Delete Team
+  - [ ] Create Team Membership
+  - [ ] Update Team Membership
+  - [ ] Update Membershp Roles
+  - [ ] Delete Team Membership
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.<br /> Open
-[http://localhost:3000](http://localhost:3000) to view it in the browser.
+Appwrite Explorer is best run locally using Docker.
 
-The page will reload if you make edits.<br /> You will also see any lint errors
-in the console.
+### Prerequisites
 
-### `npm test`
+- Docker
 
-Launches the test runner in the interactive watch mode.<br /> See the section
-about
-[running tests](https://facebook.github.io/create-react-app/docs/running-tests)
-for more information.
+### Installation
 
-### `npm run build`
+To install Appwrite Explorer, you need a copy of the repository. There are a couple of ways to get a copy of the repository:
 
-Builds the app for production to the `build` folder.<br /> It correctly bundles
-React in production mode and optimizes the build for the best performance.
+#### Git
 
-The build is minified and the filenames include the hashes.<br /> Your app is
-ready to be deployed!
+The easiest way to do this is to clone the repository:
 
-See the section about
-[deployment](https://facebook.github.io/create-react-app/docs/deployment) for
-more information.
+```bash
+git clone https://github.com/stnguyen90/appwrite-explorer.git
+```
 
-### `npm run eject`
+#### Manual Download
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Otherwise, you can manually download a zip of the code from [Github](https://github.com/stnguyen90/appwrite-explorer/archive/refs/heads/main.zip).
 
-If you aren’t satisfied with the build tool and configuration choices, you can
-`eject` at any time. This command will remove the single build dependency from
-your project.
+### Running
 
-Instead, it will copy all the configuration files and the transitive
-dependencies (webpack, Babel, ESLint, etc) right into your project so you have
-full control over them. All of the commands except `eject` will still work, but
-they will point to the copied scripts so you can tweak them. At this point
-you’re on your own.
+After obtaining the code, use Docker to spin up Appwrite Explorer (the first time you do this may time some time as Docker must pull the base images and build the Appwrite Explorer image).
 
-You don’t have to ever use `eject`. The curated feature set is suitable for
-small and middle deployments, and you shouldn’t feel obligated to use this
-feature. However we understand that this tool wouldn’t be useful if you couldn’t
-customize it when you are ready for it.
+```bash
+docker compose up
+```
 
-## Learn More
+Then, browse to [http://localhost:8080](http://localhost:8080).
 
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+If port 8080 is not available for you, you can open `docker-compose.override.yml` and change 8080 to a suitable port.

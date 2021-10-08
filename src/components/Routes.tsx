@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Spinner } from "@chakra-ui/react";
+import { Center, Spinner } from "@chakra-ui/react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Layout } from "./Layout";
@@ -34,7 +34,15 @@ export const Routes = (): JSX.Element => {
   );
 
   return !appwrite || isLoading ? (
-    <Spinner />
+    <Center minH="100vh">
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="pink.500"
+        size="xl"
+      />
+    </Center>
   ) : !data ? (
     <Login appwrite={appwrite}></Login>
   ) : (

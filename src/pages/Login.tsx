@@ -12,6 +12,9 @@ import {
   FormControl,
   InputRightElement,
   IconButton,
+  useColorModeValue,
+  Box,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -65,9 +68,10 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
       <Container
         minH="md"
         minW="xs"
-        backgroundColor="green"
         borderWidth="1px"
         borderRadius="md"
+        bg={useColorModeValue("gray.100", "gray.900")}
+        paddingY={4}
       >
         <Center minH="md">
           <VStack w="full">
@@ -76,23 +80,25 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
             <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
               <VStack w="full">
                 <FormControl isInvalid={errors.endpoint}>
+                  <FormLabel htmlFor="endpoint">Endpoint</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<LinkIcon color="gray.300" />}
+                      children={<LinkIcon color="gray" />}
                     />
                     <Input
                       id="endpoint"
                       {...register("endpoint")}
-                      placeholder="Endpoint"
+                      placeholder="http://appwrite.io/v1/"
                     />
                   </InputGroup>
                 </FormControl>
                 <FormControl isInvalid={errors.project}>
+                  <FormLabel htmlFor="project">Project ID</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<InfoOutlineIcon color="gray.300" />}
+                      children={<InfoOutlineIcon color="gray" />}
                     />
                     <Input
                       id="project"
@@ -102,10 +108,11 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                   </InputGroup>
                 </FormControl>
                 <FormControl isInvalid={errors.email}>
+                  <FormLabel htmlFor="email">Email</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<AtSignIcon color="gray.300" />}
+                      children={<AtSignIcon color="gray" />}
                     />
                     <Input
                       id="email"
@@ -115,10 +122,11 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                   </InputGroup>
                 </FormControl>
                 <FormControl isInvalid={errors.password}>
+                  <FormLabel htmlFor="password">Password</FormLabel>
                   <InputGroup size="md">
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<LockIcon color="gray.300" />}
+                      children={<LockIcon color="gray" />}
                     />
                     <Input
                       pr="4.5rem"
@@ -133,16 +141,24 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                         w="1.25rem"
                         size="xm"
                         variant="link"
-                        color="gray.300"
+                        color="gray"
                         as={showPassword ? ViewOffIcon : ViewIcon}
                         onClick={handleClick}
                       />
                     </InputRightElement>
                   </InputGroup>
                 </FormControl>
-                <Button isLoading={isSubmitting} type="submit">
-                  Sign In
-                </Button>
+                <Box>
+                  <Button
+                    colorScheme="pink"
+                    isLoading={isSubmitting}
+                    type="submit"
+                    size="lg"
+                    marginTop={4}
+                  >
+                    Sign In
+                  </Button>
+                </Box>
               </VStack>
             </form>
           </VStack>

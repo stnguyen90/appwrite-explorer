@@ -152,9 +152,13 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const onSignOutClick = async () => {
     await appwrite?.account.deleteSession("current");
 
-    localStorage.removeItem(LocalStorageKey.ENDPOINT);
-    localStorage.removeItem(LocalStorageKey.PROJECT);
-    queryClient.invalidateQueries(QueryKey.USER);
+    Object.values(LocalStorageKey).forEach((key) => {
+      localStorage.removeItem(key);
+    });
+
+    Object.values(QueryKey).forEach((key) => {
+      queryClient.invalidateQueries(key);
+    });
   };
 
   return (

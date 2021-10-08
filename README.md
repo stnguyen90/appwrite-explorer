@@ -1,8 +1,11 @@
 # Appwrite Explorer
 
-Appwrite Explorer is a tool that let's you explore different aspects of an Appwrite project from the front end. Features include:
+Appwrite Explorer is a tool that let's you explore different aspects of an Appwrite project from the front end. 
 
-- Account
+## Features
+
+### Account
+
   - [x] Sign in with Email and Password
   - [ ] Guest Access
   - [ ] Anonymous Access
@@ -14,33 +17,47 @@ Appwrite Explorer is a tool that let's you explore different aspects of an Appwr
   - [ ] Update Account Preferences
   - [ ] Email Verification
   - [ ] Password Reset
-- Database
-  - [x] Create Document
-  - [x] List Documents
-  - [ ] Update Document
-  - [ ] Filter Documents List
-  - [ ] Search Documents
-  - [ ] Delete Document
-- Storage
-  - [x] Create File
-  - [x] List Files
-  - [ ] Create File with Permissions
-  - [ ] Download File
-  - [ ] Search Files
-  - [ ] Update File
-  - [ ] Delete File
-- Functions
-  - [x] List Executions
-  - [x] Create Execution
-- Teams
-  - [ ] List Teams
-  - [ ] Create Team
-  - [ ] Update Team
-  - [ ] Delete Team
-  - [ ] Create Team Membership
-  - [ ] Update Team Membership
-  - [ ] Update Membershp Roles
-  - [ ] Delete Team Membership
+
+## Database
+
+![Database List](docs/database-list.png)
+
+- [x] Create Document
+- [x] List Documents
+- [ ] Update Document
+- [ ] Filter Documents List
+- [ ] Search Documents
+- [ ] Delete Document
+
+## Storage
+
+![Storage List](docs/storage-list.png)
+
+- [x] Create File
+- [x] List Files
+- [ ] Create File with Permissions
+- [ ] Download File
+- [ ] Search Files
+- [ ] Update File
+- [ ] Delete File
+
+## Functions
+
+![Functions List](docs/functions-list.png)
+
+- [x] List Executions
+- [x] Create Execution
+
+## Teams
+
+- [ ] List Teams
+- [ ] Create Team
+- [ ] Update Team
+- [ ] Delete Team
+- [ ] Create Team Membership
+- [ ] Update Team Membership
+- [ ] Update Membershp Roles
+- [ ] Delete Team Membership
 
 ## Getting Started
 

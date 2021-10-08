@@ -1,0 +1,7 @@
+version: "3.7"
+
+services:
+  app:
+    image: appwrite-explorer:latest
+    build:
+      context: .

@@ -16,7 +16,8 @@ export const useStorage = (
       const result = await appwrite.storage.listFiles<FileList>(
         undefined,
         options.limit,
-        options.offset
+        options.offset,
+        "DESC"
       );
 
       return result;

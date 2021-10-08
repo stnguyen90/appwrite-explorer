@@ -15,6 +15,7 @@ import { LimitInput } from "../components/LimitInput";
 import { OffsetInput } from "../components/OffsetInput";
 import { StorageTable } from "../components/StorageTable";
 import { CommonListOptions } from "../interfaces";
+import { NewUploadModal } from "../components/NewUploadModal";
 
 export interface IFormInput {
   limit: number;
@@ -64,7 +65,7 @@ export const Storage = (): JSX.Element => {
           <Button
             leftIcon={<SearchIcon />}
             mt={4}
-            colorScheme="teal"
+            colorScheme="pink"
             isLoading={isSubmitting}
             type="submit"
           >
@@ -75,11 +76,12 @@ export const Storage = (): JSX.Element => {
             leftIcon={<AddIcon />}
             variant="outline"
             mt={4}
-            colorScheme="teal"
+            colorScheme="pink"
             onClick={onOpen}
           >
             Upload
           </Button>
+          <NewUploadModal isOpen={isOpen} onClose={onClose} />
         </Flex>
       </form>
 

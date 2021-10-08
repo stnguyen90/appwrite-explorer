@@ -40,7 +40,8 @@ export const useFunctionExecutions = (
         functionId,
         undefined,
         options.limit,
-        options.offset
+        options.offset,
+        "DESC"
       );
 
       localStorage.setItem(LocalStorageKey.FUNCTION, functionId);

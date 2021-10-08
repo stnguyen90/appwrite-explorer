@@ -120,7 +120,7 @@ const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
         role="group"
         cursor="pointer"
         _hover={{
-          bg: "teal.400",
+          bg: "pink.400",
           color: "white",
         }}
         {...rest}
@@ -201,7 +201,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               _focus={{ boxShadow: "none" }}
             >
               <HStack>
-                <Avatar size={"sm"} name={data?.name} />
+                <Avatar size={"sm"} name={data?.name} bg="pink" />
                 <VStack
                   display={{ base: "none", md: "flex" }}
                   alignItems="flex-start"

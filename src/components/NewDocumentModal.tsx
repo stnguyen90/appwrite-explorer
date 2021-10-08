@@ -95,7 +95,7 @@ export const NewDocumentModal = (props: {
             Cancel
           </Button>
           <Button
-            colorScheme="teal"
+            colorScheme="pink"
             onClick={onCreateClick}
             isLoading={isSubmitting}
           >

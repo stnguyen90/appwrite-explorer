@@ -99,7 +99,7 @@ export const Database = (): JSX.Element => {
           <Button
             leftIcon={<SearchIcon />}
             mt={4}
-            colorScheme="teal"
+            colorScheme="pink"
             isLoading={isSubmitting}
             type="submit"
           >
@@ -110,7 +110,7 @@ export const Database = (): JSX.Element => {
             leftIcon={<AddIcon />}
             variant="outline"
             mt={4}
-            colorScheme="teal"
+            colorScheme="pink"
             onClick={onOpen}
           >
             New Document

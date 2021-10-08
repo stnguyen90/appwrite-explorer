@@ -94,7 +94,7 @@ export const ExecuteNowModal = (props: {
             Cancel
           </Button>
           <Button
-            colorScheme="teal"
+            colorScheme="pink"
             onClick={onCreateClick}
             isLoading={isSubmitting}
           >

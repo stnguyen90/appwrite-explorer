@@ -97,7 +97,7 @@ export const Functions = (): JSX.Element => {
           <Button
             leftIcon={<SearchIcon />}
             mt={4}
-            colorScheme="teal"
+            colorScheme="pink"
             isLoading={isSubmitting}
             type="submit"
           >
@@ -108,7 +108,7 @@ export const Functions = (): JSX.Element => {
             leftIcon={<AddIcon />}
             variant="outline"
             mt={4}
-            colorScheme="teal"
+            colorScheme="pink"
             onClick={onOpen}
           >
             Execute Now

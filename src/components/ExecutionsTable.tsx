@@ -51,10 +51,6 @@ export const ExecutionsTable = (props: {
         accessor: "read",
       },
       {
-        header: "Write Permissions",
-        accessor: "write",
-      },
-      {
         header: "Created",
         accessor: "dateCreated",
       },

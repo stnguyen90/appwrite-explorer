@@ -1,4 +1,5 @@
 import {
+  Box,
   Table,
   TableCaption,
   Tbody,
@@ -79,29 +80,31 @@ export const StorageTable = (props: {
   );
 
   return (
-    <Table variant="striped">
-      <TableCaption>
-        Showing {data.length} out of {props.total} files
-      </TableCaption>
+    <Box overflowX="auto" width="full">
+      <Table variant="striped">
+        <TableCaption>
+          Showing {data.length} out of {props.total} files
+        </TableCaption>
 
-      <Thead>
-        <Tr>
-          {columns.map((column) => (
-            <Th>{column.header}</Th>
-          ))}
-        </Tr>
-      </Thead>
-      <Tbody>
-        {data.map((row: Data) => {
-          return (
-            <Tr>
-              {columns.map((column) => (
-                <Td>{row[column.accessor]}</Td>
-              ))}
-            </Tr>
-          );
-        })}
-      </Tbody>
-    </Table>
+        <Thead>
+          <Tr>
+            {columns.map((column) => (
+              <Th>{column.header}</Th>
+            ))}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {data.map((row: Data) => {
+            return (
+              <Tr>
+                {columns.map((column) => (
+                  <Td>{row[column.accessor]}</Td>
+                ))}
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
+    </Box>
   );
 };

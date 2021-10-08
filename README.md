@@ -1,22 +1,24 @@
 # Appwrite Explorer
 
-Appwrite Explorer is a tool that let's you explore different aspects of an Appwrite project from the front end. 
+Appwrite Explorer is a tool that let's you explore different aspects of an Appwrite project from the front end.
 
 ## Features
 
 ### Account
 
-  - [x] Sign in with Email and Password
-  - [ ] Guest Access
-  - [ ] Anonymous Access
-  - [ ] Sign in with Magic URL
-  - [ ] OAuth2 Authentication
-  - [ ] Update Account Name
-  - [ ] Update Account Password
-  - [ ] Update Account Email
-  - [ ] Update Account Preferences
-  - [ ] Email Verification
-  - [ ] Password Reset
+![Sign In](docs/sign-in.png)
+
+- [x] Sign in with Email and Password
+- [ ] Guest Access
+- [ ] Anonymous Access
+- [ ] Sign in with Magic URL
+- [ ] OAuth2 Authentication
+- [ ] Update Account Name
+- [ ] Update Account Password
+- [ ] Update Account Email
+- [ ] Update Account Preferences
+- [ ] Email Verification
+- [ ] Password Reset
 
 ## Database
 

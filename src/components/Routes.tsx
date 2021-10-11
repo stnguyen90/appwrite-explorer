@@ -8,6 +8,7 @@ import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 import { Database } from "../pages/Database";
 import { Storage } from "../pages/Storage";
+import { Teams } from "../pages/Teams";
 import { Functions } from "../pages/Functions";
 
 export const Routes = (): JSX.Element => {
@@ -51,6 +52,9 @@ export const Routes = (): JSX.Element => {
         <Switch>
           <Route path="/storage">
             <Storage />
+          </Route>
+          <Route path="/teams">
+            <Teams />
           </Route>
           <Route path="/functions">
             <Functions />

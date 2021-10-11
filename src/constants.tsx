@@ -16,5 +16,6 @@ export const QueryKey = {
   USER: "user",
   DOCUMENTS: "documents",
   STORAGE: "storage",
+  TEAMS: "teams",
   FUNCTIONS: "functions",
 };

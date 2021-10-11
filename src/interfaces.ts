@@ -1,5 +1,17 @@
-export interface User {
+export interface CommonModel {
   $id: string;
+}
+
+export interface Permissions {
+  read: string[];
+  write: string[];
+}
+
+export interface CommonModelWithPermissions extends CommonModel {
+  $permissions: Permissions;
+}
+
+export interface User extends CommonModel {
   email: string;
   emailVerification: boolean;
   name: string;
@@ -9,19 +21,7 @@ export interface User {
   status: 0 | 1;
 }
 
-export interface Permissions {
-  read: string[];
-  write: string[];
-}
-
-export interface FileList {
-  files: File[];
-  sum: number;
-}
-
-export interface File {
-  $id: string;
-  $permissions: Permissions;
+export interface File extends CommonModelWithPermissions {
   name: string;
   dateCreated: number;
   signature: string;
@@ -29,14 +29,23 @@ export interface File {
   sizeOriginal: number;
 }
 
-export interface ExecutionList {
-  executions: Execution[];
+export interface FileList {
+  files: File[];
   sum: number;
 }
 
-export interface Execution {
-  $id: string;
-  $permissions: Permissions;
+export interface Team extends CommonModel {
+  name: string;
+  dateCreated: number;
+  sum: number;
+}
+
+export interface TeamsList {
+  teams: Team[];
+  sum: number;
+}
+
+export interface Execution extends CommonModelWithPermissions {
   functionId: string;
   dateCreated: number;
   trigger: string;
@@ -45,6 +54,11 @@ export interface Execution {
   stdout: string;
   stderr: string;
   time: number;
+}
+
+export interface ExecutionList {
+  executions: Execution[];
+  sum: number;
 }
 
 export interface CommonListOptions {

@@ -30,7 +30,7 @@ import { useQueryClient } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAccount } from "../hooks/useAccount";
 import { FaDatabase, FaFile } from "react-icons/fa";
-import { BsLightningFill } from "react-icons/bs";
+import { BsLightningFill, BsPeopleFill } from "react-icons/bs";
 
 interface LinkItemProps {
   name: string;
@@ -40,13 +40,14 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: "Database", icon: FaDatabase, to: "/" },
   { name: "Storage", icon: FaFile, to: "/storage" },
+  { name: "Teams", icon: BsPeopleFill, to: "/teams" },
   { name: "Functions", icon: BsLightningFill, to: "/functions" },
 ];
 
 export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" h="100vh">
+    <Box minH="100vh" h="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -66,11 +67,7 @@ export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box
-        ml={{ base: 0, md: 60 }}
-        p="4"
-        bg={useColorModeValue("gray.100", "gray.900")}
-      >
+      <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>
     </Box>

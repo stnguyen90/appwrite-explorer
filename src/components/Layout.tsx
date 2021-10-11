@@ -46,7 +46,7 @@ const LinkItems: Array<LinkItemProps> = [
 export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" h="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
+    <Box minH="100vh" h="100vh">
       <SidebarContent
         onClose={() => onClose}
         display={{ base: "none", md: "block" }}
@@ -66,7 +66,11 @@ export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box
+        ml={{ base: 0, md: 60 }}
+        p="4"
+        bg={useColorModeValue("gray.100", "gray.900")}
+      >
         {children}
       </Box>
     </Box>
@@ -191,12 +195,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: "0", md: "6" }}>
-        {/* <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        /> */}
         <Flex alignItems={"center"}>
           <Menu>
             <MenuButton

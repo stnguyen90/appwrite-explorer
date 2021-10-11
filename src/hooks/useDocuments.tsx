@@ -10,6 +10,11 @@ export interface DocumentList {
 export interface ListDocumentsOptions {
   limit: number;
   offset: number;
+  filters: string[];
+  orderField: string;
+  orderType: "ASC" | "DESC";
+  orderCast: "string" | "int" | "date" | "time" | "datetime";
+  search: string;
 }
 
 export const useDocuments = (
@@ -25,9 +30,13 @@ export const useDocuments = (
 
       const result = await appwrite.database.listDocuments<DocumentList>(
         collectionId,
-        [],
+        options.filters,
         options.limit,
-        options.offset
+        options.offset,
+        options.orderField != "" ? options.orderField : undefined,
+        options.orderField != "" ? options.orderType : undefined,
+        options.orderField != "" ? options.orderCast : undefined,
+        options.search != "" ? options.search : undefined
       );
 
       localStorage.setItem(LocalStorageKey.COLLECTION, collectionId);

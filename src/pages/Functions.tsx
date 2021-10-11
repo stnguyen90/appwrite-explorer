@@ -58,7 +58,7 @@ export const Functions = (): JSX.Element => {
     });
   };
 
-  const { isLoading, error, data } = useFunctionExecutions(functionId, options);
+  const { isLoading, data } = useFunctionExecutions(functionId, options);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -46,7 +46,7 @@ export const Storage = (): JSX.Element => {
     });
   };
 
-  const { isLoading, error, data } = useStorage(options);
+  const { isLoading, data } = useStorage(options);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 

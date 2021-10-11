@@ -68,6 +68,7 @@ export const Database = (): JSX.Element => {
       orderField: "",
       orderType: "ASC",
       orderCast: "string",
+      search: "",
     },
   });
 

@@ -16,7 +16,7 @@ import { OffsetInput } from "../components/OffsetInput";
 import { OrderTypeInput } from "../components/OrderTypeInput";
 import { SearchInput } from "../components/SearchInput";
 import { TeamsTable } from "../components/TeamsTable";
-// import { NewTeamModal } from "../components/NewTeamModal";
+import { NewTeamModal } from "../components/NewTeamModal";
 
 interface IFormInput {
   limit: number;
@@ -94,7 +94,7 @@ export const Teams = (): JSX.Element => {
             List Teams
           </Button>
 
-          {/* <Button
+          <Button
             leftIcon={<AddIcon />}
             variant="outline"
             mt={4}
@@ -103,7 +103,7 @@ export const Teams = (): JSX.Element => {
           >
             New Team
           </Button>
-          <NewTeamModal isOpen={isOpen} onClose={onClose} /> */}
+          <NewTeamModal isOpen={isOpen} onClose={onClose} />
         </Flex>
       </form>
 

@@ -66,7 +66,7 @@ export const Teams = (): JSX.Element => {
   return (
     <VStack w="full">
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-        <SimpleGrid columns={2} spacing={5}>
+        <SimpleGrid columns={2} spacing={2}>
           <GridItem colSpan={2}>
             <SearchInput register={register}></SearchInput>
           </GridItem>

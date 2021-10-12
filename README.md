@@ -52,8 +52,10 @@ Appwrite Explorer is a tool that let's you explore different aspects of an Appwr
 
 ## Teams
 
-- [ ] List Teams
-- [ ] Create Team
+![Teams List](docs/teams-list.png)
+
+- [x] List Teams
+- [x] Create Team
 - [ ] Update Team
 - [ ] Delete Team
 - [ ] Create Team Membership

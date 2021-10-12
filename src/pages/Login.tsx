@@ -15,6 +15,7 @@ import {
   useColorModeValue,
   Box,
   FormLabel,
+  useToast,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -33,8 +34,8 @@ import { useQueryClient } from "react-query";
 export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => setShowPassword(!showPassword);
-
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const {
     handleSubmit,
@@ -60,7 +61,16 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
       localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
       localStorage.setItem(LocalStorageKey.PROJECT, project);
       queryClient.invalidateQueries(QueryKey.USER);
-    } catch (error) {}
+    } catch (error) {
+      toast({
+        title: "Error signing in.",
+        description: `${error}`,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
+    }
   };
 
   return (

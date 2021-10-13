@@ -1,6 +1,6 @@
 # Appwrite Explorer
 
-Appwrite Explorer is a tool that let's you explore different aspects of an Appwrite project from the front end.
+Appwrite Explorer is a tool that let's you explore different aspects of an [Appwrite](https://appwrite.io) project from the front end.
 
 ## Features
 

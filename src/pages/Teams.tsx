@@ -11,12 +11,12 @@ import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ListTeamsOptions, useTeams } from "../hooks/useTeams";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
-import { LimitInput } from "../components/LimitInput";
-import { OffsetInput } from "../components/OffsetInput";
-import { OrderTypeInput } from "../components/OrderTypeInput";
-import { SearchInput } from "../components/SearchInput";
-import { TeamsTable } from "../components/TeamsTable";
-import { NewTeamModal } from "../components/NewTeamModal";
+import { LimitInput } from "../components/inputs/LimitInput";
+import { OffsetInput } from "../components/inputs/OffsetInput";
+import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
+import { SearchInput } from "../components/inputs/SearchInput";
+import { TeamsTable } from "../components/tables/TeamsTable";
+import { NewTeamModal } from "../components/modals/NewTeamModal";
 
 interface IFormInput {
   limit: number;

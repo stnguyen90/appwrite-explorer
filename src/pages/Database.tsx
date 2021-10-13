@@ -24,10 +24,10 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import Editor from "@monaco-editor/react";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
-import { NewDocumentModal } from "../components/NewDocumentModal";
+import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
-import { LimitInput } from "../components/LimitInput";
-import { OffsetInput } from "../components/OffsetInput";
+import { LimitInput } from "../components/inputs/LimitInput";
+import { OffsetInput } from "../components/inputs/OffsetInput";
 
 interface IFormInput {
   collection: string;

@@ -14,13 +14,13 @@ import {
 } from "@chakra-ui/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SearchIcon, AddIcon } from "@chakra-ui/icons";
-import { LimitInput } from "../components/LimitInput";
-import { OffsetInput } from "../components/OffsetInput";
-import { ExecutionsTable } from "../components/ExecutionsTable";
+import { LimitInput } from "../components/inputs/LimitInput";
+import { OffsetInput } from "../components/inputs/OffsetInput";
+import { ExecutionsTable } from "../components/tables/ExecutionsTable";
 import { LocalStorageKey } from "../constants";
 import { CommonListOptions } from "../interfaces";
 import { useFunctionExecutions } from "../hooks/useFunctionExecutions";
-import { ExecuteNowModal } from "../components/ExecuteNowModal";
+import { ExecuteNowModal } from "../components/modals/ExecuteNowModal";
 
 export interface IFormInput {
   functionId: string;

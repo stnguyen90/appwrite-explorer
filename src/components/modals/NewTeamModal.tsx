@@ -24,8 +24,8 @@ import {
 } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { QueryKey } from "../constants";
-import { useAppwrite } from "../contexts/appwrite";
+import { QueryKey } from "../../constants";
+import { useAppwrite } from "../../contexts/appwrite";
 
 interface IFormInput {
   name: string;

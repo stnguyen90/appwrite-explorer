@@ -11,11 +11,11 @@ import {
 import { useStorage } from "../hooks/useStorage";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SearchIcon, AddIcon } from "@chakra-ui/icons";
-import { LimitInput } from "../components/LimitInput";
-import { OffsetInput } from "../components/OffsetInput";
-import { StorageTable } from "../components/StorageTable";
+import { LimitInput } from "../components/inputs/LimitInput";
+import { OffsetInput } from "../components/inputs/OffsetInput";
+import { StorageTable } from "../components/tables/StorageTable";
 import { CommonListOptions } from "../interfaces";
-import { NewUploadModal } from "../components/NewUploadModal";
+import { NewUploadModal } from "../components/modals/NewUploadModal";
 
 export interface IFormInput {
   limit: number;

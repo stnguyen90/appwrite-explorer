@@ -11,7 +11,7 @@ import {
   FieldError,
   UseFormRegister,
 } from "react-hook-form";
-import { IFormInput } from "../pages/Storage";
+import { IFormInput } from "../../pages/Storage";
 
 export const LimitInput = (props: {
   register: UseFormRegister<IFormInput>;

@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { Team } from "../interfaces";
+import { Team } from "../../interfaces";
 
 interface Data {
   $id: string;

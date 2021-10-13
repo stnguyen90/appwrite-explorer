@@ -14,17 +14,16 @@ import {
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
 import React, { useState } from "react";
-import { useQueryClient } from "react-query";
-import { QueryKey } from "../constants";
-import { useAppwrite } from "../contexts/appwrite";
+import { useMutation, useQueryClient } from "react-query";
+import { QueryKey } from "../../constants";
+import { useAppwrite } from "../../contexts/appwrite";
 
-export const ExecuteNowModal = (props: {
-  functionId: string;
+export const NewDocumentModal = (props: {
+  collectionId: string;
   isOpen: boolean;
   onClose: () => void;
 }): JSX.Element => {
   const [value, setValue] = useState("");
-  const [isSubmitting, setSubmitting] = useState(false);
   const appwrite = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -35,45 +34,54 @@ export const ExecuteNowModal = (props: {
     }
   };
 
-  const onCreateClick = async () => {
-    if (!appwrite) return;
-    try {
-      setSubmitting(true);
-      await appwrite.functions.createExecution(props.functionId, value);
-      toast({
-        title: "Function executed.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-        position: "top",
-      });
-      queryClient.invalidateQueries([QueryKey.FUNCTIONS, props.functionId]);
-      props.onClose();
-    } catch (error) {
-      toast({
-        title: "Error executing function.",
-        description: `${error}`,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-        position: "top",
-      });
-    } finally {
-      setSubmitting(false);
+  const mutation = useMutation(
+    async () => {
+      if (!appwrite) return;
+
+      await appwrite.database.createDocument(
+        props.collectionId,
+        JSON.parse(value)
+      );
+    },
+    {
+      onError: (error) => {
+        // An error happened!
+        toast({
+          title: "Error creating document.",
+          description: `${error}`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
+      },
+      onSuccess: () => {
+        toast({
+          title: "Document created.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
+        queryClient.invalidateQueries([QueryKey.DOCUMENTS, props.collectionId]);
+        props.onClose();
+      },
     }
+  );
+
+  const onCreateClick = () => {
+    mutation.mutate();
   };
 
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Execute Now</ModalHeader>
+        <ModalHeader>New Document</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
-            <Text>
-              Enter the payload for this execution and click "Execute".
-            </Text>
+            <Text>Enter the JSON for the new document and click "Create".</Text>
             <Box borderWidth={1} w="full">
               <Editor
                 height="50vh"
@@ -96,9 +104,9 @@ export const ExecuteNowModal = (props: {
           <Button
             colorScheme="pink"
             onClick={onCreateClick}
-            isLoading={isSubmitting}
+            isLoading={mutation.isLoading}
           >
-            Execute
+            Create
           </Button>
         </ModalFooter>
       </ModalContent>

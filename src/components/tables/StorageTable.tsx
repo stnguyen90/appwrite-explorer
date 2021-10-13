@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import React from "react";
-import { File } from "../interfaces";
+import { File } from "../../interfaces";
 
 interface Data {
   $id: string;
@@ -89,16 +89,16 @@ export const StorageTable = (props: {
         <Thead>
           <Tr>
             {columns.map((column) => (
-              <Th>{column.header}</Th>
+              <Th key={column.header}>{column.header}</Th>
             ))}
           </Tr>
         </Thead>
         <Tbody>
           {data.map((row: Data) => {
             return (
-              <Tr>
+              <Tr key={row.$id}>
                 {columns.map((column) => (
-                  <Td>{row[column.accessor]}</Td>
+                  <Td key={column.accessor}>{row[column.accessor]}</Td>
                 ))}
               </Tr>
             );

@@ -20,8 +20,8 @@ import {
 import React, { useRef, useState } from "react";
 import { FiFile } from "react-icons/fi";
 import { useQueryClient } from "react-query";
-import { QueryKey } from "../constants";
-import { useAppwrite } from "../contexts/appwrite";
+import { QueryKey } from "../../constants";
+import { useAppwrite } from "../../contexts/appwrite";
 
 export const NewUploadModal = (props: {
   isOpen: boolean;

@@ -21,7 +21,7 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { FiMenu, FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
 import { ReactText } from "react";
@@ -113,6 +113,12 @@ interface NavItemProps extends FlexProps {
   children: ReactText;
 }
 const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
+  const location = useLocation();
+  const current = location.pathname == to;
+  const highlight = {
+    bg: "pink.400",
+    color: "white",
+  };
   return (
     <Link as={RouterLink} to={to} style={{ textDecoration: "none" }}>
       <Flex
@@ -122,9 +128,11 @@ const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        bg={current ? highlight.bg : "transparent"}
+        color={current ? highlight.color : "black"}
         _hover={{
-          bg: "pink.400",
-          color: "white",
+          bg: highlight.bg,
+          color: highlight.color,
         }}
         {...rest}
       >

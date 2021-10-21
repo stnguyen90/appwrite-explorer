@@ -21,6 +21,15 @@ export interface User extends CommonModel {
   status: 0 | 1;
 }
 
+export interface Document extends CommonModelWithPermissions {
+  [key: string]: any;
+}
+
+export interface DocumentList {
+  documents: Document[];
+  sum: number;
+}
+
 export interface File extends CommonModelWithPermissions {
   name: string;
   dateCreated: number;

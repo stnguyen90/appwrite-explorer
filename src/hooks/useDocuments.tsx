@@ -1,11 +1,7 @@
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
-
-export interface DocumentList {
-  documents: { [key: string]: string | number | boolean }[];
-  sum: number;
-}
+import { DocumentList } from "../interfaces";
 
 export interface ListDocumentsOptions {
   limit: number;

@@ -12,12 +12,10 @@ import {
   VStack,
   Spinner,
   useDisclosure,
-  Box,
   InputRightElement,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import Editor from "@monaco-editor/react";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
@@ -27,6 +25,7 @@ import { OffsetInput } from "../components/inputs/OffsetInput";
 import { OrderFieldInput } from "../components/inputs/OrderFieldInput";
 import { OrderCastInput } from "../components/inputs/OrderCastInput";
 import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
+import { DatabaseTable } from "../components/tables/DatabaseTable";
 
 interface IFormInput {
   collection: string;
@@ -104,7 +103,7 @@ export const Database = (): JSX.Element => {
     });
   };
 
-  const { isLoading, error, data } = useDocuments(collectionId, options);
+  const { isLoading, data } = useDocuments(collectionId, options);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -236,19 +235,10 @@ export const Database = (): JSX.Element => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <Box width="full" pt={3}>
-          <Editor
-            height="70vh"
-            defaultLanguage="json"
-            options={{
-              readOnly: true,
-              minimap: {
-                enabled: false,
-              },
-            }}
-            value={JSON.stringify(error ? error : data, null, 2)}
-          />
-        </Box>
+        <DatabaseTable
+          documents={data?.documents || []}
+          total={data?.sum || 0}
+        />
       )}
     </VStack>
   );

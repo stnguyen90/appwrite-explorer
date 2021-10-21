@@ -81,3 +81,10 @@ export interface CommonListOptions {
   limit: number;
   offset: number;
 }
+
+export interface Payload {
+  event: string;
+  channels: string[];
+  timestamp: number;
+  payload: { [key: string]: any };
+}

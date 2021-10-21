@@ -65,7 +65,8 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 
 ### Realtime
 
-- [ ] Subscribe
+- [x] Basic Subscribe
+- [ ] Add support for ID based channels
 
 ## Getting Started
 

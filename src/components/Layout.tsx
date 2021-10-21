@@ -31,6 +31,7 @@ import { LocalStorageKey, QueryKey } from "../constants";
 import { useAccount } from "../hooks/useAccount";
 import { FaDatabase, FaFile } from "react-icons/fa";
 import { BsLightningFill, BsPeopleFill } from "react-icons/bs";
+import { BiTime } from "react-icons/bi";
 
 interface LinkItemProps {
   name: string;
@@ -42,6 +43,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Storage", icon: FaFile, to: "/storage" },
   { name: "Teams", icon: BsPeopleFill, to: "/teams" },
   { name: "Functions", icon: BsLightningFill, to: "/functions" },
+  { name: "Realtime", icon: BiTime, to: "/realtime" },
 ];
 
 export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {

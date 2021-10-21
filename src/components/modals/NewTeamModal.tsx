@@ -27,11 +27,6 @@ import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
 
-interface IFormInput {
-  name: string;
-  roles: { value: string }[];
-}
-
 export const NewTeamModal = (props: {
   isOpen: boolean;
   onClose: () => void;

@@ -11,6 +11,7 @@ import { Storage } from "../pages/Storage";
 import { Teams } from "../pages/Teams";
 import { Functions } from "../pages/Functions";
 import { TeamMemberships } from "../pages/TeamMemberships";
+import { Realtime } from "../pages/Realtime";
 
 export const Routes = (): JSX.Element => {
   const appwrite = useAppwrite();
@@ -62,6 +63,9 @@ export const Routes = (): JSX.Element => {
           </Route>
           <Route path="/functions">
             <Functions />
+          </Route>
+          <Route path="/realtime">
+            <Realtime />
           </Route>
           <Route path="/">
             <Database />

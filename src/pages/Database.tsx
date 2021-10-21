@@ -8,15 +8,11 @@ import {
   InputGroup,
   SimpleGrid,
   GridItem,
-  Radio,
-  Stack,
-  RadioGroup,
   Flex,
   VStack,
   Spinner,
   useDisclosure,
   Box,
-  Select,
   InputRightElement,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
@@ -28,6 +24,9 @@ import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
+import { OrderFieldInput } from "../components/inputs/OrderFieldInput";
+import { OrderCastInput } from "../components/inputs/OrderCastInput";
+import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
 
 interface IFormInput {
   collection: string;
@@ -195,47 +194,15 @@ export const Database = (): JSX.Element => {
           </GridItem>
 
           <GridItem>
-            <FormControl>
-              <FormLabel htmlFor="orderField">Order Field</FormLabel>
-              <Input
-                id="orderField"
-                placeholder="Field Key"
-                {...register("orderField")}
-              />
-            </FormControl>
+            <OrderFieldInput register={register}></OrderFieldInput>
           </GridItem>
 
           <GridItem>
-            <FormControl>
-              <FormLabel htmlFor="orderCast" defaultValue="string">
-                Order Cast
-              </FormLabel>
-
-              <Select {...register("orderCast")}>
-                <option value="string">String</option>
-                <option value="int">Number</option>
-                <option value="date">Date</option>
-                <option value="time">Time</option>
-                <option value="datetime">Datetime</option>
-              </Select>
-            </FormControl>
+            <OrderCastInput register={register}></OrderCastInput>
           </GridItem>
 
           <GridItem>
-            <FormControl>
-              <FormLabel htmlFor="orderType">Order Type</FormLabel>
-
-              <RadioGroup defaultValue="ASC">
-                <Stack direction="row">
-                  <Radio {...register("orderType")} value="ASC">
-                    Ascending
-                  </Radio>
-                  <Radio {...register("orderType")} value="DESC">
-                    Descending
-                  </Radio>
-                </Stack>
-              </RadioGroup>
-            </FormControl>
+            <OrderTypeInput register={register}></OrderTypeInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

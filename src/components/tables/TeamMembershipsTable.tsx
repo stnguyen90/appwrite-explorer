@@ -1,6 +1,5 @@
 import {
   Box,
-  Link,
   Table,
   TableCaption,
   Tbody,
@@ -9,29 +8,32 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
 import React from "react";
-import { Team } from "../../interfaces";
+import { Membership } from "../../interfaces";
 
 interface Data {
   $id: string;
-  dateCreated: string;
+  userId: string;
   name: string;
-  sum: number;
+  email: string;
+  invited: string;
+  joined: string;
+  roles: string;
 }
 
-export const TeamsTable = (props: {
-  teams: Team[];
+export const TeamMembershipsTable = (props: {
+  memberships: Membership[];
   total: number;
 }): JSX.Element => {
-  const data = props.teams.map((f) => {
-    const { dateCreated, ...rest } = f;
+  const data = props.memberships.map((f) => {
+    const { invited, joined, roles, ...rest } = f;
     return {
       ...rest,
-      dateCreated: new Date(dateCreated * 1000).toLocaleString(),
+      invited: new Date(invited * 1000).toLocaleString(),
+      joined: joined > 0 ? new Date(joined * 1000).toLocaleString() : "",
+      roles: roles.join(", "),
     };
   });
-
   const columns = React.useMemo<
     { header: string; accessor: keyof Data; isNumeric?: boolean }[]
   >(
@@ -41,16 +43,28 @@ export const TeamsTable = (props: {
         accessor: "$id",
       },
       {
+        header: "User ID",
+        accessor: "userId",
+      },
+      {
         header: "Name",
         accessor: "name",
       },
       {
-        header: "Members",
-        accessor: "sum",
+        header: "Email",
+        accessor: "email",
       },
       {
-        header: "Created",
-        accessor: "dateCreated",
+        header: "Invited",
+        accessor: "invited",
+      },
+      {
+        header: "Joined",
+        accessor: "joined",
+      },
+      {
+        header: "Roles",
+        accessor: "roles",
       },
     ],
     []
@@ -71,23 +85,11 @@ export const TeamsTable = (props: {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((row: Data) => {
+          {data.map((row) => {
             return (
               <Tr key={row.$id}>
                 {columns.map((column) => (
-                  <Td key={column.accessor}>
-                    {column.accessor == "sum" ? (
-                      <Link
-                        color="pink.500"
-                        as={RouterLink}
-                        to={`/teams/${row.$id}`}
-                      >
-                        {row[column.accessor]}
-                      </Link>
-                    ) : (
-                      row[column.accessor]
-                    )}
-                  </Td>
+                  <Td key={column.accessor}>{row[column.accessor]}</Td>
                 ))}
               </Tr>
             );

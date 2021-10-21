@@ -45,6 +45,22 @@ export interface TeamsList {
   sum: number;
 }
 
+export interface Membership extends CommonModel {
+  userId: string;
+  teamId: string;
+  name: string;
+  email: string;
+  invited: number;
+  joined: number;
+  confirm: boolean;
+  roles: string[];
+}
+
+export interface MembershipsList {
+  memberships: Membership[];
+  sum: number;
+}
+
 export interface Execution extends CommonModelWithPermissions {
   functionId: string;
   dateCreated: number;

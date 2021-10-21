@@ -58,10 +58,14 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 - [x] Create Team
 - [ ] Update Team
 - [ ] Delete Team
-- [ ] Create Team Membership
+- [x] Create Team Membership
 - [ ] Update Team Membership
 - [ ] Update Membershp Roles
 - [ ] Delete Team Membership
+
+### Realtime
+
+- [ ] Subscribe
 
 ## Getting Started
 

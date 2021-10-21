@@ -17,10 +17,18 @@ export const OrderTypeInput = (props: {
 
       <RadioGroup defaultValue="ASC">
         <Stack direction="row">
-          <Radio {...props.register("orderType")} value="ASC">
+          <Radio
+            colorScheme="pink"
+            {...props.register("orderType")}
+            value="ASC"
+          >
             Ascending
           </Radio>
-          <Radio {...props.register("orderType")} value="DESC">
+          <Radio
+            colorScheme="pink"
+            {...props.register("orderType")}
+            value="DESC"
+          >
             Descending
           </Radio>
         </Stack>

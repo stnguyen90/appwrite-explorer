@@ -55,7 +55,7 @@ export const Database = (): JSX.Element => {
     control,
     handleSubmit,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<IFormInput>({
     mode: "all",
     defaultValues: {
@@ -209,7 +209,7 @@ export const Database = (): JSX.Element => {
             leftIcon={<SearchIcon />}
             mt={4}
             colorScheme="pink"
-            isLoading={isSubmitting}
+            isLoading={isLoading}
             type="submit"
           >
             List Documents

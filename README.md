@@ -13,7 +13,7 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 - [ ] Anonymous Access
 - [ ] Sign in with Magic URL
 - [ ] OAuth2 Authentication
-- [ ] Update Account Name
+- [x] Update Account Name
 - [ ] Update Account Password
 - [ ] Update Account Email
 - [ ] Update Account Preferences

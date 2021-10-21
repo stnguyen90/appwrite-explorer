@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   IconButton,
   Avatar,
@@ -32,6 +32,7 @@ import { useAccount } from "../hooks/useAccount";
 import { FaDatabase, FaFile } from "react-icons/fa";
 import { BsLightningFill, BsPeopleFill } from "react-icons/bs";
 import { BiTime } from "react-icons/bi";
+import { UpdateNameModal } from "./modals/UpdateNameModal";
 
 interface LinkItemProps {
   name: string;
@@ -159,6 +160,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const appwrite = useAppwrite();
   const queryClient = useQueryClient();
   const { data } = useAccount();
+  const [isUpdateNameModalOpen, setUpdateNameModalOpen] = useState(false);
 
   const onSignOutClick = async () => {
     await appwrite?.account.deleteSession("current");
@@ -228,7 +230,17 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              {/* <MenuItem>Settings</MenuItem> */}
+              <MenuItem
+                onClick={() => {
+                  setUpdateNameModalOpen(true);
+                }}
+              >
+                Update Name
+              </MenuItem>
+              <UpdateNameModal
+                isOpen={isUpdateNameModalOpen}
+                onClose={() => setUpdateNameModalOpen(false)}
+              />
               <MenuItem onClick={onSignOutClick}>Sign out</MenuItem>
             </MenuList>
           </Menu>

@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-  Divider,
   Text,
   Center,
   Container,
@@ -119,113 +118,111 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
           <VStack w="full">
             <Heading>Sign In</Heading>
             <Text>Login using email and password</Text>
-            <form style={{ width: "100%" }}>
-              <VStack w="full">
-                <FormControl isInvalid={!!errors.endpoint}>
-                  <FormLabel htmlFor="endpoint">Endpoint</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<LinkIcon color="gray" />}
+            <VStack w="full">
+              <FormControl isInvalid={!!errors.endpoint}>
+                <FormLabel htmlFor="endpoint">Endpoint</FormLabel>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<LinkIcon color="gray" />}
+                  />
+                  <Input
+                    id="endpoint"
+                    {...register("endpoint", {
+                      required: "This is required",
+                    })}
+                    placeholder="http://appwrite.io/v1/"
+                  />
+                </InputGroup>
+                <FormErrorMessage>
+                  {errors.endpoint && errors.endpoint.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={errors.project}>
+                <FormLabel htmlFor="project">Project ID</FormLabel>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<InfoOutlineIcon color="gray" />}
+                  />
+                  <Input
+                    id="project"
+                    {...register("project", {
+                      required: "This is required",
+                    })}
+                    placeholder="Project ID"
+                  />
+                </InputGroup>
+                <FormErrorMessage>
+                  {errors.project && errors.project.message}
+                </FormErrorMessage>
+              </FormControl>
+              <Box>
+                <Button
+                  colorScheme="pink"
+                  isLoading={isSubmitting}
+                  type="submit"
+                  size="lg"
+                  marginTop={4}
+                  onClick={handleSubmit(onContinueAsGuest)}
+                >
+                  Continue as Guest
+                </Button>
+              </Box>
+              <FormControl isInvalid={errors.email}>
+                <FormLabel htmlFor="email">Email</FormLabel>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<AtSignIcon color="gray" />}
+                  />
+                  <Input
+                    id="email"
+                    {...register("email")}
+                    placeholder="Email"
+                  />
+                </InputGroup>
+              </FormControl>
+              <FormControl isInvalid={errors.password}>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <InputGroup size="md">
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<LockIcon color="gray" />}
+                  />
+                  <Input
+                    pr="4.5rem"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Password"
+                    {...register("password")}
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      aria-label={showPassword ? "Hide" : "Show"}
+                      h="1.75rem"
+                      w="1.25rem"
+                      size="xm"
+                      variant="link"
+                      color="gray"
+                      as={showPassword ? ViewOffIcon : ViewIcon}
+                      onClick={handleClick}
                     />
-                    <Input
-                      id="endpoint"
-                      {...register("endpoint", {
-                        required: "This is required",
-                      })}
-                      placeholder="http://appwrite.io/v1/"
-                    />
-                  </InputGroup>
-                  <FormErrorMessage>
-                    {errors.endpoint && errors.endpoint.message}
-                  </FormErrorMessage>
-                </FormControl>
-                <FormControl isInvalid={errors.project}>
-                  <FormLabel htmlFor="project">Project ID</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<InfoOutlineIcon color="gray" />}
-                    />
-                    <Input
-                      id="project"
-                      {...register("project", {
-                        required: "This is required",
-                      })}
-                      placeholder="Project ID"
-                    />
-                  </InputGroup>
-                  <FormErrorMessage>
-                    {errors.project && errors.project.message}
-                  </FormErrorMessage>
-                </FormControl>
-                <Box>
-                  <Button
-                    colorScheme="pink"
-                    isLoading={isSubmitting}
-                    type="submit"
-                    size="lg"
-                    marginTop={4}
-                    onClick={handleSubmit(onContinueAsGuest)}
-                  >
-                    Continue as Guest
-                  </Button>
-                </Box>
-                <FormControl isInvalid={errors.email}>
-                  <FormLabel htmlFor="email">Email</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<AtSignIcon color="gray" />}
-                    />
-                    <Input
-                      id="email"
-                      {...register("email")}
-                      placeholder="Email"
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl isInvalid={errors.password}>
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <InputGroup size="md">
-                    <InputLeftElement
-                      pointerEvents="none"
-                      children={<LockIcon color="gray" />}
-                    />
-                    <Input
-                      pr="4.5rem"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Password"
-                      {...register("password")}
-                    />
-                    <InputRightElement>
-                      <IconButton
-                        aria-label={showPassword ? "Hide" : "Show"}
-                        h="1.75rem"
-                        w="1.25rem"
-                        size="xm"
-                        variant="link"
-                        color="gray"
-                        as={showPassword ? ViewOffIcon : ViewIcon}
-                        onClick={handleClick}
-                      />
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <Box>
-                  <Button
-                    colorScheme="pink"
-                    isLoading={isSubmitting}
-                    type="submit"
-                    size="lg"
-                    marginTop={4}
-                    onClick={handleSubmit(onSignIn)}
-                  >
-                    Sign In
-                  </Button>
-                </Box>
-              </VStack>
-            </form>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <Box>
+                <Button
+                  colorScheme="pink"
+                  isLoading={isSubmitting}
+                  type="submit"
+                  size="lg"
+                  marginTop={4}
+                  onClick={handleSubmit(onSignIn)}
+                >
+                  Sign In
+                </Button>
+              </Box>
+            </VStack>
           </VStack>
         </Center>
       </Container>

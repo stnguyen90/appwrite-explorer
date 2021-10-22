@@ -16,6 +16,7 @@ import { OffsetInput } from "../components/inputs/OffsetInput";
 import { StorageTable } from "../components/tables/StorageTable";
 import { CommonListOptions } from "../interfaces";
 import { NewUploadModal } from "../components/modals/NewUploadModal";
+import { useAccount } from "../hooks/useAccount";
 
 export interface IFormInput {
   limit: number;
@@ -23,6 +24,7 @@ export interface IFormInput {
 }
 
 export const Storage = (): JSX.Element => {
+  const { data: user } = useAccount();
   const [options, setOptions] = useState<CommonListOptions>({
     limit: 25,
     offset: 0,
@@ -72,16 +74,20 @@ export const Storage = (): JSX.Element => {
             List Files
           </Button>
 
-          <Button
-            leftIcon={<AddIcon />}
-            variant="outline"
-            mt={4}
-            colorScheme="pink"
-            onClick={onOpen}
-          >
-            Upload
-          </Button>
-          <NewUploadModal isOpen={isOpen} onClose={onClose} />
+          {!!user?.$id && (
+            <>
+              <Button
+                leftIcon={<AddIcon />}
+                variant="outline"
+                mt={4}
+                colorScheme="pink"
+                onClick={onOpen}
+              >
+                Upload
+              </Button>
+              <NewUploadModal isOpen={isOpen} onClose={onClose} />
+            </>
+          )}
         </Flex>
       </form>
 

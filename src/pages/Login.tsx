@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Divider,
   Text,
   Center,
   Container,
@@ -16,6 +17,7 @@ import {
   Box,
   FormLabel,
   useToast,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -30,6 +32,7 @@ import {
 import { Appwrite } from "appwrite";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useQueryClient } from "react-query";
+import { User } from "../interfaces";
 
 export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +46,7 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (values: {
+  const onSignIn = async (values: {
     endpoint: string;
     project: string;
     email: string;
@@ -73,6 +76,35 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
     }
   };
 
+  const onContinueAsGuest = async (values: {
+    endpoint: string;
+    project: string;
+    email: string;
+    password: string;
+  }) => {
+    const { endpoint, project } = values;
+
+    const { appwrite } = props;
+
+    appwrite.setEndpoint(endpoint);
+    appwrite.setProject(project);
+    localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
+    localStorage.setItem(LocalStorageKey.PROJECT, project);
+
+    queryClient.setQueryData<User>(QueryKey.USER, () => {
+      return {
+        $id: "",
+        email: "",
+        emailVerification: false,
+        name: "Guest",
+        passwordUpdate: 0,
+        prefs: {},
+        registration: 0,
+        status: 0,
+      };
+    });
+  };
+
   return (
     <Center minH="100vh" p={2}>
       <Container
@@ -87,9 +119,9 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
           <VStack w="full">
             <Heading>Sign In</Heading>
             <Text>Login using email and password</Text>
-            <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+            <form style={{ width: "100%" }}>
               <VStack w="full">
-                <FormControl isInvalid={errors.endpoint}>
+                <FormControl isInvalid={!!errors.endpoint}>
                   <FormLabel htmlFor="endpoint">Endpoint</FormLabel>
                   <InputGroup>
                     <InputLeftElement
@@ -98,10 +130,15 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                     />
                     <Input
                       id="endpoint"
-                      {...register("endpoint")}
+                      {...register("endpoint", {
+                        required: "This is required",
+                      })}
                       placeholder="http://appwrite.io/v1/"
                     />
                   </InputGroup>
+                  <FormErrorMessage>
+                    {errors.endpoint && errors.endpoint.message}
+                  </FormErrorMessage>
                 </FormControl>
                 <FormControl isInvalid={errors.project}>
                   <FormLabel htmlFor="project">Project ID</FormLabel>
@@ -112,11 +149,28 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                     />
                     <Input
                       id="project"
-                      {...register("project")}
+                      {...register("project", {
+                        required: "This is required",
+                      })}
                       placeholder="Project ID"
                     />
                   </InputGroup>
+                  <FormErrorMessage>
+                    {errors.project && errors.project.message}
+                  </FormErrorMessage>
                 </FormControl>
+                <Box>
+                  <Button
+                    colorScheme="pink"
+                    isLoading={isSubmitting}
+                    type="submit"
+                    size="lg"
+                    marginTop={4}
+                    onClick={handleSubmit(onContinueAsGuest)}
+                  >
+                    Continue as Guest
+                  </Button>
+                </Box>
                 <FormControl isInvalid={errors.email}>
                   <FormLabel htmlFor="email">Email</FormLabel>
                   <InputGroup>
@@ -165,6 +219,7 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                     type="submit"
                     size="lg"
                     marginTop={4}
+                    onClick={handleSubmit(onSignIn)}
                   >
                     Sign In
                   </Button>

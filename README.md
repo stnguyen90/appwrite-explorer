@@ -9,7 +9,7 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 ![Sign In](docs/sign-in.png)
 
 - [x] Sign in with Email and Password
-- [ ] Guest Access
+- [x] Guest Access
 - [ ] Anonymous Access
 - [ ] Sign in with Magic URL
 - [ ] OAuth2 Authentication

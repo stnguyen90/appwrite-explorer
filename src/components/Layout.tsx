@@ -82,6 +82,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const { data } = useAccount();
   return (
     <Box
       transition="3s ease"
@@ -99,11 +100,13 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         </Text>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} to={link.to}>
-          {link.name}
-        </NavItem>
-      ))}
+      {LinkItems.filter((link) => link.name != "Teams" || !!data?.$id).map(
+        (link) => (
+          <NavItem key={link.name} icon={link.icon} to={link.to}>
+            {link.name}
+          </NavItem>
+        )
+      )}
     </Box>
   );
 };
@@ -163,7 +166,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const [isUpdateNameModalOpen, setUpdateNameModalOpen] = useState(false);
 
   const onSignOutClick = async () => {
-    await appwrite?.account.deleteSession("current");
+    if (data?.$id != "") {
+      await appwrite?.account.deleteSession("current");
+    }
 
     Object.values(LocalStorageKey).forEach((key) => {
       localStorage.removeItem(key);
@@ -230,17 +235,21 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem
-                onClick={() => {
-                  setUpdateNameModalOpen(true);
-                }}
-              >
-                Update Name
-              </MenuItem>
-              <UpdateNameModal
-                isOpen={isUpdateNameModalOpen}
-                onClose={() => setUpdateNameModalOpen(false)}
-              />
+              {!!data?.$id && (
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      setUpdateNameModalOpen(true);
+                    }}
+                  >
+                    Update Name
+                  </MenuItem>
+                  <UpdateNameModal
+                    isOpen={isUpdateNameModalOpen}
+                    onClose={() => setUpdateNameModalOpen(false)}
+                  />
+                </>
+              )}
               <MenuItem onClick={onSignOutClick}>Sign out</MenuItem>
             </MenuList>
           </Menu>

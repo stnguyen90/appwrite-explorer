@@ -21,6 +21,7 @@ import { LocalStorageKey } from "../constants";
 import { CommonListOptions } from "../interfaces";
 import { useFunctionExecutions } from "../hooks/useFunctionExecutions";
 import { ExecuteNowModal } from "../components/modals/ExecuteNowModal";
+import { useAccount } from "../hooks/useAccount";
 
 export interface IFormInput {
   functionId: string;
@@ -29,6 +30,7 @@ export interface IFormInput {
 }
 
 export const Functions = (): JSX.Element => {
+  const { data: user } = useAccount();
   const [functionId, setFunctionId] = useState(
     localStorage.getItem(LocalStorageKey.FUNCTION) || ""
   );
@@ -104,20 +106,24 @@ export const Functions = (): JSX.Element => {
             List Executions
           </Button>
 
-          <Button
-            leftIcon={<AddIcon />}
-            variant="outline"
-            mt={4}
-            colorScheme="pink"
-            onClick={onOpen}
-          >
-            Execute Now
-          </Button>
-          <ExecuteNowModal
-            functionId={functionId}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
+          {!!user?.$id && (
+            <>
+              <Button
+                leftIcon={<AddIcon />}
+                variant="outline"
+                mt={4}
+                colorScheme="pink"
+                onClick={onOpen}
+              >
+                Execute Now
+              </Button>
+              <ExecuteNowModal
+                functionId={functionId}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
+            </>
+          )}
         </Flex>
       </form>
 

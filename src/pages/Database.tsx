@@ -10,10 +10,8 @@ import {
   GridItem,
   Flex,
   VStack,
-  Spinner,
   useDisclosure,
   InputRightElement,
-  Text,
   Alert,
   AlertDescription,
   AlertIcon,
@@ -31,6 +29,7 @@ import { OrderFieldInput } from "../components/inputs/OrderFieldInput";
 import { OrderCastInput } from "../components/inputs/OrderCastInput";
 import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
 import { DatabaseTable } from "../components/tables/DatabaseTable";
+import { useAccount } from "../hooks/useAccount";
 
 interface IFormInput {
   collection: string;
@@ -43,6 +42,7 @@ interface IFormInput {
   search: string;
 }
 export const Database = (): JSX.Element => {
+  const { data: user } = useAccount();
   const [collectionId, setCollectionId] = useState(
     localStorage.getItem(LocalStorageKey.COLLECTION) || ""
   );
@@ -227,20 +227,24 @@ export const Database = (): JSX.Element => {
             List Documents
           </Button>
 
-          <Button
-            leftIcon={<AddIcon />}
-            variant="outline"
-            mt={4}
-            colorScheme="pink"
-            onClick={onOpen}
-          >
-            New Document
-          </Button>
-          <NewDocumentModal
-            collectionId={collectionId}
-            isOpen={isOpen}
-            onClose={onClose}
-          />
+          {!!user?.$id && (
+            <>
+              <Button
+                leftIcon={<AddIcon />}
+                variant="outline"
+                mt={4}
+                colorScheme="pink"
+                onClick={onOpen}
+              >
+                New Document
+              </Button>
+              <NewDocumentModal
+                collectionId={collectionId}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
+            </>
+          )}
         </Flex>
       </form>
 

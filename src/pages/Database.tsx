@@ -13,6 +13,11 @@ import {
   Spinner,
   useDisclosure,
   InputRightElement,
+  Text,
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -103,7 +108,14 @@ export const Database = (): JSX.Element => {
     });
   };
 
-  const { isLoading, data } = useDocuments(collectionId, options);
+  const { isLoading, isError, error, data } = useDocuments(
+    collectionId,
+    options
+  );
+
+  if (isError) {
+    console.log(error);
+  }
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -232,14 +244,30 @@ export const Database = (): JSX.Element => {
         </Flex>
       </form>
 
-      {isLoading ? (
-        <Spinner />
-      ) : (
-        <DatabaseTable
-          documents={data?.documents || []}
-          total={data?.sum || 0}
-        />
-      )}
+      {!isLoading &&
+        (isError ? (
+          <Alert
+            status="error"
+            variant="subtle"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            textAlign="center"
+          >
+            <AlertIcon mr={0} />
+            <AlertTitle mt={1} mb={1} fontSize="lg">
+              Error Code {error?.code || ""}
+            </AlertTitle>
+            <AlertDescription maxWidth="sm">
+              {error?.message || ""}
+            </AlertDescription>
+          </Alert>
+        ) : (
+          <DatabaseTable
+            documents={data?.documents || []}
+            total={data?.sum || 0}
+          />
+        ))}
     </VStack>
   );
 };

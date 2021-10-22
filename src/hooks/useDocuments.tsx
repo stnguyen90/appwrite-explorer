@@ -1,3 +1,4 @@
+import { AppwriteException } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -16,7 +17,7 @@ export interface ListDocumentsOptions {
 export const useDocuments = (
   collectionId: string,
   options: ListDocumentsOptions
-): UseQueryResult<DocumentList | null, unknown> => {
+): UseQueryResult<DocumentList | null, AppwriteException> => {
   const appwrite = useAppwrite();
 
   return useQuery(

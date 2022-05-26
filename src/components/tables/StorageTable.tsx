@@ -8,8 +8,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { Models } from "appwrite";
 import React from "react";
-import { File } from "../../interfaces";
 
 interface Data {
   $id: string;
@@ -22,18 +22,15 @@ interface Data {
   sizeOriginal: number;
 }
 
-export const StorageTable = (props: {
-  files: File[];
-  total: number;
-}): JSX.Element => {
+export const StorageTable = (props: Models.FileList): JSX.Element => {
   const data = props.files.map((f) => {
-    const { $permissions, dateCreated, sizeOriginal, ...rest } = f;
+    const { $read, $write, dateCreated, sizeOriginal, ...rest } = f;
     return {
       ...rest,
       dateCreated: new Date(dateCreated * 1000).toLocaleString(),
       sizeOriginal: sizeOriginal / 1000, // KB
-      read: $permissions.read.join(", "),
-      write: $permissions.write.join(", "),
+      read: $read.join(", "),
+      write: $write.join(", "),
     };
   });
 

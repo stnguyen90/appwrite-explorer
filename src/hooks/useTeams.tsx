@@ -1,7 +1,7 @@
+import { Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
-import { TeamsList } from "../interfaces";
 
 export interface ListTeamsOptions {
   limit: number;
@@ -12,7 +12,7 @@ export interface ListTeamsOptions {
 
 export const useTeams = (
   options: ListTeamsOptions
-): UseQueryResult<TeamsList | null, unknown> => {
+): UseQueryResult<Models.TeamList | null, unknown> => {
   const appwrite = useAppwrite();
 
   return useQuery(
@@ -20,10 +20,12 @@ export const useTeams = (
     async () => {
       if (!appwrite) return null;
 
-      const result = await appwrite.teams.list<TeamsList>(
+      const result = await appwrite.teams.list(
         options.search != "" ? options.search : undefined,
         options.limit,
         options.offset,
+        undefined,
+        undefined,
         options.orderType
       );
 

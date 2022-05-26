@@ -26,7 +26,6 @@ import { AddIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
 import { OrderFieldInput } from "../components/inputs/OrderFieldInput";
-import { OrderCastInput } from "../components/inputs/OrderCastInput";
 import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
 import { DatabaseTable } from "../components/tables/DatabaseTable";
 import { useAccount } from "../hooks/useAccount";
@@ -35,11 +34,9 @@ interface IFormInput {
   collection: string;
   limit: number;
   offset: number;
-  filters: { value: string }[];
+  queries: { value: string }[];
   orderField: string;
   orderType: "ASC" | "DESC";
-  orderCast: "string" | "int" | "date" | "time" | "datetime";
-  search: string;
 }
 export const Database = (): JSX.Element => {
   const { data: user } = useAccount();
@@ -49,11 +46,9 @@ export const Database = (): JSX.Element => {
   const [options, setOptions] = useState<ListDocumentsOptions>({
     limit: 25,
     offset: 0,
-    filters: [],
+    queries: [],
     orderField: "",
     orderType: "ASC",
-    orderCast: "string",
-    search: "",
   });
 
   const {
@@ -67,18 +62,16 @@ export const Database = (): JSX.Element => {
       collection: collectionId,
       limit: options.limit,
       offset: options.offset,
-      filters: [{ value: "" }],
+      queries: [{ value: "" }],
       orderField: "",
       orderType: "ASC",
-      orderCast: "string",
-      search: "",
     },
   });
 
-  const { fields, append, remove } = useFieldArray<IFormInput, "filters", "id">(
+  const { fields, append, remove } = useFieldArray<IFormInput, "queries", "id">(
     {
       control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "filters", // unique name for your Field Array
+      name: "queries", // unique name for your Field Array
       // keyName: "id", default to "id", you can change the key name
     }
   );
@@ -95,13 +88,13 @@ export const Database = (): JSX.Element => {
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {
-      const { collection, filters, ...rest } = values;
+      const { collection, queries: queries, ...rest } = values;
       setCollectionId(collection);
       setOptions((prevState) => {
         return {
           ...prevState,
           ...rest,
-          filters: filters.filter((f) => f.value != "").map((f) => f.value),
+          queries: queries.filter((q) => q.value != "").map((q) => q.value),
         };
       });
       resolve();
@@ -146,30 +139,19 @@ export const Database = (): JSX.Element => {
 
           <GridItem colSpan={2}>
             <FormControl>
-              <FormLabel htmlFor="search">Search</FormLabel>
-              <Input
-                id="search"
-                placeholder="Search Query"
-                {...register("search")}
-              />
-            </FormControl>
-          </GridItem>
-
-          <GridItem colSpan={2}>
-            <FormControl>
-              <FormLabel>Filters</FormLabel>
+              <FormLabel>Queries</FormLabel>
               <VStack justifyContent="flex-start">
                 {fields.map((field, index) => {
                   return (
                     <InputGroup key={field.id}>
                       <Input
-                        placeholder="name=John Doe"
-                        {...register(`filters.${index}.value` as const)}
+                        placeholder='attribute.equal("value")'
+                        {...register(`queries.${index}.value` as const)}
                       />
                       {index != 0 && (
                         <InputRightElement>
                           <IconButton
-                            aria-label="Remove Filter"
+                            aria-label="Remove Query"
                             h="1.5rem"
                             w="1rem"
                             size="xm"
@@ -197,23 +179,19 @@ export const Database = (): JSX.Element => {
           </GridItem>
 
           <GridItem>
-            <LimitInput register={register} errors={errors} />
+            <LimitInput register={register as any} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <OffsetInput register={register} errors={errors} />
+            <OffsetInput register={register as any} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <OrderFieldInput register={register}></OrderFieldInput>
+            <OrderFieldInput register={register as any}></OrderFieldInput>
           </GridItem>
 
           <GridItem>
-            <OrderCastInput register={register}></OrderCastInput>
-          </GridItem>
-
-          <GridItem>
-            <OrderTypeInput register={register}></OrderTypeInput>
+            <OrderTypeInput register={register as any}></OrderTypeInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">
@@ -269,7 +247,7 @@ export const Database = (): JSX.Element => {
         ) : (
           <DatabaseTable
             documents={data?.documents || []}
-            total={data?.sum || 0}
+            total={data?.total || 0}
           />
         ))}
     </VStack>

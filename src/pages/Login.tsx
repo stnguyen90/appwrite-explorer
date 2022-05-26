@@ -28,10 +28,9 @@ import {
   ViewIcon,
   ViewOffIcon,
 } from "@chakra-ui/icons";
-import { Appwrite } from "appwrite";
+import { Appwrite, Models } from "appwrite";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useQueryClient } from "react-query";
-import { User } from "../interfaces";
 
 export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -90,18 +89,21 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
     localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
     localStorage.setItem(LocalStorageKey.PROJECT, project);
 
-    queryClient.setQueryData<User>(QueryKey.USER, () => {
-      return {
-        $id: "",
-        email: "",
-        emailVerification: false,
-        name: "Guest",
-        passwordUpdate: 0,
-        prefs: {},
-        registration: 0,
-        status: 0,
-      };
-    });
+    queryClient.setQueryData<Models.User<Models.Preferences>>(
+      QueryKey.USER,
+      () => {
+        return {
+          $id: "",
+          email: "",
+          emailVerification: false,
+          name: "Guest",
+          passwordUpdate: 0,
+          prefs: {},
+          registration: 0,
+          status: false,
+        };
+      }
+    );
   };
 
   return (
@@ -131,7 +133,7 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                     {...register("endpoint", {
                       required: "This is required",
                     })}
-                    placeholder="http://appwrite.io/v1/"
+                    placeholder="http://appwrite.io/v1"
                   />
                 </InputGroup>
                 <FormErrorMessage>
@@ -151,6 +153,11 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                       required: "This is required",
                     })}
                     placeholder="Project ID"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSubmit(onContinueAsGuest)();
+                      }
+                    }}
                   />
                 </InputGroup>
                 <FormErrorMessage>
@@ -195,6 +202,11 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
                     {...register("password")}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSubmit(onSignIn)();
+                      }
+                    }}
                   />
                   <InputRightElement>
                     <IconButton

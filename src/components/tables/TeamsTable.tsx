@@ -11,19 +11,16 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import React from "react";
-import { Team } from "../../interfaces";
+import { Models } from "appwrite";
 
 interface Data {
   $id: string;
   dateCreated: string;
   name: string;
-  sum: number;
+  total: number;
 }
 
-export const TeamsTable = (props: {
-  teams: Team[];
-  total: number;
-}): JSX.Element => {
+export const TeamsTable = (props: Models.TeamList): JSX.Element => {
   const data = props.teams.map((f) => {
     const { dateCreated, ...rest } = f;
     return {
@@ -46,7 +43,7 @@ export const TeamsTable = (props: {
       },
       {
         header: "Members",
-        accessor: "sum",
+        accessor: "total",
       },
       {
         header: "Created",
@@ -76,7 +73,7 @@ export const TeamsTable = (props: {
               <Tr key={row.$id}>
                 {columns.map((column) => (
                   <Td key={column.accessor}>
-                    {column.accessor == "sum" ? (
+                    {column.accessor == "total" ? (
                       <Link
                         color="pink.500"
                         as={RouterLink}

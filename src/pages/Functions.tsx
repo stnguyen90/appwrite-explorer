@@ -89,10 +89,10 @@ export const Functions = (): JSX.Element => {
           </GridItem>
           <GridItem />
           <GridItem>
-            <LimitInput register={register} errors={errors} />
+            <LimitInput register={register as any} errors={errors} />
           </GridItem>
           <GridItem>
-            <OffsetInput register={register} errors={errors} />
+            <OffsetInput register={register as any} errors={errors} />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">
@@ -132,7 +132,7 @@ export const Functions = (): JSX.Element => {
       ) : (
         <ExecutionsTable
           executions={data?.executions || []}
-          total={data?.sum || 0}
+          total={data?.total || 0}
         ></ExecutionsTable>
       )}
     </VStack>

@@ -1,7 +1,7 @@
+import { Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
-import { MembershipsList } from "../interfaces";
 
 export interface ListTeamMembershipsOptions {
   id: string;
@@ -13,7 +13,7 @@ export interface ListTeamMembershipsOptions {
 
 export const useTeamMemberships = (
   options: ListTeamMembershipsOptions
-): UseQueryResult<MembershipsList | null, unknown> => {
+): UseQueryResult<Models.MembershipList | null, unknown> => {
   const appwrite = useAppwrite();
 
   return useQuery(
@@ -21,11 +21,13 @@ export const useTeamMemberships = (
     async () => {
       if (!appwrite) return null;
 
-      const result = await appwrite.teams.getMemberships<MembershipsList>(
+      const result = await appwrite.teams.getMemberships(
         options.id,
         options.search != "" ? options.search : undefined,
         options.limit,
         options.offset,
+        undefined,
+        undefined,
         options.orderType
       );
 

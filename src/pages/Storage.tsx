@@ -2,30 +2,38 @@ import React, { useState } from "react";
 import {
   Button,
   Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   GridItem,
+  Input,
   SimpleGrid,
   Spinner,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useStorage } from "../hooks/useStorage";
+import { ListFilesOptions, useStorage } from "../hooks/useStorage";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SearchIcon, AddIcon } from "@chakra-ui/icons";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
 import { StorageTable } from "../components/tables/StorageTable";
-import { CommonListOptions } from "../interfaces";
 import { NewUploadModal } from "../components/modals/NewUploadModal";
 import { useAccount } from "../hooks/useAccount";
+import { LocalStorageKey } from "../constants";
 
 export interface IFormInput {
+  bucket: string;
   limit: number;
   offset: number;
 }
 
 export const Storage = (): JSX.Element => {
   const { data: user } = useAccount();
-  const [options, setOptions] = useState<CommonListOptions>({
+  const [bucketId, setBucketId] = useState(
+    localStorage.getItem(LocalStorageKey.BUCKET) || ""
+  );
+  const [options, setOptions] = useState<ListFilesOptions>({
     limit: 25,
     offset: 0,
   });
@@ -36,6 +44,7 @@ export const Storage = (): JSX.Element => {
   } = useForm<IFormInput>({
     mode: "all",
     defaultValues: {
+      bucket: bucketId,
       limit: options.limit,
       offset: options.offset,
     },
@@ -43,12 +52,13 @@ export const Storage = (): JSX.Element => {
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {
+      setBucketId(values.bucket);
       setOptions(values);
       resolve();
     });
   };
 
-  const { isLoading, data } = useStorage(options);
+  const { isLoading, data } = useStorage(bucketId, options);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -57,10 +67,30 @@ export const Storage = (): JSX.Element => {
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} spacing={2}>
           <GridItem>
-            <LimitInput register={register} errors={errors} />
+            <FormControl isInvalid={!!errors.bucket}>
+              <FormLabel htmlFor="bucket">Bucket ID</FormLabel>
+              <Input
+                id="bucket"
+                placeholder="Bucket ID"
+                {...register("bucket", {
+                  required: "This is required",
+                  minLength: {
+                    value: 4,
+                    message: "Minimum length should be 4",
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {errors.bucket && errors.bucket.message}
+              </FormErrorMessage>
+            </FormControl>
+          </GridItem>
+          <GridItem />
+          <GridItem>
+            <LimitInput register={register as any} errors={errors} />
           </GridItem>
           <GridItem>
-            <OffsetInput register={register} errors={errors} />
+            <OffsetInput register={register as any} errors={errors} />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">
@@ -96,7 +126,7 @@ export const Storage = (): JSX.Element => {
       ) : (
         <StorageTable
           files={data?.files || []}
-          total={data?.sum || 0}
+          total={data?.total || 0}
         ></StorageTable>
       )}
     </VStack>

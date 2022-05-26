@@ -19,8 +19,8 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Payload } from "../../interfaces";
 import Editor from "@monaco-editor/react";
+import { RealtimeResponseEvent } from "appwrite";
 
 interface Data {
   event: string;
@@ -29,7 +29,9 @@ interface Data {
   payload: string;
 }
 
-export const RealtimeTable = (props: { payloads: Payload[] }): JSX.Element => {
+export const RealtimeTable = (props: {
+  payloads: RealtimeResponseEvent<Record<string, any>>[];
+}): JSX.Element => {
   const data = props.payloads.map((f) => {
     const { channels, timestamp, payload, ...rest } = f;
     return {

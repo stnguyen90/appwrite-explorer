@@ -8,8 +8,8 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { Models } from "appwrite";
 import React from "react";
-import { Membership } from "../../interfaces";
 
 interface Data {
   $id: string;
@@ -21,10 +21,9 @@ interface Data {
   roles: string;
 }
 
-export const TeamMembershipsTable = (props: {
-  memberships: Membership[];
-  total: number;
-}): JSX.Element => {
+export const TeamMembershipsTable = (
+  props: Models.MembershipList
+): JSX.Element => {
   const data = props.memberships.map((f) => {
     const { invited, joined, roles, ...rest } = f;
     return {

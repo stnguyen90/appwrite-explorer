@@ -1,34 +1,13 @@
+import { Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
-import { CommonListOptions, Permissions } from "../interfaces";
-
-export interface ExecutionList {
-  executions: Execution[];
-  sum: number;
-}
-
-export interface Execution {
-  $id: string;
-  $permissions: Permissions;
-  functionId: string;
-  dateCreated: number;
-  trigger: string;
-  status: string;
-  exitCode: number;
-  stdout: string;
-  stderr: string;
-  time: number;
-}
-
-// export interface ListExcecutionsOptions extends CommonListOptions {
-
-// }
+import { CommonListOptions } from "../interfaces";
 
 export const useFunctionExecutions = (
   functionId: string,
   options: CommonListOptions
-): UseQueryResult<ExecutionList | null, unknown> => {
+): UseQueryResult<Models.ExecutionList | null, unknown> => {
   const appwrite = useAppwrite();
 
   return useQuery(
@@ -36,12 +15,10 @@ export const useFunctionExecutions = (
     async () => {
       if (!appwrite || !functionId) return null;
 
-      const result = await appwrite.functions.listExecutions<ExecutionList>(
+      const result = await appwrite.functions.listExecutions(
         functionId,
-        undefined,
         options.limit,
-        options.offset,
-        "DESC"
+        options.offset
       );
 
       localStorage.setItem(LocalStorageKey.FUNCTION, functionId);

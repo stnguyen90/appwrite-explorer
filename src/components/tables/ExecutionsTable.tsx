@@ -8,34 +8,29 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { Models } from "appwrite";
 import React from "react";
-import { Execution } from "../../interfaces";
 
 interface Data {
   $id: string;
-  read: string;
-  write: string;
+  $read: string;
   functionId: string;
   dateCreated: string;
   trigger: string;
   status: string;
-  exitCode: number;
+  statusCode: number;
   stdout: string;
   stderr: string;
   time: number;
 }
 
-export const ExecutionsTable = (props: {
-  executions: Execution[];
-  total: number;
-}): JSX.Element => {
+export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
   const data = props.executions.map((e) => {
-    const { $permissions, dateCreated, ...rest } = e;
+    const { $read, dateCreated, ...rest } = e;
     return {
       ...rest,
       dateCreated: new Date(dateCreated * 1000).toLocaleString(),
-      read: $permissions.read.join(", "),
-      write: $permissions.write.join(", "),
+      $read: $read.join(", "),
     };
   });
 
@@ -49,7 +44,7 @@ export const ExecutionsTable = (props: {
       },
       {
         header: "Read Permissions",
-        accessor: "read",
+        accessor: "$read",
       },
       {
         header: "Created",
@@ -64,8 +59,8 @@ export const ExecutionsTable = (props: {
         accessor: "status",
       },
       {
-        header: "Exit Code",
-        accessor: "exitCode",
+        header: "Status Code",
+        accessor: "statusCode",
       },
       {
         header: "Runtime (s)",
@@ -98,7 +93,7 @@ export const ExecutionsTable = (props: {
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((row: Data) => {
+          {data.map((row) => {
             return (
               <Tr key={row.$id}>
                 {columns.map((column) => (

@@ -87,19 +87,19 @@ export const TeamMemberships = (): JSX.Element => {
           <GridItem />
 
           <GridItem colSpan={2}>
-            <SearchInput register={register}></SearchInput>
+            <SearchInput register={register as any}></SearchInput>
           </GridItem>
 
           <GridItem>
-            <LimitInput register={register} errors={errors} />
+            <LimitInput register={register as any} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <OffsetInput register={register} errors={errors} />
+            <OffsetInput register={register as any} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <OrderTypeInput register={register}></OrderTypeInput>
+            <OrderTypeInput register={register as any}></OrderTypeInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">
@@ -131,7 +131,7 @@ export const TeamMemberships = (): JSX.Element => {
       ) : (
         <TeamMembershipsTable
           memberships={data?.memberships || []}
-          total={data?.sum || 0}
+          total={data?.total || 0}
         ></TeamMembershipsTable>
       )}
     </VStack>

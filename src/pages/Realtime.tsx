@@ -13,23 +13,27 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import { useAppwrite } from "../contexts/appwrite";
-import { Payload } from "../interfaces";
 import { RealtimeTable } from "../components/tables/RealtimeTable";
+import { RealtimeResponseEvent } from "appwrite";
 
 interface IFormInput {
   channels: { name: string; isChecked: boolean }[];
 }
 export const Realtime = (): JSX.Element => {
   const [channels, setChannels] = useState<string[]>([]);
-  const [events, setEvents] = useState<Payload[]>([]);
+  const [events, setEvents] = useState<
+    RealtimeResponseEvent<Record<string, any>>[]
+  >([]);
   const appwrite = useAppwrite();
 
   useEffect(() => {
     if (!appwrite || channels.length == 0) return;
     // events from the outside scope doesn't update in the subscription callback
     // so we create the scopedEvents so that we can update and persist the data
-    const scopedEvents: Payload[] = [];
-    const unsubscribe = appwrite?.subscribe<Payload>(channels, (response) => {
+    const scopedEvents: RealtimeResponseEvent<Record<string, any>>[] = [];
+    const unsubscribe = appwrite?.subscribe<
+      RealtimeResponseEvent<Record<string, any>>
+    >(channels, (response) => {
       scopedEvents.push(response);
       setEvents([...scopedEvents]);
     });

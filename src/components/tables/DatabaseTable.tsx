@@ -19,8 +19,8 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { Document } from "../../interfaces";
 import Editor from "@monaco-editor/react";
+import { Models } from "appwrite";
 
 interface Data {
   $id: string;
@@ -29,16 +29,15 @@ interface Data {
   data: string;
 }
 
-export const DatabaseTable = (props: {
-  documents: Document[];
-  total: number;
-}): JSX.Element => {
+export const DatabaseTable = (
+  props: Models.DocumentList<Models.Document>
+): JSX.Element => {
   const data = props.documents.map((f) => {
-    const { $id, $permissions } = f;
+    const { $id, $read, $write } = f;
     return {
       $id,
-      read: $permissions.read.join(", "),
-      write: $permissions.write.join(", "),
+      read: $read.join(", "),
+      write: $write.join(", "),
       data: JSON.stringify(f, null, 2),
     };
   });

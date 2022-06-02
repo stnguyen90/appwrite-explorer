@@ -9,6 +9,7 @@ export const LocalStorageKey = {
   PROJECT: "project",
   COLLECTION: "collection",
   FUNCTION: "function",
+  BUCKET: "bucket",
 };
 
 export const QueryKey = {

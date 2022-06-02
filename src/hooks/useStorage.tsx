@@ -1,25 +1,35 @@
+import { Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
-import { QueryKey } from "../constants";
+import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
-import { CommonListOptions, FileList } from "../interfaces";
+
+export interface ListFilesOptions {
+  limit: number;
+  offset: number;
+}
 
 export const useStorage = (
-  options: CommonListOptions
-): UseQueryResult<FileList | null, unknown> => {
+  bucketId: string,
+  options: ListFilesOptions
+): UseQueryResult<Models.FileList | null, unknown> => {
   const appwrite = useAppwrite();
 
   return useQuery(
-    [QueryKey.STORAGE, options],
+    [QueryKey.STORAGE, bucketId, options],
     async () => {
-      if (!appwrite) return null;
+      if (!appwrite || !bucketId) return null;
 
-      const result = await appwrite.storage.listFiles<FileList>(
+      const result = await appwrite.storage.listFiles(
+        bucketId,
         undefined,
         options.limit,
         options.offset,
+        undefined,
+        undefined,
         "DESC"
       );
 
+      localStorage.setItem(LocalStorageKey.BUCKET, bucketId);
       return result;
     },
     { enabled: !!appwrite }

@@ -11,7 +11,10 @@ import {
   FieldError,
   UseFormRegister,
 } from "react-hook-form";
-import { IFormInput } from "../pages/Storage";
+
+interface IFormInput {
+  offset: number;
+}
 
 export const OffsetInput = (props: {
   register: UseFormRegister<IFormInput>;

@@ -68,19 +68,19 @@ export const Teams = (): JSX.Element => {
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} spacing={2}>
           <GridItem colSpan={2}>
-            <SearchInput register={register}></SearchInput>
+            <SearchInput register={register as any}></SearchInput>
           </GridItem>
 
           <GridItem>
-            <LimitInput register={register} errors={errors} />
+            <LimitInput register={register as any} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <OffsetInput register={register} errors={errors} />
+            <OffsetInput register={register as any} errors={errors} />
           </GridItem>
 
           <GridItem>
-            <OrderTypeInput register={register}></OrderTypeInput>
+            <OrderTypeInput register={register as any}></OrderTypeInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">
@@ -112,7 +112,7 @@ export const Teams = (): JSX.Element => {
       ) : (
         <TeamsTable
           teams={data?.teams || []}
-          total={data?.sum || 0}
+          total={data?.total || 0}
         ></TeamsTable>
       )}
     </VStack>

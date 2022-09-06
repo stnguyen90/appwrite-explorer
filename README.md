@@ -1,6 +1,6 @@
 # Appwrite Explorer
 
-**This app is best used with Appwrite version 0.13.X.**
+**This app is best used with Appwrite version 0.15.X.**
 
 Appwrite Explorer is a tool that let's you explore different aspects of an [Appwrite](https://appwrite.io) project from the front end.
 
@@ -80,30 +80,12 @@ Appwrite Explorer is best run locally using Docker.
 
 - Docker
 
-### Installation
-
-To install Appwrite Explorer, you need a copy of the repository. There are a couple of ways to get a copy of the repository:
-
-#### Git
-
-The easiest way to do this is to clone the repository:
-
-```bash
-git clone https://github.com/stnguyen90/appwrite-explorer.git
-```
-
-#### Manual Download
-
-Otherwise, you can manually download a zip of the code from [Github](https://github.com/stnguyen90/appwrite-explorer/archive/refs/heads/main.zip).
-
 ### Running
 
-After obtaining the code, use Docker to spin up Appwrite Explorer (the first time you do this may time some time as Docker must pull the base images and build the Appwrite Explorer image).
+Start the container:
 
 ```bash
-docker compose up
+docker run --rm -p 8080:80 stnguyen90/appwrite-explorer
 ```
 
 Then, browse to [http://localhost:8080](http://localhost:8080).
-
-If port 8080 is not available for you, you can open `docker-compose.override.yml` and change 8080 to a suitable port.

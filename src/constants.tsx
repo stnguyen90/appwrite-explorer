@@ -7,6 +7,7 @@ export const FetchState = {
 export const LocalStorageKey = {
   ENDPOINT: "endpoint",
   PROJECT: "project",
+  DATABASE: "database",
   COLLECTION: "collection",
   FUNCTION: "function",
   BUCKET: "bucket",

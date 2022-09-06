@@ -115,7 +115,11 @@ export const Storage = (): JSX.Element => {
               >
                 Upload
               </Button>
-              <NewUploadModal isOpen={isOpen} onClose={onClose} />
+              <NewUploadModal
+                bucketId={bucketId}
+                isOpen={isOpen}
+                onClose={onClose}
+              />
             </>
           )}
         </Flex>

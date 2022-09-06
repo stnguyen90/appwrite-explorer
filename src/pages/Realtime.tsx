@@ -3,35 +3,55 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  SimpleGrid,
+  HStack,
   Flex,
   VStack,
-  Checkbox,
-  CheckboxGroup,
+  Text,
+  Link,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Tag,
+  TagCloseButton,
+  TagLabel,
+  SimpleGrid,
+  GridItem,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { DeleteIcon, SearchIcon } from "@chakra-ui/icons";
+import React, { useEffect, useRef, useState } from "react";
+import { AddIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
 import { useAppwrite } from "../contexts/appwrite";
 import { RealtimeTable } from "../components/tables/RealtimeTable";
 import { RealtimeResponseEvent } from "appwrite";
 
-interface IFormInput {
-  channels: { name: string; isChecked: boolean }[];
-}
 export const Realtime = (): JSX.Element => {
   const [channels, setChannels] = useState<string[]>([]);
+  const channelRef = useRef<HTMLInputElement | null>(null);
+  const [channelError, setChannelError] = useState("");
   const [events, setEvents] = useState<
     RealtimeResponseEvent<Record<string, any>>[]
   >([]);
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
+
+  const addChannel = () => {
+    const { current } = channelRef;
+    if (!current) return;
+    const { value } = current;
+    if (!value) return;
+
+    if (channels.includes(value)) {
+      setChannelError("Channels must be unique");
+    } else {
+      setChannels([...channels, value]);
+      current.value = "";
+    }
+  };
 
   useEffect(() => {
-    if (!appwrite || channels.length == 0) return;
+    if (!client || channels.length == 0) return;
     // events from the outside scope doesn't update in the subscription callback
     // so we create the scopedEvents so that we can update and persist the data
     const scopedEvents: RealtimeResponseEvent<Record<string, any>>[] = [];
-    const unsubscribe = appwrite?.subscribe<
+    const unsubscribe = client?.subscribe<
       RealtimeResponseEvent<Record<string, any>>
     >(channels, (response) => {
       scopedEvents.push(response);
@@ -40,101 +60,75 @@ export const Realtime = (): JSX.Element => {
     return unsubscribe;
   }, [channels]);
 
-  const {
-    control,
-    handleSubmit,
-    register,
-    formState: { errors, isSubmitting },
-  } = useForm<IFormInput>({
-    mode: "all",
-    defaultValues: {
-      channels: [
-        {
-          name: "account",
-          isChecked: false,
-        },
-        {
-          name: "collections",
-          isChecked: false,
-        },
-        {
-          name: "documents",
-          isChecked: false,
-        },
-        {
-          name: "files",
-          isChecked: false,
-        },
-        {
-          name: "teams",
-          isChecked: false,
-        },
-        {
-          name: "memberships",
-          isChecked: false,
-        },
-        {
-          name: "executions",
-          isChecked: false,
-        },
-      ],
-    },
-  });
-
-  const { fields } = useFieldArray<IFormInput, "channels", "name">({
-    control, // control props comes from useForm (optional: if you are using FormContext)
-    name: "channels", // unique name for your Field Array
-  });
-
-  const onSubmit: SubmitHandler<IFormInput> = (values) => {
-    return new Promise<void>((resolve) => {
-      if (!appwrite) {
-        resolve();
-        return;
-      }
-
-      const selectedChannels = values.channels
-        .filter((c) => c.isChecked)
-        .map((c) => c.name);
-
-      setChannels([...selectedChannels]);
-
-      resolve();
-    });
-  };
-
   return (
     <VStack w="full">
-      <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-        <FormControl isInvalid={!!errors.channels}>
+      <form style={{ width: "100%" }}>
+        <FormControl isInvalid={!!channelError}>
           <FormLabel htmlFor="channels">Channels</FormLabel>
-          <CheckboxGroup colorScheme="pink">
-            <SimpleGrid minChildWidth="200px" spacing={2}>
-              {fields.map((field, index) => {
-                return (
-                  <Checkbox
-                    key={field.name}
-                    {...register(`channels.${index}.isChecked`)}
-                    checked={field.isChecked}
-                  >
-                    {field.name}
-                  </Checkbox>
-                );
-              })}
-            </SimpleGrid>
-          </CheckboxGroup>
-          <FormErrorMessage>{errors.channels}</FormErrorMessage>
+          <Text>
+            Refer to the{" "}
+            <Link
+              color="pink.500"
+              href="https://appwrite.io/docs/realtime#channels"
+              target="_blank"
+            >
+              Appwrite Docs
+            </Link>{" "}
+            for list of available channels.
+          </Text>
+          <HStack spacing={2} mb={2} mt={2}>
+            {channels.map((channel) => (
+              <Tag
+                size="md"
+                key={channel}
+                borderRadius="full"
+                variant="solid"
+                colorScheme="pink"
+              >
+                <TagLabel>{channel}</TagLabel>
+                <TagCloseButton
+                  onClick={() => {
+                    setChannels(channels.filter((c) => c != channel));
+                  }}
+                />
+              </Tag>
+            ))}
+          </HStack>
+          <SimpleGrid columns={2} spacing={2}>
+            <GridItem>
+              <InputGroup size="md">
+                <Input
+                  id="channel"
+                  placeholder="Channel"
+                  pr="4.5rem"
+                  ref={channelRef}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      addChannel();
+                      e.preventDefault();
+                    }
+                  }}
+                />
+                <InputRightElement>
+                  <Button
+                    aria-label="Add Channel"
+                    as={AddIcon}
+                    h="1.75rem"
+                    w="1.25rem"
+                    size="xs"
+                    colorScheme="pink"
+                    variant="link"
+                    onClick={() => {
+                      addChannel();
+                    }}
+                  />
+                </InputRightElement>
+              </InputGroup>
+            </GridItem>
+          </SimpleGrid>
+          <FormErrorMessage>{channelError}</FormErrorMessage>
         </FormControl>
-        <Flex w="full" justifyContent="space-between">
-          <Button
-            leftIcon={<SearchIcon />}
-            mt={4}
-            colorScheme="pink"
-            isLoading={isSubmitting}
-            type="submit"
-          >
-            Subscribe
-          </Button>
+        <Flex w="full" justifyContent="end">
           <Button
             leftIcon={<DeleteIcon />}
             variant="outline"

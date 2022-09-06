@@ -13,6 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
+import { Functions } from "appwrite";
 import React, { useState } from "react";
 import { useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
@@ -25,7 +26,7 @@ export const ExecuteNowModal = (props: {
 }): JSX.Element => {
   const [value, setValue] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -36,10 +37,13 @@ export const ExecuteNowModal = (props: {
   };
 
   const onCreateClick = async () => {
-    if (!appwrite) return;
+    if (!client) return;
     try {
       setSubmitting(true);
-      await appwrite.functions.createExecution(props.functionId, value);
+
+      const functions = new Functions(client);
+
+      await functions.createExecution(props.functionId, value);
       toast({
         title: "Function executed.",
         status: "success",

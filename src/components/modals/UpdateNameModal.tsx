@@ -15,6 +15,7 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import { Account } from "appwrite";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
@@ -31,15 +32,17 @@ export const UpdateNameModal = (props: {
   onClose: () => void;
 }): JSX.Element => {
   const { data } = useAccount();
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
 
   const mutation = useMutation(
     async (name: string) => {
-      if (!appwrite) return;
+      if (!client) return;
 
-      await appwrite.account.updateName(name);
+      const account = new Account(client);
+
+      await account.updateName(name);
     },
     {
       onError: (error) => {

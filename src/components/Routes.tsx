@@ -13,10 +13,10 @@ import { Realtime } from "../pages/Realtime";
 import { useAccount } from "../hooks/useAccount";
 
 export const Routes = (): JSX.Element => {
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const { isLoading, data } = useAccount();
 
-  return !appwrite || isLoading ? (
+  return !client || isLoading ? (
     <Center minH="100vh">
       <Spinner
         thickness="4px"
@@ -27,7 +27,7 @@ export const Routes = (): JSX.Element => {
       />
     </Center>
   ) : !data ? (
-    <Login appwrite={appwrite}></Login>
+    <Login client={client}></Login>
   ) : (
     <Router>
       <Layout>

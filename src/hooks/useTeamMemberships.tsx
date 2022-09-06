@@ -1,4 +1,4 @@
-import { Models } from "appwrite";
+import { Models, Teams } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -14,14 +14,16 @@ export interface ListTeamMembershipsOptions {
 export const useTeamMemberships = (
   options: ListTeamMembershipsOptions
 ): UseQueryResult<Models.MembershipList | null, unknown> => {
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
 
   return useQuery(
     [QueryKey.TEAM_MEMBERSHIPS, options],
     async () => {
-      if (!appwrite) return null;
+      if (!client) return null;
 
-      const result = await appwrite.teams.getMemberships(
+      const teams = new Teams(client);
+
+      const result = await teams.getMemberships(
         options.id,
         options.search != "" ? options.search : undefined,
         options.limit,
@@ -33,6 +35,6 @@ export const useTeamMemberships = (
 
       return result;
     },
-    { enabled: !!appwrite }
+    { enabled: !!client }
   );
 };

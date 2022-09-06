@@ -15,21 +15,21 @@ interface Data {
   $id: string;
   $read: string;
   functionId: string;
-  dateCreated: string;
+  $createdAt: string;
   trigger: string;
   status: string;
   statusCode: number;
-  stdout: string;
+  response: string;
   stderr: string;
   time: number;
 }
 
 export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
   const data = props.executions.map((e) => {
-    const { $read, dateCreated, ...rest } = e;
+    const { $read, $createdAt, ...rest } = e;
     return {
       ...rest,
-      dateCreated: new Date(dateCreated * 1000).toLocaleString(),
+      $createdAt: new Date($createdAt * 1000).toLocaleString(),
       $read: $read.join(", "),
     };
   });
@@ -48,7 +48,7 @@ export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
       },
       {
         header: "Created",
-        accessor: "dateCreated",
+        accessor: "$createdAt",
       },
       {
         header: "Trigger",
@@ -68,7 +68,7 @@ export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
       },
       {
         header: "Output",
-        accessor: "stdout",
+        accessor: "response",
       },
       {
         header: "Errors",

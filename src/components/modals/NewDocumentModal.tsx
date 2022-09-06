@@ -1,6 +1,9 @@
 import {
   Box,
   Button,
+  FormControl,
+  FormLabel,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -13,18 +16,21 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
+import { Databases } from "appwrite";
 import React, { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
 
 export const NewDocumentModal = (props: {
+  databaseId: string;
   collectionId: string;
   isOpen: boolean;
   onClose: () => void;
 }): JSX.Element => {
-  const [value, setValue] = useState("");
-  const appwrite = useAppwrite();
+  const [documentId, setDocumentId] = useState("unique()");
+  const [value, setValue] = useState("{}");
+  const appwriteClient = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -36,15 +42,18 @@ export const NewDocumentModal = (props: {
 
   const mutation = useMutation(
     async () => {
-      if (!appwrite) return;
+      if (!appwriteClient) return;
 
-      await appwrite.database.createDocument(
+      const db = new Databases(appwriteClient, props.databaseId);
+
+      await db.createDocument(
         props.collectionId,
+        documentId,
         JSON.parse(value)
       );
     },
     {
-      onError: (error) => {
+      onError: (error: any) => {
         // An error happened!
         toast({
           title: "Error creating document.",
@@ -81,12 +90,26 @@ export const NewDocumentModal = (props: {
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
-            <Text>Enter the JSON for the new document and click "Create".</Text>
+            <Text>
+              Enter an ID, the JSON for the new document, and click "Create".
+            </Text>
+            <FormControl>
+              <FormLabel htmlFor="document-id">Document ID</FormLabel>
+              <Input
+                id="document-id"
+                value={documentId}
+                onChange={(e) => {
+                  setDocumentId(e.target.value);
+                }}
+              />
+            </FormControl>
+            <FormLabel htmlFor="document-id">Data</FormLabel>
             <Box borderWidth={1} w="full">
               <Editor
                 height="50vh"
                 defaultLanguage="json"
                 onChange={onEditorChange}
+                value={value}
                 options={{
                   minimap: {
                     enabled: false,

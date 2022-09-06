@@ -1,4 +1,4 @@
-import { AppwriteException, Models } from "appwrite";
+import { AppwriteException, Databases, Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -12,20 +12,23 @@ export interface ListDocumentsOptions {
 }
 
 export const useDocuments = (
+  databaseId: string,
   collectionId: string,
   options: ListDocumentsOptions
 ): UseQueryResult<
   Models.DocumentList<Models.Document> | null,
   AppwriteException
 > => {
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
 
   return useQuery(
     [QueryKey.DOCUMENTS, collectionId, options],
     async () => {
-      if (!appwrite || !collectionId) return null;
+      if (!client || !collectionId) return null;
 
-      const result = await appwrite.database.listDocuments(
+      const db = new Databases(client, databaseId);
+
+      const result = await db.listDocuments(
         collectionId,
         options.queries,
         options.limit,
@@ -36,9 +39,10 @@ export const useDocuments = (
         options.orderField != "" ? [options.orderType] : undefined
       );
 
+      localStorage.setItem(LocalStorageKey.DATABASE, databaseId);
       localStorage.setItem(LocalStorageKey.COLLECTION, collectionId);
       return result;
     },
-    { enabled: !!appwrite || !collectionId }
+    { enabled: !!client || !collectionId }
   );
 };

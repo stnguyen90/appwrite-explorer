@@ -23,7 +23,7 @@ import Editor from "@monaco-editor/react";
 import { RealtimeResponseEvent } from "appwrite";
 
 interface Data {
-  event: string;
+  events: string;
   channels: string;
   timestamp: string;
   payload: string;
@@ -33,9 +33,10 @@ export const RealtimeTable = (props: {
   payloads: RealtimeResponseEvent<Record<string, any>>[];
 }): JSX.Element => {
   const data = props.payloads.map((f) => {
-    const { channels, timestamp, payload, ...rest } = f;
+    const { events, channels, timestamp, payload, ...rest } = f;
     return {
       ...rest,
+      events: events.join(", "),
       channels: channels.join(", "),
       timestamp: new Date(timestamp * 1000).toLocaleString(),
       payload: JSON.stringify(payload, null, 2),
@@ -47,8 +48,8 @@ export const RealtimeTable = (props: {
   >(
     () => [
       {
-        header: "Event",
-        accessor: "event",
+        header: "Events",
+        accessor: "events",
       },
       {
         header: "Channels",

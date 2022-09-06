@@ -1,4 +1,4 @@
-import { Models } from "appwrite";
+import { Functions, Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -8,14 +8,16 @@ export const useFunctionExecutions = (
   functionId: string,
   options: CommonListOptions
 ): UseQueryResult<Models.ExecutionList | null, unknown> => {
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
 
   return useQuery(
     [QueryKey.FUNCTIONS, functionId, options],
     async () => {
-      if (!appwrite || !functionId) return null;
+      if (!client || !functionId) return null;
 
-      const result = await appwrite.functions.listExecutions(
+      const functions = new Functions(client);
+
+      const result = await functions.listExecutions(
         functionId,
         options.limit,
         options.offset
@@ -25,6 +27,6 @@ export const useFunctionExecutions = (
 
       return result;
     },
-    { enabled: !!appwrite || !functionId }
+    { enabled: !!client || !functionId }
   );
 };

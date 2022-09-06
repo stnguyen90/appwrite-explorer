@@ -22,6 +22,7 @@ import {
   InputRightElement,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import { Teams } from "appwrite";
 import React, { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
@@ -31,12 +32,14 @@ export const NewTeamModal = (props: {
   isOpen: boolean;
   onClose: () => void;
 }): JSX.Element => {
+  const [teamId, setTeamId] = useState("unique()");
+  const [teamIdError, setTeamIdError] = useState("");
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
-  const [roles, setRoles] = useState<string[]>([]);
+  const [roles, setRoles] = useState<string[]>(["owner"]);
   const [roleError, setRoleError] = useState("");
   const roleRef = useRef<HTMLInputElement | null>(null);
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -61,9 +64,11 @@ export const NewTeamModal = (props: {
 
   const mutation = useMutation(
     async () => {
-      if (!appwrite) return;
+      if (!client) return;
 
-      await appwrite.teams.create(name, roles);
+      const teams = new Teams(client);
+
+      await teams.create(teamId, name, roles);
     },
     {
       onError: (error) => {
@@ -118,7 +123,24 @@ export const NewTeamModal = (props: {
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
-            <Text>Enter the name and click "Create".</Text>
+            <Text>Enter an ID, name, and click "Create".</Text>
+            <FormControl isInvalid={!!teamIdError}>
+              <FormLabel htmlFor="team-id">Team ID</FormLabel>
+              <Input
+                id="team-id"
+                onChange={(e) => {
+                  const { value } = e.target;
+                  if (!value) {
+                    setTeamIdError("ID is required");
+                  } else {
+                    setTeamId(value);
+                    setTeamIdError("");
+                  }
+                }}
+                value={teamId}
+              />
+              <FormErrorMessage>{nameError}</FormErrorMessage>
+            </FormControl>
             <FormControl isInvalid={!!nameError}>
               <FormLabel htmlFor="name">Name</FormLabel>
               <Input

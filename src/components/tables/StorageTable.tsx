@@ -16,7 +16,7 @@ interface Data {
   read: string;
   write: string;
   name: string;
-  dateCreated: string;
+  $createdAt: string;
   signature: string;
   mimeType: string;
   sizeOriginal: number;
@@ -24,10 +24,10 @@ interface Data {
 
 export const StorageTable = (props: Models.FileList): JSX.Element => {
   const data = props.files.map((f) => {
-    const { $read, $write, dateCreated, sizeOriginal, ...rest } = f;
+    const { $read, $write, $createdAt, sizeOriginal, ...rest } = f;
     return {
       ...rest,
-      dateCreated: new Date(dateCreated * 1000).toLocaleString(),
+      $createdAt: new Date($createdAt * 1000).toLocaleString(),
       sizeOriginal: sizeOriginal / 1000, // KB
       read: $read.join(", "),
       write: $write.join(", "),
@@ -56,7 +56,7 @@ export const StorageTable = (props: Models.FileList): JSX.Element => {
       },
       {
         header: "Created",
-        accessor: "dateCreated",
+        accessor: "$createdAt",
       },
       {
         header: "Signature",

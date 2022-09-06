@@ -2,6 +2,7 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Icon,
   Input,
   InputGroup,
@@ -17,6 +18,7 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
+import { Storage } from "appwrite";
 import React, { useRef, useState } from "react";
 import { FiFile } from "react-icons/fi";
 import { useQueryClient } from "react-query";
@@ -24,14 +26,16 @@ import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
 
 export const NewUploadModal = (props: {
+  bucketId: string;
   isOpen: boolean;
   onClose: () => void;
 }): JSX.Element => {
+  const [fileId, setFileId] = useState("unique()");
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -47,7 +51,7 @@ export const NewUploadModal = (props: {
   };
 
   const onUploadClick = async () => {
-    if (!appwrite) return;
+    if (!client) return;
     const files = fileRef?.current?.files;
     if (!files || files.length == 0) {
       setError("A file is required");
@@ -55,7 +59,8 @@ export const NewUploadModal = (props: {
     }
     try {
       setSubmitting(true);
-      await appwrite.storage.createFile(files[0]);
+      const storage = new Storage(client);
+      await storage.createFile(props.bucketId, fileId, files[0]);
       toast({
         title: "File uploaded.",
         status: "success",
@@ -91,8 +96,19 @@ export const NewUploadModal = (props: {
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
-            <Text>Select a file and click "Upload".</Text>
+            <Text>Enter an ID, select a file, and click "Upload".</Text>
+            <FormControl>
+              <FormLabel htmlFor="file-id">File ID</FormLabel>
+              <Input
+                id="file-id"
+                value={fileId}
+                onChange={(e) => {
+                  setFileId(e.target.value);
+                }}
+              />
+            </FormControl>
             <FormControl isInvalid={!!error}>
+              <FormLabel htmlFor="file">File</FormLabel>
               <InputGroup>
                 <InputLeftElement
                   pointerEvents="none"

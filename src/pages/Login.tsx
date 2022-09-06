@@ -28,11 +28,11 @@ import {
   ViewIcon,
   ViewOffIcon,
 } from "@chakra-ui/icons";
-import { Appwrite, Models } from "appwrite";
+import { Account, Client, Models } from "appwrite";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useQueryClient } from "react-query";
 
-export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
+export const Login = (props: { client: Client }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => setShowPassword(!showPassword);
   const queryClient = useQueryClient();
@@ -52,13 +52,15 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
   }) => {
     const { endpoint, project, email, password } = values;
 
-    const { appwrite } = props;
+    const { client } = props;
 
-    appwrite.setEndpoint(endpoint);
-    appwrite.setProject(project);
+    client.setEndpoint(endpoint);
+    client.setProject(project);
+
+    const account = new Account(client);
 
     try {
-      await appwrite.account.createSession(email, password);
+      await account.createEmailSession(email, password);
       localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
       localStorage.setItem(LocalStorageKey.PROJECT, project);
       queryClient.invalidateQueries(QueryKey.USER);
@@ -82,10 +84,10 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
   }) => {
     const { endpoint, project } = values;
 
-    const { appwrite } = props;
+    const { client } = props;
 
-    appwrite.setEndpoint(endpoint);
-    appwrite.setProject(project);
+    client.setEndpoint(endpoint);
+    client.setProject(project);
     localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
     localStorage.setItem(LocalStorageKey.PROJECT, project);
 
@@ -94,6 +96,10 @@ export const Login = (props: { appwrite: Appwrite }): JSX.Element => {
       () => {
         return {
           $id: "",
+          $createdAt: 0,
+          $updatedAt: 0,
+          phone: "",
+          phoneVerification: false,
           email: "",
           emailVerification: false,
           name: "Guest",

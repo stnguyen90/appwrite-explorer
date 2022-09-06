@@ -22,6 +22,7 @@ import {
   InputRightElement,
   FormErrorMessage,
 } from "@chakra-ui/react";
+import { Teams } from "appwrite";
 import React, { useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
@@ -45,7 +46,7 @@ export const NewTeamMemberModal = (props: {
   const [url, setUrl] = useState("");
   const [urlError, setUrlError] = useState("");
   const roleRef = useRef<HTMLInputElement | null>(null);
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
 
@@ -70,9 +71,11 @@ export const NewTeamMemberModal = (props: {
 
   const mutation = useMutation(
     async () => {
-      if (!appwrite) return;
+      if (!client) return;
 
-      await appwrite.teams.createMembership(
+      const teams = new Teams(client);
+
+      await teams.createMembership(
         props.teamId,
         email,
         roles,

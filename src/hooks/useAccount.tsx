@@ -1,30 +1,31 @@
-import { Models } from "appwrite";
+import { Account, Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
 export const useAccount =
   (): UseQueryResult<Models.User<Models.Preferences> | null> => {
-    const appwrite = useAppwrite();
+    const client = useAppwrite();
 
     return useQuery(
       QueryKey.USER,
       async () => {
-        if (!appwrite) return null;
+        if (!client) return null;
 
         const endpoint = localStorage.getItem(LocalStorageKey.ENDPOINT);
         const project = localStorage.getItem(LocalStorageKey.PROJECT);
         if (endpoint && project) {
-          appwrite.setEndpoint(endpoint);
-          appwrite.setProject(project);
+          client.setEndpoint(endpoint);
+          client.setProject(project);
         }
 
         try {
-          const result = await appwrite.account.get();
+          const account = new Account(client);
+          const result = await account.get();
           return result;
         } catch (err) {}
         return null;
       },
-      { enabled: !!appwrite, staleTime: Infinity }
+      { enabled: !!client, staleTime: Infinity }
     );
   };

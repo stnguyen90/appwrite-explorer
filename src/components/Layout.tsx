@@ -33,6 +33,7 @@ import { FaDatabase, FaFile } from "react-icons/fa";
 import { BsLightningFill, BsPeopleFill } from "react-icons/bs";
 import { BiTime } from "react-icons/bi";
 import { UpdateNameModal } from "./modals/UpdateNameModal";
+import { Account } from "appwrite";
 
 interface LinkItemProps {
   name: string;
@@ -160,14 +161,15 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const appwrite = useAppwrite();
+  const client = useAppwrite();
   const queryClient = useQueryClient();
   const { data } = useAccount();
   const [isUpdateNameModalOpen, setUpdateNameModalOpen] = useState(false);
 
   const onSignOutClick = async () => {
-    if (data?.$id != "") {
-      await appwrite?.account.deleteSession("current");
+    if (data?.$id != "" && client) {
+      const account = new Account(client);
+      await account.deleteSession("current");
     }
 
     Object.values(LocalStorageKey).forEach((key) => {

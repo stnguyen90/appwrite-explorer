@@ -15,17 +15,17 @@ import { Models } from "appwrite";
 
 interface Data {
   $id: string;
-  dateCreated: string;
+  $createdAt: string;
   name: string;
   total: number;
 }
 
 export const TeamsTable = (props: Models.TeamList): JSX.Element => {
   const data = props.teams.map((f) => {
-    const { dateCreated, ...rest } = f;
+    const { $createdAt, ...rest } = f;
     return {
       ...rest,
-      dateCreated: new Date(dateCreated * 1000).toLocaleString(),
+      $createdAt: new Date($createdAt * 1000).toLocaleString(),
     };
   });
 
@@ -47,7 +47,7 @@ export const TeamsTable = (props: Models.TeamList): JSX.Element => {
       },
       {
         header: "Created",
-        accessor: "dateCreated",
+        accessor: "$createdAt",
       },
     ],
     []

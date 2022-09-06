@@ -14,8 +14,8 @@ import React from "react";
 interface Data {
   $id: string;
   userId: string;
-  name: string;
-  email: string;
+  userName: string;
+  userEmail: string;
   invited: string;
   joined: string;
   roles: string;
@@ -47,11 +47,11 @@ export const TeamMembershipsTable = (
       },
       {
         header: "Name",
-        accessor: "name",
+        accessor: "userName",
       },
       {
         header: "Email",
-        accessor: "email",
+        accessor: "userEmail",
       },
       {
         header: "Invited",

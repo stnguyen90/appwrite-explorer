@@ -1,13 +1,13 @@
-import { Appwrite } from "appwrite";
+import { Client } from "appwrite";
 import React from "react";
 
-const AppwriteContext = React.createContext<Appwrite | null>(null);
+const AppwriteContext = React.createContext<Client | null>(null);
 
 export const AppwriteProvider = ({
   value,
   children,
 }: {
-  value: Appwrite;
+  value: Client;
   children: JSX.Element;
 }): JSX.Element => {
   return (
@@ -17,10 +17,10 @@ export const AppwriteProvider = ({
   );
 };
 
-export const useAppwrite = (): Appwrite | null => {
+export const useAppwrite = (): Client | null => {
   const context = React.useContext(AppwriteContext);
   if (context === undefined) {
-    throw new Error("useAppwrite must be used within a CountProvider");
+    throw new Error("useAppwrite must be used within a AppwriteProvider");
   }
   return context;
 };

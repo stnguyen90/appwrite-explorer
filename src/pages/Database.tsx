@@ -31,6 +31,7 @@ import { DatabaseTable } from "../components/tables/DatabaseTable";
 import { useAccount } from "../hooks/useAccount";
 
 interface IFormInput {
+  database: string;
   collection: string;
   limit: number;
   offset: number;
@@ -40,6 +41,9 @@ interface IFormInput {
 }
 export const Database = (): JSX.Element => {
   const { data: user } = useAccount();
+  const [databaseId, setDatabaseId] = useState(
+    localStorage.getItem(LocalStorageKey.DATABASE) || ""
+  );
   const [collectionId, setCollectionId] = useState(
     localStorage.getItem(LocalStorageKey.COLLECTION) || ""
   );
@@ -59,6 +63,7 @@ export const Database = (): JSX.Element => {
   } = useForm<IFormInput>({
     mode: "all",
     defaultValues: {
+      database: databaseId,
       collection: collectionId,
       limit: options.limit,
       offset: options.offset,
@@ -88,7 +93,8 @@ export const Database = (): JSX.Element => {
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {
-      const { collection, queries: queries, ...rest } = values;
+      const { database, collection, queries: queries, ...rest } = values;
+      setDatabaseId(database);
       setCollectionId(collection);
       setOptions((prevState) => {
         return {
@@ -102,6 +108,7 @@ export const Database = (): JSX.Element => {
   };
 
   const { isLoading, isError, error, data } = useDocuments(
+    databaseId,
     collectionId,
     options
   );
@@ -116,6 +123,25 @@ export const Database = (): JSX.Element => {
     <VStack w="full">
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} spacing={2}>
+          <GridItem>
+            <FormControl isInvalid={!!errors.database}>
+              <FormLabel htmlFor="database">Database ID</FormLabel>
+              <Input
+                id="database"
+                placeholder="Database ID"
+                {...register("database", {
+                  required: "This is required",
+                  minLength: {
+                    value: 4,
+                    message: "Minimum length should be 4",
+                  },
+                })}
+              />
+              <FormErrorMessage>
+                {errors.database && errors.database.message}
+              </FormErrorMessage>
+            </FormControl>
+          </GridItem>
           <GridItem>
             <FormControl isInvalid={!!errors.collection}>
               <FormLabel htmlFor="collection">Collection ID</FormLabel>
@@ -135,7 +161,6 @@ export const Database = (): JSX.Element => {
               </FormErrorMessage>
             </FormControl>
           </GridItem>
-          <GridItem />
 
           <GridItem colSpan={2}>
             <FormControl>
@@ -217,6 +242,7 @@ export const Database = (): JSX.Element => {
                 New Document
               </Button>
               <NewDocumentModal
+                databaseId={databaseId}
                 collectionId={collectionId}
                 isOpen={isOpen}
                 onClose={onClose}

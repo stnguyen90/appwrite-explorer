@@ -24,8 +24,9 @@ import { Models } from "appwrite";
 
 interface Data {
   $id: string;
-  read: string;
-  write: string;
+  $createdAt: string;
+  $updatedAt: string;
+  $permissions: string;
   data: string;
 }
 
@@ -33,11 +34,12 @@ export const DatabaseTable = (
   props: Models.DocumentList<Models.Document>
 ): JSX.Element => {
   const data = props.documents.map((f) => {
-    const { $id, $read, $write } = f;
+    const { $id, $createdAt, $updatedAt, $permissions } = f;
     return {
       $id,
-      read: $read.join(", "),
-      write: $write.join(", "),
+      $createdAt: new Date($createdAt).toLocaleString(),
+      $updatedAt: new Date($updatedAt).toLocaleString(),
+      $permissions: $permissions.join(", "),
       data: JSON.stringify(f, null, 2),
     };
   });
@@ -51,12 +53,16 @@ export const DatabaseTable = (
         accessor: "$id",
       },
       {
-        header: "Read",
-        accessor: "read",
+        header: "Created At",
+        accessor: "$createdAt",
       },
       {
-        header: "Write",
-        accessor: "write",
+        header: "Updated At",
+        accessor: "$updatedAt",
+      },
+      {
+        header: "Permissions",
+        accessor: "$permissions",
       },
       {
         header: "Data",

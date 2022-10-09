@@ -1,6 +1,6 @@
 {
   "name": "appwrite-explorer",
-  "version": "0.2.0",
+  "version": "4.0.0",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",
@@ -19,7 +19,7 @@
     "@types/react-table": "^7.7.6",
     "@typescript-eslint/eslint-plugin": "^4.32.0",
     "@typescript-eslint/parser": "^4.32.0",
-    "appwrite": "^9.0.2",
+    "appwrite": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

@@ -44,9 +44,10 @@ export const NewDocumentModal = (props: {
     async () => {
       if (!appwriteClient) return;
 
-      const db = new Databases(appwriteClient, props.databaseId);
+      const db = new Databases(appwriteClient);
 
       await db.createDocument(
+        props.databaseId,
         props.collectionId,
         documentId,
         JSON.parse(value)

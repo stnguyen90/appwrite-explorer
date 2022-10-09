@@ -26,17 +26,12 @@ export const useDocuments = (
     async () => {
       if (!client || !collectionId) return null;
 
-      const db = new Databases(client, databaseId);
+      const db = new Databases(client);
 
       const result = await db.listDocuments(
+        databaseId,
         collectionId,
-        options.queries,
-        options.limit,
-        options.offset,
-        undefined,
-        undefined,
-        options.orderField != "" ? [options.orderField] : undefined,
-        options.orderField != "" ? [options.orderType] : undefined
+        options.queries
       );
 
       localStorage.setItem(LocalStorageKey.DATABASE, databaseId);

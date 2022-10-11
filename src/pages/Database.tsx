@@ -3,15 +3,12 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  IconButton,
   Input,
-  InputGroup,
   SimpleGrid,
   GridItem,
   Flex,
   VStack,
   useDisclosure,
-  InputRightElement,
   Alert,
   AlertDescription,
   AlertIcon,
@@ -22,22 +19,15 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
-import { AddIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
-import { LimitInput } from "../components/inputs/LimitInput";
-import { OffsetInput } from "../components/inputs/OffsetInput";
-import { OrderFieldInput } from "../components/inputs/OrderFieldInput";
-import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
+import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabaseTable } from "../components/tables/DatabaseTable";
 import { useAccount } from "../hooks/useAccount";
+import { QueriesInput } from "../components/inputs/QueriesInput";
 
 interface IFormInput {
   database: string;
   collection: string;
-  limit: number;
-  offset: number;
   queries: { value: string }[];
-  orderField: string;
-  orderType: "ASC" | "DESC";
 }
 export const Database = (): JSX.Element => {
   const { data: user } = useAccount();
@@ -65,11 +55,7 @@ export const Database = (): JSX.Element => {
     defaultValues: {
       database: databaseId,
       collection: collectionId,
-      limit: options.limit,
-      offset: options.offset,
       queries: [{ value: "" }],
-      orderField: "",
-      orderType: "ASC",
     },
   });
 
@@ -82,9 +68,7 @@ export const Database = (): JSX.Element => {
   );
 
   const onRemoveClick = (index: number) => {
-    return () => {
-      remove(index);
-    };
+    remove(index);
   };
 
   const onAddClick = () => {
@@ -118,6 +102,21 @@ export const Database = (): JSX.Element => {
   }
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const getQueryOnChange = (index: number) => {
+    const q = register(`queries.${index}.value`);
+    return q.onChange;
+  };
+
+  const getQueryOnBlur = (index: number) => {
+    const q = register(`queries.${index}.value`);
+    return q.onBlur;
+  };
+
+  const getQueryRef = (index: number) => {
+    const q = register(`queries.${index}.value`);
+    return q.ref;
+  };
 
   return (
     <VStack w="full">
@@ -163,60 +162,14 @@ export const Database = (): JSX.Element => {
           </GridItem>
 
           <GridItem colSpan={2}>
-            <FormControl>
-              <FormLabel>Queries</FormLabel>
-              <VStack justifyContent="flex-start">
-                {fields.map((field, index) => {
-                  return (
-                    <InputGroup key={field.id}>
-                      <Input
-                        placeholder='attribute.equal("value")'
-                        {...register(`queries.${index}.value` as const)}
-                      />
-                      {index != 0 && (
-                        <InputRightElement>
-                          <IconButton
-                            aria-label="Remove Query"
-                            h="1.5rem"
-                            w="1rem"
-                            size="xm"
-                            variant="link"
-                            color="pink.500"
-                            as={CloseIcon}
-                            onClick={onRemoveClick(index)}
-                          />
-                        </InputRightElement>
-                      )}
-                    </InputGroup>
-                  );
-                })}
-
-                <Button
-                  leftIcon={<AddIcon />}
-                  variant="outline"
-                  colorScheme="pink"
-                  onClick={onAddClick}
-                >
-                  Add Filter
-                </Button>
-              </VStack>
-            </FormControl>
-          </GridItem>
-
-          <GridItem>
-            <LimitInput register={register as any} errors={errors} />
-          </GridItem>
-
-          <GridItem>
-            <OffsetInput register={register as any} errors={errors} />
-          </GridItem>
-
-          <GridItem>
-            <OrderFieldInput register={register as any}></OrderFieldInput>
-          </GridItem>
-
-          <GridItem>
-            <OrderTypeInput register={register as any}></OrderTypeInput>
+            <QueriesInput
+              fields={fields}
+              getQueryOnChange={getQueryOnChange}
+              getQueryOnBlur={getQueryOnBlur}
+              getQueryRef={getQueryRef}
+              onRemoveClick={onRemoveClick}
+              onAddClick={onAddClick}
+            ></QueriesInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

@@ -4,7 +4,7 @@ import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
 export const useAccount =
-  (): UseQueryResult<Models.User<Models.Preferences> | null> => {
+  (): UseQueryResult<Models.Account<Models.Preferences> | null> => {
     const client = useAppwrite();
 
     return useQuery(

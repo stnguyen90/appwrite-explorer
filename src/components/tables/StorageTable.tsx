@@ -13,8 +13,7 @@ import React from "react";
 
 interface Data {
   $id: string;
-  read: string;
-  write: string;
+  $permissions: string;
   name: string;
   $createdAt: string;
   signature: string;
@@ -24,13 +23,12 @@ interface Data {
 
 export const StorageTable = (props: Models.FileList): JSX.Element => {
   const data = props.files.map((f) => {
-    const { $read, $write, $createdAt, sizeOriginal, ...rest } = f;
+    const { $permissions, $createdAt, sizeOriginal, ...rest } = f;
     return {
       ...rest,
-      $createdAt: new Date($createdAt * 1000).toLocaleString(),
+      $createdAt: new Date($createdAt).toLocaleString(),
       sizeOriginal: sizeOriginal / 1000, // KB
-      read: $read.join(", "),
-      write: $write.join(", "),
+      $permissions: $permissions.join(", "),
     };
   });
 
@@ -47,12 +45,8 @@ export const StorageTable = (props: Models.FileList): JSX.Element => {
         accessor: "name",
       },
       {
-        header: "Read Permissions",
-        accessor: "read",
-      },
-      {
-        header: "Write Permissions",
-        accessor: "write",
+        header: "Permissions",
+        accessor: "$permissions",
       },
       {
         header: "Created",

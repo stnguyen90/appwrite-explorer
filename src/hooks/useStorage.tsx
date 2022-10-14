@@ -1,4 +1,4 @@
-import { Models, Storage } from "appwrite";
+import { Models, Storage, Query } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -23,12 +23,12 @@ export const useStorage = (
 
       const result = await storage.listFiles(
         bucketId,
-        undefined,
-        options.limit,
-        options.offset,
-        undefined,
-        undefined,
-        "DESC"
+        [
+          Query.limit(options.limit),
+          Query.offset(options.offset),
+          Query.orderDesc(""),
+        ],
+        undefined
       );
 
       localStorage.setItem(LocalStorageKey.BUCKET, bucketId);

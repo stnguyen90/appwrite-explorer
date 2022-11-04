@@ -1,4 +1,4 @@
-import { Models, Teams } from "appwrite";
+import { Models, Query, Teams } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -23,14 +23,16 @@ export const useTeamMemberships = (
 
       const teams = new Teams(client);
 
-      const result = await teams.getMemberships(
+      const result = await teams.listMemberships(
         options.id,
-        options.search != "" ? options.search : undefined,
-        options.limit,
-        options.offset,
-        undefined,
-        undefined,
-        options.orderType
+        [
+          Query.limit(options.limit),
+          Query.offset(options.offset),
+          options.orderType === "DESC"
+            ? Query.orderDesc("")
+            : Query.orderAsc(""),
+        ],
+        options.search != "" ? options.search : undefined
       );
 
       return result;

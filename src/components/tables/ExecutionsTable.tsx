@@ -13,7 +13,7 @@ import React from "react";
 
 interface Data {
   $id: string;
-  $read: string;
+  $permissions: string;
   functionId: string;
   $createdAt: string;
   trigger: string;
@@ -21,16 +21,16 @@ interface Data {
   statusCode: number;
   response: string;
   stderr: string;
-  time: number;
+  duration: number;
 }
 
 export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
   const data = props.executions.map((e) => {
-    const { $read, $createdAt, ...rest } = e;
+    const { $permissions, $createdAt, ...rest } = e;
     return {
       ...rest,
-      $createdAt: new Date($createdAt * 1000).toLocaleString(),
-      $read: $read.join(", "),
+      $createdAt: new Date($createdAt).toLocaleString(),
+      $permissions: $permissions.join(", "),
     };
   });
 
@@ -43,8 +43,8 @@ export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
         accessor: "$id",
       },
       {
-        header: "Read Permissions",
-        accessor: "$read",
+        header: "Permissions",
+        accessor: "$permissions",
       },
       {
         header: "Created",
@@ -64,15 +64,11 @@ export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
       },
       {
         header: "Runtime (s)",
-        accessor: "time",
+        accessor: "duration",
       },
       {
         header: "Output",
         accessor: "response",
-      },
-      {
-        header: "Errors",
-        accessor: "stderr",
       },
     ],
     []

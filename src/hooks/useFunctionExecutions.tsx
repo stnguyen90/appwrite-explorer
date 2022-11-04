@@ -1,4 +1,4 @@
-import { Functions, Models } from "appwrite";
+import { Functions, Models, Query } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
@@ -17,11 +17,11 @@ export const useFunctionExecutions = (
 
       const functions = new Functions(client);
 
-      const result = await functions.listExecutions(
-        functionId,
-        options.limit,
-        options.offset
-      );
+      const result = await functions.listExecutions(functionId, [
+        Query.limit(options.limit),
+        Query.offset(options.offset),
+        Query.orderDesc("$createdAt"),
+      ]);
 
       localStorage.setItem(LocalStorageKey.FUNCTION, functionId);
 

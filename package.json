@@ -1,6 +1,6 @@
 {
   "name": "appwrite-explorer",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "private": true,
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",

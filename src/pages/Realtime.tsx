@@ -1,34 +1,34 @@
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  GridItem,
   HStack,
-  Flex,
-  VStack,
-  Text,
-  Link,
   Input,
   InputGroup,
   InputRightElement,
+  Link,
+  SimpleGrid,
   Tag,
   TagCloseButton,
   TagLabel,
-  SimpleGrid,
-  GridItem,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
-import { AddIcon, DeleteIcon, SearchIcon } from "@chakra-ui/icons";
-import { useAppwrite } from "../contexts/appwrite";
-import { RealtimeTable } from "../components/tables/RealtimeTable";
 import { RealtimeResponseEvent } from "appwrite";
+import React, { useEffect, useRef, useState } from "react";
+import { RealtimeTable } from "../components/tables/RealtimeTable";
+import { useAppwrite } from "../contexts/appwrite";
 
 export const Realtime = (): JSX.Element => {
   const [channels, setChannels] = useState<string[]>([]);
   const channelRef = useRef<HTMLInputElement | null>(null);
   const [channelError, setChannelError] = useState("");
   const [events, setEvents] = useState<
-    RealtimeResponseEvent<Record<string, any>>[]
+    RealtimeResponseEvent<Record<string, unknown>>[]
   >([]);
   const client = useAppwrite();
 
@@ -50,9 +50,9 @@ export const Realtime = (): JSX.Element => {
     if (!client || channels.length == 0) return;
     // events from the outside scope doesn't update in the subscription callback
     // so we create the scopedEvents so that we can update and persist the data
-    const scopedEvents: RealtimeResponseEvent<Record<string, any>>[] = [];
+    const scopedEvents: RealtimeResponseEvent<Record<string, unknown>>[] = [];
     const unsubscribe = client?.subscribe<
-      RealtimeResponseEvent<Record<string, any>>
+      RealtimeResponseEvent<Record<string, unknown>>
     >(channels, (response) => {
       scopedEvents.push(response);
       setEvents([...scopedEvents]);

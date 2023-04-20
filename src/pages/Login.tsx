@@ -21,9 +21,9 @@ import {
   InputLeftElement,
   InputRightElement,
   Text,
-  VStack,
   useColorModeValue,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { Account, Client, Models } from "appwrite";
 import * as React from "react";
@@ -31,6 +31,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
+
+interface IFormInput {
+  endpoint: string;
+  project: string;
+  email: string;
+  password: string;
+}
 
 export const Login = (props: { client: Client }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -42,14 +49,9 @@ export const Login = (props: { client: Client }): JSX.Element => {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm<IFormInput>();
 
-  const onSignIn = async (values: {
-    endpoint: string;
-    project: string;
-    email: string;
-    password: string;
-  }) => {
+  const onSignIn = async (values: IFormInput) => {
     const { endpoint, project, email, password } = values;
 
     const { client } = props;
@@ -76,12 +78,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
     }
   };
 
-  const onContinueAsGuest = async (values: {
-    endpoint: string;
-    project: string;
-    email: string;
-    password: string;
-  }) => {
+  const onContinueAsGuest = async (values: IFormInput) => {
     const { endpoint, project } = values;
 
     const { client } = props;
@@ -96,16 +93,16 @@ export const Login = (props: { client: Client }): JSX.Element => {
       () => {
         return {
           $id: "",
-          $createdAt: 0,
-          $updatedAt: 0,
+          $createdAt: "",
+          $updatedAt: "",
           phone: "",
           phoneVerification: false,
           email: "",
           emailVerification: false,
           name: "Guest",
-          passwordUpdate: 0,
+          passwordUpdate: "",
           prefs: {},
-          registration: 0,
+          registration: "",
           status: false,
         };
       }

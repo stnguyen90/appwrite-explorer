@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -9,18 +9,18 @@ import {
   Input,
   SimpleGrid,
   Spinner,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { ListFilesOptions, useStorage } from "../hooks/useStorage";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { SearchIcon, AddIcon } from "@chakra-ui/icons";
+import React, { useState } from "react";
+import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
-import { StorageTable } from "../components/tables/StorageTable";
 import { NewUploadModal } from "../components/modals/NewUploadModal";
-import { useAccount } from "../hooks/useAccount";
+import { StorageTable } from "../components/tables/StorageTable";
 import { LocalStorageKey } from "../constants";
+import { useAccount } from "../hooks/useAccount";
+import { ListFilesOptions, useStorage } from "../hooks/useStorage";
 
 export interface IFormInput {
   bucket: string;
@@ -87,10 +87,16 @@ export const Storage = (): JSX.Element => {
           </GridItem>
           <GridItem />
           <GridItem>
-            <LimitInput register={register as any} errors={errors} />
+            <LimitInput
+              register={register as UseFormRegister<IFormInput>}
+              errors={errors}
+            />
           </GridItem>
           <GridItem>
-            <OffsetInput register={register as any} errors={errors} />
+            <OffsetInput
+              register={register as UseFormRegister<IFormInput>}
+              errors={errors}
+            />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

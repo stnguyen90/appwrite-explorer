@@ -1,29 +1,29 @@
+import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
-  SimpleGrid,
-  GridItem,
   Flex,
-  VStack,
-  Spinner,
-  useDisclosure,
-  Input,
   FormControl,
   FormLabel,
+  GridItem,
+  Input,
+  SimpleGrid,
+  Spinner,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  ListTeamMembershipsOptions,
-  useTeamMemberships,
-} from "../hooks/useTeamMemberships";
-import { AddIcon, SearchIcon } from "@chakra-ui/icons";
+import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form";
+import { useParams } from "react-router-dom";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
 import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
 import { SearchInput } from "../components/inputs/SearchInput";
-import { useParams } from "react-router";
-import { TeamMembershipsTable } from "../components/tables/TeamMembershipsTable";
 import { NewTeamMemberModal } from "../components/modals/NewTeamMemberModal";
+import { TeamMembershipsTable } from "../components/tables/TeamMembershipsTable";
+import {
+  ListTeamMembershipsOptions,
+  useTeamMemberships,
+} from "../hooks/useTeamMemberships";
 
 interface IFormInput {
   id: string;
@@ -87,19 +87,29 @@ export const TeamMemberships = (): JSX.Element => {
           <GridItem />
 
           <GridItem colSpan={2}>
-            <SearchInput register={register as any}></SearchInput>
+            <SearchInput
+              register={register as UseFormRegister<{ search: string }>}
+            ></SearchInput>
           </GridItem>
 
           <GridItem>
-            <LimitInput register={register as any} errors={errors} />
+            <LimitInput
+              register={register as UseFormRegister<IFormInput>}
+              errors={errors}
+            />
           </GridItem>
 
           <GridItem>
-            <OffsetInput register={register as any} errors={errors} />
+            <OffsetInput
+              register={register as UseFormRegister<IFormInput>}
+              errors={errors}
+            />
           </GridItem>
 
           <GridItem>
-            <OrderTypeInput register={register as any}></OrderTypeInput>
+            <OrderTypeInput
+              register={register as UseFormRegister<{ orderType: string }>}
+            ></OrderTypeInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

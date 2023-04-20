@@ -54,7 +54,7 @@ export const NewDocumentModal = (props: {
       );
     },
     {
-      onError: (error: any) => {
+      onError: (error: unknown) => {
         // An error happened!
         toast({
           title: "Error creating document.",

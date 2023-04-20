@@ -1,22 +1,22 @@
+import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
-  SimpleGrid,
-  GridItem,
   Flex,
-  VStack,
+  GridItem,
+  SimpleGrid,
   Spinner,
+  VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { ListTeamsOptions, useTeams } from "../hooks/useTeams";
-import { AddIcon, SearchIcon } from "@chakra-ui/icons";
+import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
 import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
 import { SearchInput } from "../components/inputs/SearchInput";
-import { TeamsTable } from "../components/tables/TeamsTable";
 import { NewTeamModal } from "../components/modals/NewTeamModal";
+import { TeamsTable } from "../components/tables/TeamsTable";
+import { ListTeamsOptions, useTeams } from "../hooks/useTeams";
 
 interface IFormInput {
   limit: number;
@@ -68,19 +68,29 @@ export const Teams = (): JSX.Element => {
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
         <SimpleGrid columns={2} spacing={2}>
           <GridItem colSpan={2}>
-            <SearchInput register={register as any}></SearchInput>
+            <SearchInput
+              register={register as UseFormRegister<{ search: string }>}
+            ></SearchInput>
           </GridItem>
 
           <GridItem>
-            <LimitInput register={register as any} errors={errors} />
+            <LimitInput
+              register={register as UseFormRegister<IFormInput>}
+              errors={errors}
+            />
           </GridItem>
 
           <GridItem>
-            <OffsetInput register={register as any} errors={errors} />
+            <OffsetInput
+              register={register as UseFormRegister<IFormInput>}
+              errors={errors}
+            />
           </GridItem>
 
           <GridItem>
-            <OrderTypeInput register={register as any}></OrderTypeInput>
+            <OrderTypeInput
+              register={register as UseFormRegister<{ orderType: string }>}
+            ></OrderTypeInput>
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

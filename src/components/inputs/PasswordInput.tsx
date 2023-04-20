@@ -6,8 +6,12 @@ import {
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-import React, { ChangeEventHandler, FocusEventHandler } from "react";
-import { useState } from "react";
+import React, {
+  ChangeEventHandler,
+  FocusEventHandler,
+  MutableRefObject,
+  useState,
+} from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export const PasswordInput = React.forwardRef(
@@ -17,7 +21,10 @@ export const PasswordInput = React.forwardRef(
       onChange: ChangeEventHandler;
       onBlur?: FocusEventHandler;
     },
-    ref?: any
+    ref?:
+      | ((instance: HTMLInputElement | null) => void)
+      | MutableRefObject<HTMLInputElement | null>
+      | null
   ) => {
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);

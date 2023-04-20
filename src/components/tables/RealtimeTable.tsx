@@ -30,7 +30,7 @@ interface Data {
 }
 
 export const RealtimeTable = (props: {
-  payloads: RealtimeResponseEvent<Record<string, any>>[];
+  payloads: RealtimeResponseEvent<Record<string, unknown>>[];
 }): JSX.Element => {
   const data = props.payloads.map((f) => {
     const { events, channels, timestamp, payload, ...rest } = f;

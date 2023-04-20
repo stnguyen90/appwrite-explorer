@@ -28,8 +28,8 @@ export const TeamMembershipsTable = (
     const { invited, joined, roles, ...rest } = f;
     return {
       ...rest,
-      invited: new Date(invited * 1000).toLocaleString(),
-      joined: joined > 0 ? new Date(joined * 1000).toLocaleString() : "",
+      invited: new Date(invited).toLocaleString(),
+      joined: joined ? new Date(joined).toLocaleString() : "",
       roles: roles.join(", "),
     };
   });

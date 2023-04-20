@@ -9,9 +9,9 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
-import React from "react";
 import { Models } from "appwrite";
+import React from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 interface Data {
   $id: string;
@@ -25,7 +25,7 @@ export const TeamsTable = (props: Models.TeamList): JSX.Element => {
     const { $createdAt, ...rest } = f;
     return {
       ...rest,
-      $createdAt: new Date($createdAt * 1000).toLocaleString(),
+      $createdAt: new Date($createdAt).toLocaleString(),
     };
   });
 

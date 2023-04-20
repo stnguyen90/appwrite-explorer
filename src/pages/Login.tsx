@@ -1,25 +1,3 @@
-import * as React from "react";
-import {
-  Text,
-  Center,
-  Container,
-  Heading,
-  VStack,
-  InputGroup,
-  InputLeftElement,
-  Input,
-  Button,
-  FormControl,
-  InputRightElement,
-  IconButton,
-  useColorModeValue,
-  Box,
-  FormLabel,
-  useToast,
-  FormErrorMessage,
-} from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
 import {
   AtSignIcon,
   InfoOutlineIcon,
@@ -28,9 +6,31 @@ import {
   ViewIcon,
   ViewOffIcon,
 } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Center,
+  Container,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Text,
+  VStack,
+  useColorModeValue,
+  useToast,
+} from "@chakra-ui/react";
 import { Account, Client, Models } from "appwrite";
-import { LocalStorageKey, QueryKey } from "../constants";
+import * as React from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
+import { LocalStorageKey, QueryKey } from "../constants";
 
 export const Login = (props: { client: Client }): JSX.Element => {
   const [showPassword, setShowPassword] = useState(false);
@@ -91,7 +91,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
     localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
     localStorage.setItem(LocalStorageKey.PROJECT, project);
 
-    queryClient.setQueryData<Models.User<Models.Preferences>>(
+    queryClient.setQueryData<Models.Account<Models.Preferences>>(
       QueryKey.USER,
       () => {
         return {

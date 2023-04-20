@@ -1,15 +1,6 @@
 import {
   Box,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
-  Text,
   Button,
-  useDisclosure,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -17,10 +8,19 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Table,
+  TableCaption,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
 import Editor from "@monaco-editor/react";
 import { RealtimeResponseEvent } from "appwrite";
+import React, { useState } from "react";
 
 interface Data {
   events: string;
@@ -38,7 +38,7 @@ export const RealtimeTable = (props: {
       ...rest,
       events: events.join(", "),
       channels: channels.join(", "),
-      timestamp: new Date(timestamp * 1000).toLocaleString(),
+      timestamp: new Date(timestamp).toLocaleString(),
       payload: JSON.stringify(payload, null, 2),
     };
   });

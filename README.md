@@ -1,6 +1,6 @@
 # Appwrite Explorer
 
-**This app is best used with Appwrite version 1.0.X.**
+**This app is best used with Appwrite version 1.2.X.**
 
 Appwrite Explorer is a tool that let's you explore different aspects of an [Appwrite](https://appwrite.io) project from the front end.
 
@@ -70,7 +70,7 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 ![Realtime List](docs/realtime-list.png)
 
 - [x] Basic Subscribe
-- [ ] Add support for ID based channels
+- [x] Add support for ID based channels
 
 ## Getting Started
 

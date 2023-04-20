@@ -1,4 +1,4 @@
-FROM node:16 as builder
+FROM --platform=$BUILDPLATFORM node:16 as builder
 
 RUN mkdir /app
 WORKDIR /app

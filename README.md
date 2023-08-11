@@ -28,7 +28,7 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 
 - [x] Create Document
 - [x] List Documents
-- [ ] Update Document
+- [x] Update Document
 - [x] Filter Documents List
 - [x] Search Documents
 - [ ] Delete Document

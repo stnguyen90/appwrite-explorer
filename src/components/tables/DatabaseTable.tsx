@@ -10,17 +10,10 @@ import {
   Text,
   Button,
   useDisclosure,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import Editor from "@monaco-editor/react";
 import { Models } from "appwrite";
+import { UpdateDocumentModal } from "../modals/UpdateDocumentModal";
 
 interface Data {
   $id: string;
@@ -43,6 +36,7 @@ export const DatabaseTable = (
       data: JSON.stringify(f, null, 2),
     };
   });
+  const [document, setDocument] = useState<Models.Document | null>(null);
 
   const columns = React.useMemo<
     { header: string; accessor: keyof Data; isNumeric?: boolean }[]
@@ -73,7 +67,11 @@ export const DatabaseTable = (
   );
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [modalBody, setModalBody] = useState("");
+
+  const closeAndClear = () => {
+    setDocument(null);
+    onClose();
+  };
 
   return (
     <Box overflowX="auto" width="full">
@@ -90,7 +88,7 @@ export const DatabaseTable = (
           </Tr>
         </Thead>
         <Tbody>
-          {data.map((row: Data) => {
+          {data.map((row: Data, i) => {
             return (
               <Tr key={row.$id}>
                 {columns.map((column) => (
@@ -101,7 +99,9 @@ export const DatabaseTable = (
                           variant="link"
                           color="pink.500"
                           onClick={() => {
-                            setModalBody(row[column.accessor]);
+                            const document = props.documents[i];
+                            if (!document) return;
+                            setDocument(document);
                             onOpen();
                           }}
                         >
@@ -120,32 +120,14 @@ export const DatabaseTable = (
           })}
         </Tbody>
       </Table>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Data</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Editor
-              height="50vh"
-              defaultLanguage="json"
-              options={{
-                readOnly: true,
-                minimap: {
-                  enabled: false,
-                },
-              }}
-              value={modalBody}
-            />
-          </ModalBody>
 
-          <ModalFooter>
-            <Button colorScheme="pink" mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      {document && (
+        <UpdateDocumentModal
+          document={document}
+          isOpen={isOpen}
+          onClose={closeAndClear}
+        />
+      )}
     </Box>
   );
 };

@@ -9,7 +9,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Models } from "appwrite";
+import type { Models } from "appwrite";
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -20,7 +20,9 @@ interface Data {
   total: number;
 }
 
-export const TeamsTable = (props: Models.TeamList): JSX.Element => {
+export const TeamsTable = (
+  props: Models.TeamList<Models.Preferences>,
+): JSX.Element => {
   const data = props.teams.map((f) => {
     const { $createdAt, ...rest } = f;
     return {
@@ -50,7 +52,7 @@ export const TeamsTable = (props: Models.TeamList): JSX.Element => {
         accessor: "$createdAt",
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -73,7 +75,7 @@ export const TeamsTable = (props: Models.TeamList): JSX.Element => {
               <Tr key={row.$id}>
                 {columns.map((column) => (
                   <Td key={column.accessor}>
-                    {column.accessor == "total" ? (
+                    {column.accessor === "total" ? (
                       <Link
                         color="pink.500"
                         as={RouterLink}

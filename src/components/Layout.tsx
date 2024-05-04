@@ -106,7 +106,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
           <NavItem key={link.name} icon={link.icon} to={link.to}>
             {link.name}
           </NavItem>
-        )
+        ),
       )}
     </Box>
   );

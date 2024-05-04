@@ -5,7 +5,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import React from "react";
-import {
+import type {
   DeepMap,
   DeepPartial,
   FieldError,

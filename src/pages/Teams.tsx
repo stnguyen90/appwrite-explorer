@@ -9,14 +9,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
+import {
+  type SubmitHandler,
+  type UseFormRegister,
+  useForm,
+} from "react-hook-form";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
 import { OrderTypeInput } from "../components/inputs/OrderTypeInput";
 import { SearchInput } from "../components/inputs/SearchInput";
 import { NewTeamModal } from "../components/modals/NewTeamModal";
 import { TeamsTable } from "../components/tables/TeamsTable";
-import { ListTeamsOptions, useTeams } from "../hooks/useTeams";
+import { type ListTeamsOptions, useTeams } from "../hooks/useTeams";
 
 interface IFormInput {
   limit: number;
@@ -69,28 +73,36 @@ export const Teams = (): JSX.Element => {
         <SimpleGrid columns={2} spacing={2}>
           <GridItem colSpan={2}>
             <SearchInput
-              register={register as UseFormRegister<{ search: string }>}
-            ></SearchInput>
+              register={
+                register as unknown as UseFormRegister<{ search: string }>
+              }
+            />
           </GridItem>
 
           <GridItem>
             <LimitInput
-              register={register as UseFormRegister<IFormInput>}
+              register={
+                register as unknown as UseFormRegister<{ limit: number }>
+              }
               errors={errors}
             />
           </GridItem>
 
           <GridItem>
             <OffsetInput
-              register={register as UseFormRegister<IFormInput>}
+              register={
+                register as unknown as UseFormRegister<{ offset: number }>
+              }
               errors={errors}
             />
           </GridItem>
 
           <GridItem>
             <OrderTypeInput
-              register={register as UseFormRegister<{ orderType: string }>}
-            ></OrderTypeInput>
+              register={
+                register as unknown as UseFormRegister<{ orderType: string }>
+              }
+            />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">
@@ -120,10 +132,7 @@ export const Teams = (): JSX.Element => {
       {isLoading ? (
         <Spinner />
       ) : (
-        <TeamsTable
-          teams={data?.teams || []}
-          total={data?.total || 0}
-        ></TeamsTable>
+        <TeamsTable teams={data?.teams || []} total={data?.total || 0} />
       )}
     </VStack>
   );

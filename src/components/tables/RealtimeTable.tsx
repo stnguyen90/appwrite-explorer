@@ -64,7 +64,7 @@ export const RealtimeTable = (props: {
         accessor: "payload",
       },
     ],
-    []
+    [],
   );
 
   const { isOpen, onOpen, onClose } = useDisclosure();

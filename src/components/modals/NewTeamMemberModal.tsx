@@ -77,10 +77,12 @@ export const NewTeamMemberModal = (props: {
 
       await teams.createMembership(
         props.teamId,
-        email,
         roles,
+        email,
+        undefined,
+        undefined,
         url,
-        name || undefined
+        name || undefined,
       );
     },
     {
@@ -107,7 +109,7 @@ export const NewTeamMemberModal = (props: {
         setRoles([]);
         props.onClose();
       },
-    }
+    },
   );
 
   const addRole = () => {

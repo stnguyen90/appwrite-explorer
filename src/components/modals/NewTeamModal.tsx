@@ -94,7 +94,7 @@ export const NewTeamModal = (props: {
         setRoles([]);
         props.onClose();
       },
-    }
+    },
   );
 
   const addRole = () => {

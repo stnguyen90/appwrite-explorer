@@ -13,7 +13,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { SubmitHandler, useForm, UseFormRegister } from "react-hook-form";
+import {
+  type SubmitHandler,
+  useForm,
+  type UseFormRegister,
+} from "react-hook-form";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
 import { ExecuteNowModal } from "../components/modals/ExecuteNowModal";
@@ -21,7 +25,7 @@ import { ExecutionsTable } from "../components/tables/ExecutionsTable";
 import { LocalStorageKey } from "../constants";
 import { useAccount } from "../hooks/useAccount";
 import { useFunctionExecutions } from "../hooks/useFunctionExecutions";
-import { CommonListOptions } from "../interfaces";
+import type { CommonListOptions } from "../interfaces";
 
 export interface IFormInput {
   functionId: string;
@@ -32,7 +36,7 @@ export interface IFormInput {
 export const Functions = (): JSX.Element => {
   const { data: user } = useAccount();
   const [functionId, setFunctionId] = useState(
-    localStorage.getItem(LocalStorageKey.FUNCTION) || ""
+    localStorage.getItem(LocalStorageKey.FUNCTION) || "",
   );
   const [options, setOptions] = useState<CommonListOptions>({
     limit: 25,
@@ -82,21 +86,23 @@ export const Functions = (): JSX.Element => {
                   },
                 })}
               />
-              <FormErrorMessage>
-                {errors.functionId && errors.functionId.message}
-              </FormErrorMessage>
+              <FormErrorMessage>{errors.functionId?.message}</FormErrorMessage>
             </FormControl>
           </GridItem>
           <GridItem />
           <GridItem>
             <LimitInput
-              register={register as UseFormRegister<IFormInput>}
+              register={
+                register as unknown as UseFormRegister<{ limit: number }>
+              }
               errors={errors}
             />
           </GridItem>
           <GridItem>
             <OffsetInput
-              register={register as UseFormRegister<IFormInput>}
+              register={
+                register as unknown as UseFormRegister<{ offset: number }>
+              }
               errors={errors}
             />
           </GridItem>
@@ -139,7 +145,7 @@ export const Functions = (): JSX.Element => {
         <ExecutionsTable
           executions={data?.executions || []}
           total={data?.total || 0}
-        ></ExecutionsTable>
+        />
       )}
     </VStack>
   );

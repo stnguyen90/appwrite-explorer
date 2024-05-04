@@ -67,7 +67,7 @@ export const UpdateNameModal = (props: {
         queryClient.invalidateQueries([QueryKey.USER]);
         props.onClose();
       },
-    }
+    },
   );
 
   const {

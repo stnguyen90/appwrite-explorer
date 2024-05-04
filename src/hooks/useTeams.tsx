@@ -1,5 +1,5 @@
-import { Models, Query, Teams } from "appwrite";
-import { useQuery, UseQueryResult } from "react-query";
+import { type Models, Query, Teams } from "appwrite";
+import { useQuery, type UseQueryResult } from "react-query";
 import { QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
@@ -11,8 +11,8 @@ export interface ListTeamsOptions {
 }
 
 export const useTeams = (
-  options: ListTeamsOptions
-): UseQueryResult<Models.TeamList | null, unknown> => {
+  options: ListTeamsOptions,
+): UseQueryResult<Models.TeamList<Models.Preferences> | null, unknown> => {
   const client = useAppwrite();
 
   return useQuery(
@@ -30,11 +30,11 @@ export const useTeams = (
             ? Query.orderDesc("")
             : Query.orderAsc(""),
         ],
-        options.search != "" ? options.search : undefined
+        options.search !== "" ? options.search : undefined,
       );
 
       return result;
     },
-    { enabled: !!client }
+    { enabled: !!client },
   );
 };

@@ -1,10 +1,10 @@
-import { Account, Models } from "appwrite";
-import { useQuery, UseQueryResult } from "react-query";
+import { Account, type Models } from "appwrite";
+import { useQuery, type UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
 export const useAccount =
-  (): UseQueryResult<Models.Account<Models.Preferences> | null> => {
+  (): UseQueryResult<Models.User<Models.Preferences> | null> => {
     const client = useAppwrite();
 
     return useQuery(
@@ -26,6 +26,6 @@ export const useAccount =
         } catch (err) {}
         return null;
       },
-      { enabled: !!client, staleTime: Infinity }
+      { enabled: !!client, staleTime: Number.POSITIVE_INFINITY },
     );
   };

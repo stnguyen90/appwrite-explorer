@@ -14,7 +14,7 @@ export interface ListDocumentsOptions {
 export const useDocuments = (
   databaseId: string,
   collectionId: string,
-  options: ListDocumentsOptions
+  options: ListDocumentsOptions,
 ): UseQueryResult<
   Models.DocumentList<Models.Document> | null,
   AppwriteException
@@ -31,13 +31,13 @@ export const useDocuments = (
       const result = await db.listDocuments(
         databaseId,
         collectionId,
-        options.queries
+        options.queries,
       );
 
       localStorage.setItem(LocalStorageKey.DATABASE, databaseId);
       localStorage.setItem(LocalStorageKey.COLLECTION, collectionId);
       return result;
     },
-    { enabled: !!client || !collectionId }
+    { enabled: !!client || !collectionId },
   );
 };

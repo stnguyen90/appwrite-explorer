@@ -32,10 +32,10 @@ interface IFormInput {
 export const Database = (): JSX.Element => {
   const { data: user } = useAccount();
   const [databaseId, setDatabaseId] = useState(
-    localStorage.getItem(LocalStorageKey.DATABASE) || ""
+    localStorage.getItem(LocalStorageKey.DATABASE) || "",
   );
   const [collectionId, setCollectionId] = useState(
-    localStorage.getItem(LocalStorageKey.COLLECTION) || ""
+    localStorage.getItem(LocalStorageKey.COLLECTION) || "",
   );
   const [options, setOptions] = useState<ListDocumentsOptions>({
     limit: 25,
@@ -64,7 +64,7 @@ export const Database = (): JSX.Element => {
       control, // control props comes from useForm (optional: if you are using FormContext)
       name: "queries", // unique name for your Field Array
       // keyName: "id", default to "id", you can change the key name
-    }
+    },
   );
 
   const onRemoveClick = (index: number) => {
@@ -94,7 +94,7 @@ export const Database = (): JSX.Element => {
   const { isLoading, isError, error, data } = useDocuments(
     databaseId,
     collectionId,
-    options
+    options,
   );
 
   if (isError) {

@@ -50,7 +50,7 @@ export const NewDocumentModal = (props: {
         props.databaseId,
         props.collectionId,
         documentId,
-        JSON.parse(value)
+        JSON.parse(value),
       );
     },
     {
@@ -76,7 +76,7 @@ export const NewDocumentModal = (props: {
         queryClient.invalidateQueries([QueryKey.DOCUMENTS, props.collectionId]);
         props.onClose();
       },
-    }
+    },
   );
 
   const onCreateClick = () => {

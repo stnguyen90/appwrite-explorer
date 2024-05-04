@@ -8,7 +8,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Models } from "appwrite";
+import type { Models } from "appwrite";
 import React from "react";
 
 interface Data {
@@ -18,9 +18,8 @@ interface Data {
   $createdAt: string;
   trigger: string;
   status: string;
-  statusCode: number;
-  response: string;
-  stderr: string;
+  responseStatusCode: number;
+  responseBody: string;
   duration: number;
 }
 
@@ -60,7 +59,7 @@ export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
       },
       {
         header: "Status Code",
-        accessor: "statusCode",
+        accessor: "responseStatusCode",
       },
       {
         header: "Runtime (s)",
@@ -68,10 +67,10 @@ export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
       },
       {
         header: "Output",
-        accessor: "response",
+        accessor: "responseBody",
       },
     ],
-    []
+    [],
   );
 
   return (

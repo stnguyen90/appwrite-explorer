@@ -1,6 +1,10 @@
 import * as React from "react";
 import { Center, Spinner } from "@chakra-ui/react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes as RouterRoutes,
+  Route,
+} from "react-router-dom";
 import { Login } from "../pages/Login";
 import { Layout } from "./Layout";
 import { useAppwrite } from "../contexts/appwrite";
@@ -27,30 +31,18 @@ export const Routes = (): JSX.Element => {
       />
     </Center>
   ) : !data ? (
-    <Login client={client}></Login>
+    <Login client={client} />
   ) : (
     <Router>
       <Layout>
-        <Switch>
-          <Route path="/storage">
-            <Storage />
-          </Route>
-          <Route path="/teams/:id">
-            <TeamMemberships />
-          </Route>
-          <Route path="/teams">
-            <Teams />
-          </Route>
-          <Route path="/functions">
-            <Functions />
-          </Route>
-          <Route path="/realtime">
-            <Realtime />
-          </Route>
-          <Route path="/">
-            <Database />
-          </Route>
-        </Switch>
+        <RouterRoutes>
+          <Route path="/storage" element={<Storage />} />
+          <Route path="/teams/:id" element={<TeamMemberships />} />
+          <Route path="/teams" element={<Teams />} />
+          <Route path="/functions" element={<Functions />} />
+          <Route path="/realtime" element={<Realtime />} />
+          <Route path="/" element={<Database />} />
+        </RouterRoutes>
       </Layout>
     </Router>
   );

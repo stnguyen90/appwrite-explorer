@@ -31,7 +31,7 @@ export interface IFormInput {
 export const Storage = (): JSX.Element => {
   const { data: user } = useAccount();
   const [bucketId, setBucketId] = useState(
-    localStorage.getItem(LocalStorageKey.BUCKET) || ""
+    localStorage.getItem(LocalStorageKey.BUCKET) || "",
   );
   const [options, setOptions] = useState<ListFilesOptions>({
     limit: 25,
@@ -88,13 +88,17 @@ export const Storage = (): JSX.Element => {
           <GridItem />
           <GridItem>
             <LimitInput
-              register={register as UseFormRegister<IFormInput>}
+              register={
+                register as unknown as UseFormRegister<{ limit: number }>
+              }
               errors={errors}
             />
           </GridItem>
           <GridItem>
             <OffsetInput
-              register={register as UseFormRegister<IFormInput>}
+              register={
+                register as unknown as UseFormRegister<{ offset: number }>
+              }
               errors={errors}
             />
           </GridItem>

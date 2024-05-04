@@ -67,7 +67,7 @@ export const StorageTable = (props: Models.FileList): JSX.Element => {
         accessor: "sizeOriginal",
       },
     ],
-    []
+    [],
   );
 
   return (

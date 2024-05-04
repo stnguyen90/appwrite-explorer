@@ -22,7 +22,7 @@ interface Data {
 }
 
 export const TeamMembershipsTable = (
-  props: Models.MembershipList
+  props: Models.MembershipList,
 ): JSX.Element => {
   const data = props.memberships.map((f) => {
     const { invited, joined, roles, ...rest } = f;
@@ -66,7 +66,7 @@ export const TeamMembershipsTable = (
         accessor: "roles",
       },
     ],
-    []
+    [],
   );
 
   return (

@@ -25,7 +25,7 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { Account, Client, Models } from "appwrite";
+import { Account, type Client, type Models } from "appwrite";
 import * as React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -62,7 +62,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
     const account = new Account(client);
 
     try {
-      await account.createEmailSession(email, password);
+      await account.createEmailPasswordSession(email, password);
       localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
       localStorage.setItem(LocalStorageKey.PROJECT, project);
       queryClient.invalidateQueries(QueryKey.USER);
@@ -88,7 +88,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
     localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
     localStorage.setItem(LocalStorageKey.PROJECT, project);
 
-    queryClient.setQueryData<Models.Account<Models.Preferences>>(
+    queryClient.setQueryData<Models.User<Models.Preferences>>(
       QueryKey.USER,
       () => {
         return {
@@ -104,8 +104,15 @@ export const Login = (props: { client: Client }): JSX.Element => {
           prefs: {},
           registration: "",
           status: false,
+          accessedAt: "",
+          labels: [],
+          mfa: false,
+          targets: [],
+          hash: "",
+          hashOptions: {},
+          password: "",
         };
-      }
+      },
     );
   };
 
@@ -127,10 +134,9 @@ export const Login = (props: { client: Client }): JSX.Element => {
               <FormControl isInvalid={!!errors.endpoint}>
                 <FormLabel htmlFor="endpoint">Endpoint</FormLabel>
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<LinkIcon color="gray" />}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <LinkIcon color="gray" />
+                  </InputLeftElement>
                   <Input
                     id="endpoint"
                     {...register("endpoint", {
@@ -139,17 +145,14 @@ export const Login = (props: { client: Client }): JSX.Element => {
                     placeholder="http://appwrite.io/v1"
                   />
                 </InputGroup>
-                <FormErrorMessage>
-                  {errors.endpoint && errors.endpoint.message}
-                </FormErrorMessage>
+                <FormErrorMessage>{errors.endpoint?.message}</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.project}>
+              <FormControl isInvalid={!!errors.project}>
                 <FormLabel htmlFor="project">Project ID</FormLabel>
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<InfoOutlineIcon color="gray" />}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <InfoOutlineIcon color="gray" />
+                  </InputLeftElement>
                   <Input
                     id="project"
                     {...register("project", {
@@ -163,9 +166,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
                     }}
                   />
                 </InputGroup>
-                <FormErrorMessage>
-                  {errors.project && errors.project.message}
-                </FormErrorMessage>
+                <FormErrorMessage>{errors.project?.message}</FormErrorMessage>
               </FormControl>
               <Box>
                 <Button
@@ -179,13 +180,12 @@ export const Login = (props: { client: Client }): JSX.Element => {
                   Continue as Guest
                 </Button>
               </Box>
-              <FormControl isInvalid={errors.email}>
+              <FormControl isInvalid={!!errors.email}>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<AtSignIcon color="gray" />}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <AtSignIcon color="gray" />
+                  </InputLeftElement>
                   <Input
                     id="email"
                     {...register("email")}
@@ -193,13 +193,12 @@ export const Login = (props: { client: Client }): JSX.Element => {
                   />
                 </InputGroup>
               </FormControl>
-              <FormControl isInvalid={errors.password}>
+              <FormControl isInvalid={!!errors.password}>
                 <FormLabel htmlFor="password">Password</FormLabel>
                 <InputGroup size="md">
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<LockIcon color="gray" />}
-                  />
+                  <InputLeftElement pointerEvents="none">
+                    <LockIcon color="gray" />
+                  </InputLeftElement>
                   <Input
                     pr="4.5rem"
                     type={showPassword ? "text" : "password"}

@@ -24,7 +24,7 @@ interface Data {
 }
 
 export const DatabaseTable = (
-  props: Models.DocumentList<Models.Document>
+  props: Models.DocumentList<Models.Document>,
 ): JSX.Element => {
   const data = props.documents.map((f) => {
     const { $id, $createdAt, $updatedAt, $permissions } = f;
@@ -63,7 +63,7 @@ export const DatabaseTable = (
         accessor: "data",
       },
     ],
-    []
+    [],
   );
 
   const { isOpen, onOpen, onClose } = useDisclosure();

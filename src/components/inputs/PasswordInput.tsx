@@ -24,7 +24,7 @@ export const PasswordInput = React.forwardRef(
     ref?:
       | ((instance: HTMLInputElement | null) => void)
       | MutableRefObject<HTMLInputElement | null>
-      | null
+      | null,
   ) => {
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
@@ -56,5 +56,5 @@ export const PasswordInput = React.forwardRef(
         </InputRightElement>
       </InputGroup>
     );
-  }
+  },
 );

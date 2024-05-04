@@ -10,7 +10,7 @@ export interface ListFilesOptions {
 
 export const useStorage = (
   bucketId: string,
-  options: ListFilesOptions
+  options: ListFilesOptions,
 ): UseQueryResult<Models.FileList | null, unknown> => {
   const client = useAppwrite();
 
@@ -28,12 +28,12 @@ export const useStorage = (
           Query.offset(options.offset),
           Query.orderDesc(""),
         ],
-        undefined
+        undefined,
       );
 
       localStorage.setItem(LocalStorageKey.BUCKET, bucketId);
       return result;
     },
-    { enabled: !!client }
+    { enabled: !!client },
   );
 };

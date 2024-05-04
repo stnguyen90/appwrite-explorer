@@ -78,7 +78,7 @@ export const UpdateDocumentModal = (props: {
         queryClient.invalidateQueries([QueryKey.DOCUMENTS, $collectionId]);
         props.onClose();
       },
-    }
+    },
   );
 
   const updateDocument = () => {

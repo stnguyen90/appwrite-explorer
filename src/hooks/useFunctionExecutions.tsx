@@ -6,7 +6,7 @@ import { CommonListOptions } from "../interfaces";
 
 export const useFunctionExecutions = (
   functionId: string,
-  options: CommonListOptions
+  options: CommonListOptions,
 ): UseQueryResult<Models.ExecutionList | null, unknown> => {
   const client = useAppwrite();
 
@@ -27,6 +27,6 @@ export const useFunctionExecutions = (
 
       return result;
     },
-    { enabled: !!client || !functionId }
+    { enabled: !!client || !functionId },
   );
 };

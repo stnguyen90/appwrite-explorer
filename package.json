@@ -40,7 +40,7 @@
     "typescript": "^5.4.5",
     "vite": "^5.2.11",
     "vite-tsconfig-paths": "^4.3.2",
-    "web-vitals": "^3.5.2"
+    "web-vitals": "^4.0.1"
   },
   "scripts": {
     "start": "vite",

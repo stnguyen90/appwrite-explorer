@@ -34,7 +34,7 @@
     "react-hook-form": "^7.51.4",
     "react-icons": "^5.2.1",
     "react-query": "^3.39.3",
-    "react-router-dom": "^6.23.0",
+    "react-router-dom": "^6.24.0",
     "react-table": "^7.8.0",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.5",

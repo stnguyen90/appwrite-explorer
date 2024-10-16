@@ -142,7 +142,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
                     {...register("endpoint", {
                       required: "This is required",
                     })}
-                    placeholder="http://appwrite.io/v1"
+                    defaultValue="https://cloud.appwrite.io/v1"
                   />
                 </InputGroup>
                 <FormErrorMessage>{errors.endpoint?.message}</FormErrorMessage>

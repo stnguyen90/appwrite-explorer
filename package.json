@@ -21,7 +21,7 @@
     "@types/react-table": "^7.7.20",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
     "@typescript-eslint/parser": "^7.18.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.3.4",
     "appwrite": "^14.0.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
@@ -38,7 +38,7 @@
     "react-table": "^7.8.0",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3",
-    "vite": "^6.0.11",
+    "vite": "^6.2.1",
     "vite-tsconfig-paths": "^4.3.2",
     "web-vitals": "^4.2.4"
   },

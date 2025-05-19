@@ -20,7 +20,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/react-table": "^7.7.20",
     "@typescript-eslint/eslint-plugin": "^8.18.1",
-    "@typescript-eslint/parser": "^8.28.0",
+    "@typescript-eslint/parser": "^8.32.1",
     "@vitejs/plugin-react": "^4.3.4",
     "appwrite": "^14.0.1",
     "eslint": "^8.56.0",

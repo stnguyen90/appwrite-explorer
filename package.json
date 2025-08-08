@@ -79,5 +79,8 @@
     "setupFilesAfterEnv": [
       "<rootDir>/src/setupTests.ts"
     ]
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

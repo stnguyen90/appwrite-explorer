@@ -49,7 +49,16 @@ export const Login = (props: { client: Client }): JSX.Element => {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    defaultValues: {
+      endpoint:
+        localStorage.getItem(LocalStorageKey.ENDPOINT) ||
+        "https://REGION.cloud.appwrite.io/v1",
+      project: localStorage.getItem(LocalStorageKey.PROJECT) || "",
+      email: "",
+      password: "",
+    },
+  });
 
   const onSignIn = async (values: IFormInput) => {
     const { endpoint, project, email, password } = values;

@@ -56,6 +56,7 @@ export const Login = (props: { client: Client }): JSX.Element => {
 
     const { client } = props;
 
+    client.setEndpointRealtime(""); // clear previous value so that setEndpoint() will also set endpointRealtime
     client.setEndpoint(endpoint);
     client.setProject(project);
 

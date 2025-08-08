@@ -11,7 +11,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import {
   type SubmitHandler,
   useForm,
@@ -36,7 +36,7 @@ interface IFormInput {
   orderType: "ASC" | "DESC";
   search: string;
 }
-export const TeamMemberships = (): JSX.Element => {
+export const TeamMemberships = (): ReactElement => {
   const { id } = useParams<{ id: string }>();
   const [options, setOptions] = useState<ListTeamMembershipsOptions>({
     id: id as string,

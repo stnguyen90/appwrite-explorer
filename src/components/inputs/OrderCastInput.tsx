@@ -1,10 +1,10 @@
 import { FormControl, FormLabel, Select } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 export const OrderCastInput = (props: {
   register: UseFormRegister<{ orderCast: string }>;
-}): JSX.Element => {
+}): ReactElement => {
   return (
     <FormControl>
       <FormLabel htmlFor="orderCast" defaultValue="string">

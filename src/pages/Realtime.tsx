@@ -19,11 +19,11 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { RealtimeResponseEvent } from "appwrite";
-import React, { useEffect, useRef, useState } from "react";
+import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { RealtimeTable } from "../components/tables/RealtimeTable";
 import { useAppwrite } from "../contexts/appwrite";
 
-export const Realtime = (): JSX.Element => {
+export const Realtime = (): ReactElement => {
   const [channels, setChannels] = useState<string[]>([]);
   const channelRef = useRef<HTMLInputElement | null>(null);
   const [channelError, setChannelError] = useState("");

@@ -16,7 +16,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { Account } from "appwrite";
-import React from "react";
+import React, { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
@@ -30,7 +30,7 @@ interface IFormInput {
 export const UpdateNameModal = (props: {
   isOpen: boolean;
   onClose: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const { data } = useAccount();
   const client = useAppwrite();
   const toast = useToast();

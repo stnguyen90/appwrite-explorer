@@ -10,7 +10,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import type { Models } from "appwrite";
-import React from "react";
+import React, { ReactElement } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 interface Data {
@@ -22,7 +22,7 @@ interface Data {
 
 export const TeamsTable = (
   props: Models.TeamList<Models.Preferences>,
-): JSX.Element => {
+): ReactElement => {
   const data = props.teams.map((f) => {
     const { $createdAt, ...rest } = f;
     return {

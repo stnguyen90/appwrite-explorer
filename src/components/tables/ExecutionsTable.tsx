@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import type { Models } from "appwrite";
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface Data {
   $id: string;
@@ -23,7 +23,7 @@ interface Data {
   duration: number;
 }
 
-export const ExecutionsTable = (props: Models.ExecutionList): JSX.Element => {
+export const ExecutionsTable = (props: Models.ExecutionList): ReactElement => {
   const data = props.executions.map((e) => {
     const { $permissions, $createdAt, ...rest } = e;
     return {

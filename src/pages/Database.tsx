@@ -14,7 +14,7 @@ import {
   AlertIcon,
   AlertTitle,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
@@ -29,7 +29,7 @@ interface IFormInput {
   collection: string;
   queries: { value: string }[];
 }
-export const Database = (): JSX.Element => {
+export const Database = (): ReactElement => {
   const { data: user } = useAccount();
   const [databaseId, setDatabaseId] = useState(
     localStorage.getItem(LocalStorageKey.DATABASE) || "",

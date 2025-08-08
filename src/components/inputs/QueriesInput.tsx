@@ -9,7 +9,7 @@ import {
   InputRightElement,
   VStack,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import { ChangeHandler, RefCallBack } from "react-hook-form";
 
 export const QueriesInput = (props: {
@@ -19,7 +19,7 @@ export const QueriesInput = (props: {
   getQueryRef: (index: number) => RefCallBack;
   onRemoveClick: (index: number) => void;
   onAddClick: VoidFunction;
-}): JSX.Element => {
+}): ReactElement => {
   return (
     <FormControl>
       <FormLabel>Queries</FormLabel>

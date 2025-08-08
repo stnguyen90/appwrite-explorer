@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
 import { Functions } from "appwrite";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
@@ -23,7 +23,7 @@ export const ExecuteNowModal = (props: {
   functionId: string;
   isOpen: boolean;
   onClose: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const [value, setValue] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
   const client = useAppwrite();

@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { Models } from "appwrite";
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface Data {
   $id: string;
@@ -21,7 +21,7 @@ interface Data {
   sizeOriginal: number;
 }
 
-export const StorageTable = (props: Models.FileList): JSX.Element => {
+export const StorageTable = (props: Models.FileList): ReactElement => {
   const data = props.files.map((f) => {
     const { $permissions, $createdAt, sizeOriginal, ...rest } = f;
     return {

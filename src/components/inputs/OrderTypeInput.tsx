@@ -5,12 +5,12 @@ import {
   Stack,
   Radio,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 export const OrderTypeInput = (props: {
   register: UseFormRegister<{ orderType: string }>;
-}): JSX.Element => {
+}): ReactElement => {
   return (
     <FormControl>
       <FormLabel htmlFor="orderType">Order Type</FormLabel>

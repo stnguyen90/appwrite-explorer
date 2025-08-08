@@ -23,7 +23,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { Teams } from "appwrite";
-import React, { useRef, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
@@ -37,7 +37,7 @@ export const NewTeamMemberModal = (props: {
   teamId: string;
   isOpen: boolean;
   onClose: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [name, setName] = useState("");

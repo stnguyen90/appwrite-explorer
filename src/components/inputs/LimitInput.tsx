@@ -4,7 +4,7 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import type {
   DeepMap,
   DeepPartial,
@@ -19,7 +19,7 @@ interface IFormInput {
 export const LimitInput = (props: {
   register: UseFormRegister<IFormInput>;
   errors: DeepMap<DeepPartial<IFormInput>, FieldError>;
-}): JSX.Element => {
+}): ReactElement => {
   return (
     <FormControl isInvalid={!!props.errors.limit}>
       <FormLabel htmlFor="limit">Limit</FormLabel>

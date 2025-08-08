@@ -20,7 +20,7 @@ import {
 } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
 import { RealtimeResponseEvent } from "appwrite";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 
 interface Data {
   events: string;
@@ -31,7 +31,7 @@ interface Data {
 
 export const RealtimeTable = (props: {
   payloads: RealtimeResponseEvent<Record<string, unknown>>[];
-}): JSX.Element => {
+}): ReactElement => {
   const data = props.payloads.map((f) => {
     const { events, channels, timestamp, payload, ...rest } = f;
     return {

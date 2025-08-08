@@ -12,7 +12,7 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import {
   type SubmitHandler,
   useForm,
@@ -33,7 +33,7 @@ export interface IFormInput {
   offset: number;
 }
 
-export const Functions = (): JSX.Element => {
+export const Functions = (): ReactElement => {
   const { data: user } = useAccount();
   const [functionId, setFunctionId] = useState(
     localStorage.getItem(LocalStorageKey.FUNCTION) || "",

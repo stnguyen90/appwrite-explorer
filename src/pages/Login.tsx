@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { Account, type Client, type Models } from "appwrite";
 import * as React from "react";
-import { useState } from "react";
+import { useState, ReactElement } from "react";
 import { useForm } from "react-hook-form";
 import { useQueryClient } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
@@ -39,7 +39,7 @@ interface IFormInput {
   password: string;
 }
 
-export const Login = (props: { client: Client }): JSX.Element => {
+export const Login = (props: { client: Client }): ReactElement => {
   const [showPassword, setShowPassword] = useState(false);
   const handleClick = () => setShowPassword(!showPassword);
   const queryClient = useQueryClient();

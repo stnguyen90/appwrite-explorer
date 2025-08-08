@@ -19,7 +19,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Storage } from "appwrite";
-import React, { useRef, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import { FiFile } from "react-icons/fi";
 import { useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
@@ -29,7 +29,7 @@ export const NewUploadModal = (props: {
   bucketId: string;
   isOpen: boolean;
   onClose: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const [fileId, setFileId] = useState("unique()");
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState("");

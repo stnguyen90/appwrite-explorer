@@ -9,7 +9,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { Models } from "appwrite";
-import React from "react";
+import React, { ReactElement } from "react";
 
 interface Data {
   $id: string;
@@ -23,7 +23,7 @@ interface Data {
 
 export const TeamMembershipsTable = (
   props: Models.MembershipList,
-): JSX.Element => {
+): ReactElement => {
   const data = props.memberships.map((f) => {
     const { invited, joined, roles, ...rest } = f;
     return {

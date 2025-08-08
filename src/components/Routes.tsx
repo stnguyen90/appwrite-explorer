@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ReactElement } from "react";
 import { Center, Spinner } from "@chakra-ui/react";
 import {
   BrowserRouter as Router,
@@ -16,7 +17,7 @@ import { TeamMemberships } from "../pages/TeamMemberships";
 import { Realtime } from "../pages/Realtime";
 import { useAccount } from "../hooks/useAccount";
 
-export const Routes = (): JSX.Element => {
+export const Routes = (): ReactElement => {
   const client = useAppwrite();
   const { isLoading, data } = useAccount();
 

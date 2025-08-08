@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
 import { Databases } from "appwrite";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
@@ -27,7 +27,7 @@ export const NewDocumentModal = (props: {
   collectionId: string;
   isOpen: boolean;
   onClose: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const [documentId, setDocumentId] = useState("unique()");
   const [value, setValue] = useState("{}");
   const appwriteClient = useAppwrite();

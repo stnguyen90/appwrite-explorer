@@ -12,7 +12,7 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
 import { LimitInput } from "../components/inputs/LimitInput";
 import { OffsetInput } from "../components/inputs/OffsetInput";
@@ -28,7 +28,7 @@ export interface IFormInput {
   offset: number;
 }
 
-export const Storage = (): JSX.Element => {
+export const Storage = (): ReactElement => {
   const { data: user } = useAccount();
   const [bucketId, setBucketId] = useState(
     localStorage.getItem(LocalStorageKey.BUCKET) || "",

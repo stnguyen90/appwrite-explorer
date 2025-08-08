@@ -1,5 +1,5 @@
 import { Client } from "appwrite";
-import React from "react";
+import React, { ReactElement } from "react";
 
 const AppwriteContext = React.createContext<Client | null>(null);
 
@@ -8,8 +8,8 @@ export const AppwriteProvider = ({
   children,
 }: {
   value: Client;
-  children: JSX.Element;
-}): JSX.Element => {
+  children: ReactElement;
+}): ReactElement => {
   return (
     <AppwriteContext.Provider value={value}>
       {children}

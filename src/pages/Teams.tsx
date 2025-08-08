@@ -8,7 +8,7 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import {
   type SubmitHandler,
   type UseFormRegister,
@@ -28,7 +28,7 @@ interface IFormInput {
   orderType: "ASC" | "DESC";
   search: string;
 }
-export const Teams = (): JSX.Element => {
+export const Teams = (): ReactElement => {
   const [options, setOptions] = useState<ListTeamsOptions>({
     limit: 25,
     offset: 0,

@@ -11,7 +11,7 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Models } from "appwrite";
 import { UpdateDocumentModal } from "../modals/UpdateDocumentModal";
 
@@ -25,7 +25,7 @@ interface Data {
 
 export const DatabaseTable = (
   props: Models.DocumentList<Models.Document>,
-): JSX.Element => {
+): ReactElement => {
   const data = props.documents.map((f) => {
     const { $id, $createdAt, $updatedAt, $permissions } = f;
     return {

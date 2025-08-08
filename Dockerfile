@@ -1,9 +1,9 @@
-FROM --platform=$BUILDPLATFORM node:18 as builder
+FROM --platform=$BUILDPLATFORM node:20 as builder
 
 RUN mkdir /app
 WORKDIR /app
 COPY package.json /app
-RUN npm install
+RUN npm install --force
 COPY . /app
 RUN npm run build
 

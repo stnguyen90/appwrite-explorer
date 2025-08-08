@@ -4,7 +4,7 @@ import {
   FormLabel,
   Input,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import {
   DeepMap,
   DeepPartial,
@@ -19,7 +19,7 @@ interface IFormInput {
 export const OffsetInput = (props: {
   register: UseFormRegister<IFormInput>;
   errors: DeepMap<DeepPartial<IFormInput>, FieldError>;
-}): JSX.Element => {
+}): ReactElement => {
   return (
     <FormControl isInvalid={!!props.errors.offset}>
       <FormLabel htmlFor="offset">Offset</FormLabel>

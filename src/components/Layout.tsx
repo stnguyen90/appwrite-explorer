@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, ReactElement, useState } from "react";
 import {
   IconButton,
   Avatar,
@@ -24,7 +24,7 @@ import {
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { FiMenu, FiChevronDown } from "react-icons/fi";
 import { IconType } from "react-icons";
-import { ReactText } from "react";
+
 import { useAppwrite } from "../contexts/appwrite";
 import { useQueryClient } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
@@ -48,7 +48,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: "Realtime", icon: BiTime, to: "/realtime" },
 ];
 
-export const Layout = ({ children }: { children: ReactNode }): JSX.Element => {
+export const Layout = ({ children }: { children: ReactNode }): ReactElement => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box minH="100vh" h="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
@@ -115,7 +115,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 interface NavItemProps extends FlexProps {
   icon: IconType;
   to: string;
-  children: ReactText;
+  children: string | number;
 }
 const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
   const location = useLocation();

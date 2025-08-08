@@ -17,7 +17,7 @@ import {
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
 import { Databases, Models } from "appwrite";
-import React, { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
@@ -26,7 +26,7 @@ export const UpdateDocumentModal = (props: {
   document: Models.Document;
   isOpen: boolean;
   onClose: () => void;
-}): JSX.Element => {
+}): ReactElement => {
   const {
     $databaseId,
     $collectionId,

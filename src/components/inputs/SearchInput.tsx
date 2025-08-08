@@ -1,10 +1,10 @@
 import { FormControl, FormLabel, Input } from "@chakra-ui/react";
-import React from "react";
+import React, { ReactElement } from "react";
 import { UseFormRegister } from "react-hook-form";
 
 export const SearchInput = (props: {
   register: UseFormRegister<{ search: string }>;
-}): JSX.Element => {
+}): ReactElement => {
   return (
     <FormControl>
       <FormLabel htmlFor="search">Search</FormLabel>

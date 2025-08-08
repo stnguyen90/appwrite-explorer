@@ -8,8 +8,8 @@ Always reference these instructions first and fallback to search or bash command
 
 ### Bootstrap and Setup
 
-- Install dependencies: `npm install --legacy-peer-deps`
-  - **CRITICAL**: Always use `--legacy-peer-deps` flag due to React version compatibility issues
+- Install dependencies: `npm install`
+  - Requires `npm install --force` due to peer dependency warnings from legacy packages (`react-query@3.39.3` and `react-table@7.8.0`)
   - Takes ~60 seconds to complete
   - Install creates `node_modules` directory and installs 700+ packages
 - Create required Jest mock files (if missing):
@@ -41,7 +41,7 @@ Always reference these instructions first and fallback to search or bash command
 ### Testing
 
 - Run tests: `npm test`
-  - Tests now pass successfully with React 18.3.1 and jest polyfills
+  - Tests now pass successfully with React 19 and jest polyfills
   - TextEncoder/TextDecoder polyfills handled by `jest.setup.js`
   - Tests use simplified approach without DOM rendering to avoid compatibility issues
   - Current tests: `src/App.test.tsx` contains 3 tests validating App component structure
@@ -63,7 +63,7 @@ Always reference these instructions first and fallback to search or bash command
 
 - Build Docker image: `docker build .`
   - **NEVER CANCEL**: Docker build takes 5-10 minutes. Set timeout to 15+ minutes.
-  - Uses multi-stage build with Node.js 18 and nginx:alpine
+  - Uses multi-stage build with Node.js 20 and nginx:alpine
   - Dockerfile has been updated to use `dist/` directory (not `build/`)
   - Final image serves application on nginx
 
@@ -100,14 +100,14 @@ After making changes, ALWAYS test these scenarios:
 
 ### Dependency Installation Issues
 
-- **Problem**: npm install fails with peer dependency conflicts
-- **Solution**: Always use `npm install --legacy-peer-deps`
+- **Problem**: npm install requires `--force` flag due to peer dependency warnings from `react-query@3.39.3` and `react-table@7.8.0`
+- **Solution**: The React 19 upgrade works correctly with these legacy packages, but they haven't been updated to officially support React 19. Use `npm install --force` to bypass non-blocking peer dependency warnings.
 
 ### React Version Compatibility
 
-- **Current State**: React 18.3.1 is working correctly with jest polyfills
+- **Current State**: React 19.1.1 is working correctly with jest polyfills
 - **Testing**: TextEncoder/TextDecoder polyfills are provided by `jest.setup.js`
-- **Solution**: Project uses React 18 for stability. Do NOT upgrade to React 19.
+- **Solution**: Project uses React 19 for modern compatibility and performance.
 - **Testing Approach**: Uses simplified component structure testing instead of DOM rendering
 
 ### Build Directory Confusion
@@ -140,13 +140,13 @@ After making changes, ALWAYS test these scenarios:
 - `vite.config.ts` - Vite build configuration (port 3000, React with Emotion)
 - `tsconfig.json` - TypeScript configuration
 - `.eslintrc` - ESLint configuration
-- `Dockerfile` - Multi-stage Docker build (Node.js 18 + nginx)
+- `Dockerfile` - Multi-stage Docker build (Node.js 20 + nginx)
 
 ### Important Commands Reference
 
 ```bash
 # Setup
-npm install --legacy-peer-deps
+npm install --force
 
 # Development
 npm start                                    # Start dev server on :3000

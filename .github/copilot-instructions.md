@@ -9,7 +9,7 @@ Always reference these instructions first and fallback to search or bash command
 ### Bootstrap and Setup
 
 - Install dependencies: `npm install`
-  - May require `npm install --force` if peer dependency warnings appear from legacy packages
+  - Requires `npm install --force` due to peer dependency warnings from legacy packages (`react-query@3.39.3` and `react-table@7.8.0`)
   - Takes ~60 seconds to complete
   - Install creates `node_modules` directory and installs 700+ packages
 - Create required Jest mock files (if missing):
@@ -63,7 +63,7 @@ Always reference these instructions first and fallback to search or bash command
 
 - Build Docker image: `docker build .`
   - **NEVER CANCEL**: Docker build takes 5-10 minutes. Set timeout to 15+ minutes.
-  - Uses multi-stage build with Node.js 18 and nginx:alpine
+  - Uses multi-stage build with Node.js 20 and nginx:alpine
   - Dockerfile has been updated to use `dist/` directory (not `build/`)
   - Final image serves application on nginx
 
@@ -100,8 +100,8 @@ After making changes, ALWAYS test these scenarios:
 
 ### Dependency Installation Issues
 
-- **Problem**: npm install may show peer dependency warnings from `react-query@3.39.3` and `react-table@7.8.0`
-- **Solution**: The React 19 upgrade has resolved most peer dependency conflicts. If warnings appear, use `npm install --force` to bypass non-blocking warnings.
+- **Problem**: npm install requires `--force` flag due to peer dependency warnings from `react-query@3.39.3` and `react-table@7.8.0`
+- **Solution**: The React 19 upgrade works correctly with these legacy packages, but they haven't been updated to officially support React 19. Use `npm install --force` to bypass non-blocking peer dependency warnings.
 
 ### React Version Compatibility
 
@@ -140,13 +140,13 @@ After making changes, ALWAYS test these scenarios:
 - `vite.config.ts` - Vite build configuration (port 3000, React with Emotion)
 - `tsconfig.json` - TypeScript configuration
 - `.eslintrc` - ESLint configuration
-- `Dockerfile` - Multi-stage Docker build (Node.js 18 + nginx)
+- `Dockerfile` - Multi-stage Docker build (Node.js 20 + nginx)
 
 ### Important Commands Reference
 
 ```bash
 # Setup
-npm install
+npm install --force
 
 # Development
 npm start                                    # Start dev server on :3000

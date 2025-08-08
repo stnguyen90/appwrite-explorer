@@ -7,6 +7,7 @@ Always reference these instructions first and fallback to search or bash command
 ## Working Effectively
 
 ### Bootstrap and Setup
+
 - Install dependencies: `npm install --legacy-peer-deps`
   - **CRITICAL**: Always use `--legacy-peer-deps` flag due to React version compatibility issues
   - Takes ~60 seconds to complete
@@ -17,6 +18,7 @@ Always reference these instructions first and fallback to search or bash command
   - Create `__mocks__/styleMock.js` with content: `module.exports = {};`
 
 ### Build Process
+
 - Build the application: `npm run build`
   - **NEVER CANCEL**: Build takes approximately 10-12 seconds. ALWAYS wait for completion.
   - Command runs TypeScript compilation (`tsc`) followed by Vite build
@@ -25,6 +27,7 @@ Always reference these instructions first and fallback to search or bash command
   - Set timeout to 60+ seconds to ensure build completes
 
 ### Development Server
+
 - Start development server: `npm start`
   - Runs on http://localhost:3000 by default
   - Uses Vite dev server with hot module reloading
@@ -36,14 +39,16 @@ Always reference these instructions first and fallback to search or bash command
   - Then click "Continue as Guest" again to access main interface
 
 ### Testing
+
 - **WARNING**: Jest tests currently have compatibility issues with React 18+ and newer dependencies
-- Run tests: `npm test` 
+- Run tests: `npm test`
   - **NOTE**: Tests may fail due to TextEncoder/dependency compatibility issues
   - Current known issue: Tests fail with "TextEncoder is not defined" error
   - Test setup includes custom render utility with Chakra UI provider in `src/test-utils.tsx`
   - Only one test exists: `src/App.test.tsx` which tests basic app rendering
 
 ### Code Quality
+
 - Format code: `npm run format`
   - Uses Prettier to format all files in project
   - Takes ~4 seconds to complete, processes 50+ files
@@ -55,6 +60,7 @@ Always reference these instructions first and fallback to search or bash command
   - Configuration in `.eslintrc` extends TypeScript and Prettier recommended rules
 
 ### Docker Build
+
 - Build Docker image: `docker build .`
   - **NEVER CANCEL**: Docker build takes 5-10 minutes. Set timeout to 15+ minutes.
   - Uses multi-stage build with Node.js 18 and nginx:alpine
@@ -66,6 +72,7 @@ Always reference these instructions first and fallback to search or bash command
 After making changes, ALWAYS test these scenarios:
 
 ### Application Functionality Test
+
 1. Start development server: `npm start`
 2. Navigate to http://localhost:3000
 3. Verify login screen appears with Appwrite Explorer title
@@ -78,11 +85,13 @@ After making changes, ALWAYS test these scenarios:
 8. Take screenshot to confirm UI is working
 
 ### Build Validation Test
+
 1. Run `npm run build` and wait for completion (~10 seconds)
 2. Verify `dist/` directory is created with `index.html` and assets
 3. Check that build succeeds without TypeScript errors
 
 ### Code Quality Test
+
 1. Run `npm run format` to ensure code formatting
 2. Run `npx eslint src --ext .ts,.tsx` to check for linting issues
 3. Address any new ESLint errors before committing
@@ -90,18 +99,22 @@ After making changes, ALWAYS test these scenarios:
 ## Common Issues and Solutions
 
 ### Dependency Installation Issues
+
 - **Problem**: npm install fails with peer dependency conflicts
 - **Solution**: Always use `npm install --legacy-peer-deps`
 
 ### React Version Compatibility
+
 - **Problem**: Tests fail with "Cannot read properties of undefined (reading 'S')" or "TextEncoder is not defined"
 - **Solution**: The project uses React 18 for compatibility. Do NOT upgrade to React 19.
 
 ### Build Directory Confusion
+
 - **Important**: Vite builds to `dist/` directory, NOT `build/`
 - The Dockerfile has been updated to reference correct `dist/` directory
 
 ### ESLint Errors
+
 - **Current State**: Repository has 6 ESLint errors related to unused variables
 - **Action**: Fix only NEW ESLint errors introduced by your changes
 - **Do NOT**: Attempt to fix all existing ESLint errors as part of feature work
@@ -109,6 +122,7 @@ After making changes, ALWAYS test these scenarios:
 ## Key Project Structure
 
 ### Important Directories
+
 - `src/` - Main source code
   - `src/components/` - React components (Layout, Routes, inputs, modals, tables)
   - `src/pages/` - Page components (Database, Storage, Functions, Teams, etc.)
@@ -119,6 +133,7 @@ After making changes, ALWAYS test these scenarios:
 - `.github/workflows/` - GitHub Actions for Docker image publishing
 
 ### Key Files
+
 - `package.json` - Dependencies and npm scripts
 - `vite.config.ts` - Vite build configuration (port 3000, React with Emotion)
 - `tsconfig.json` - TypeScript configuration
@@ -126,11 +141,12 @@ After making changes, ALWAYS test these scenarios:
 - `Dockerfile` - Multi-stage Docker build (Node.js 18 + nginx)
 
 ### Important Commands Reference
+
 ```bash
 # Setup
 npm install --legacy-peer-deps
 
-# Development  
+# Development
 npm start                                    # Start dev server on :3000
 npm run build                               # Build for production (~10s)
 npm run format                              # Format with Prettier (~4s)
@@ -144,18 +160,20 @@ docker run --rm -p 8080:80 <image-name>    # Run containerized app on :8080
 ## Testing Instructions
 
 ### Manual Application Test
+
 1. Ensure development server is running (`npm start`)
 2. Navigate to http://localhost:3000
 3. Verify the login screen appears correctly
 4. Test guest access flow:
    - Enter endpoint: `https://cloud.appwrite.io/v1`
-   - Enter project ID: `test-project`  
+   - Enter project ID: `test-project`
    - Click "Continue as Guest"
 5. Verify main application interface loads
 6. Test navigation between Database, Storage, Functions, Realtime sections
 7. Verify no JavaScript console errors
 
 ### Build Verification
+
 1. Run `npm run build` and verify successful completion
 2. Check `dist/` directory contains `index.html` and bundled assets
 3. Verify no TypeScript compilation errors

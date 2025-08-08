@@ -6,7 +6,7 @@ test("App component can be imported and renders JSX", () => {
   const appElement = React.createElement(App);
   expect(appElement).toBeTruthy();
   expect(appElement.type).toBe(App);
-  
+
   // Verify the component is a valid React function component
   expect(typeof App).toBe("function");
   expect(App.name).toBe("App");
@@ -25,8 +25,10 @@ test("App component returns expected JSX structure", () => {
   // Verify the component returns a React element with expected structure
   const result = App();
   expect(React.isValidElement(result)).toBe(true);
-  
-  // The App should return a valid React element
-  expect(result.type).toBeTruthy();
+
+  // The App should return a ChakraProvider as the root element
+  expect(result.type.displayName || result.type.name).toMatch(
+    /ChakraProvider|Provider/i,
+  );
   expect(result.props).toBeTruthy();
 });

@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:16 as builder
+FROM --platform=$BUILDPLATFORM node:18 as builder
 
 RUN mkdir /app
 WORKDIR /app
@@ -10,4 +10,4 @@ RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html

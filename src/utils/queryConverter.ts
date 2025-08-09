@@ -3,13 +3,15 @@ import { Query } from "appwrite";
 export interface QueryObject {
   method: string;
   attribute?: string;
-  values?: any[];
+  values?: unknown[];
 }
 
-export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string[] => {
+export const convertJsonQueriesToAppwriteQueries = (
+  jsonQueries: string,
+): string[] => {
   try {
     const parsedQueries: QueryObject[] = JSON.parse(jsonQueries);
-    
+
     if (!Array.isArray(parsedQueries)) {
       throw new Error("Queries must be an array");
     }
@@ -22,32 +24,42 @@ export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string
       switch (method) {
         case "equal":
           if (attribute && values) {
-            appwriteQueries.push(Query.equal(attribute, values));
+            appwriteQueries.push(Query.equal(attribute, values as string[]));
           }
           break;
         case "notEqual":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.notEqual(attribute, values[0]));
+            appwriteQueries.push(
+              Query.notEqual(attribute, values[0] as string),
+            );
           }
           break;
         case "lessThan":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.lessThan(attribute, values[0]));
+            appwriteQueries.push(
+              Query.lessThan(attribute, values[0] as string | number),
+            );
           }
           break;
         case "lessThanEqual":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.lessThanEqual(attribute, values[0]));
+            appwriteQueries.push(
+              Query.lessThanEqual(attribute, values[0] as string | number),
+            );
           }
           break;
         case "greaterThan":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.greaterThan(attribute, values[0]));
+            appwriteQueries.push(
+              Query.greaterThan(attribute, values[0] as string | number),
+            );
           }
           break;
         case "greaterThanEqual":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.greaterThanEqual(attribute, values[0]));
+            appwriteQueries.push(
+              Query.greaterThanEqual(attribute, values[0] as string | number),
+            );
           }
           break;
         case "isNull":
@@ -62,27 +74,35 @@ export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string
           break;
         case "between":
           if (attribute && values && values.length === 2) {
-            appwriteQueries.push(Query.between(attribute, values[0], values[1]));
+            appwriteQueries.push(
+              Query.between(
+                attribute,
+                values[0] as string | number,
+                values[1] as string | number,
+              ),
+            );
           }
           break;
         case "startsWith":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.startsWith(attribute, values[0]));
+            appwriteQueries.push(
+              Query.startsWith(attribute, values[0] as string),
+            );
           }
           break;
         case "endsWith":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.endsWith(attribute, values[0]));
+            appwriteQueries.push(Query.endsWith(attribute, values[0] as string));
           }
           break;
         case "select":
           if (values && values.length > 0) {
-            appwriteQueries.push(Query.select(values));
+            appwriteQueries.push(Query.select(values as string[]));
           }
           break;
         case "search":
           if (attribute && values && values.length === 1) {
-            appwriteQueries.push(Query.search(attribute, values[0]));
+            appwriteQueries.push(Query.search(attribute, values[0] as string));
           }
           break;
         case "orderDesc":
@@ -97,12 +117,12 @@ export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string
           break;
         case "cursorAfter":
           if (values && values.length === 1) {
-            appwriteQueries.push(Query.cursorAfter(values[0]));
+            appwriteQueries.push(Query.cursorAfter(values[0] as string));
           }
           break;
         case "cursorBefore":
           if (values && values.length === 1) {
-            appwriteQueries.push(Query.cursorBefore(values[0]));
+            appwriteQueries.push(Query.cursorBefore(values[0] as string));
           }
           break;
         case "limit":
@@ -117,15 +137,19 @@ export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string
           break;
         case "contains":
           if (attribute && values) {
-            appwriteQueries.push(Query.contains(attribute, values));
+            appwriteQueries.push(Query.contains(attribute, values as string[]));
           }
           break;
         case "or":
           if (values && values.length > 0) {
-            const nestedQueries = values.map(nestedQuery => {
-              const nestedResult = convertJsonQueriesToAppwriteQueries(JSON.stringify([nestedQuery]));
-              return nestedResult[0];
-            }).filter(Boolean);
+            const nestedQueries = values
+              .map((nestedQuery) => {
+                const nestedResult = convertJsonQueriesToAppwriteQueries(
+                  JSON.stringify([nestedQuery]),
+                );
+                return nestedResult[0];
+              })
+              .filter(Boolean);
             if (nestedQueries.length > 0) {
               appwriteQueries.push(Query.or(nestedQueries));
             }
@@ -133,10 +157,14 @@ export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string
           break;
         case "and":
           if (values && values.length > 0) {
-            const nestedQueries = values.map(nestedQuery => {
-              const nestedResult = convertJsonQueriesToAppwriteQueries(JSON.stringify([nestedQuery]));
-              return nestedResult[0];
-            }).filter(Boolean);
+            const nestedQueries = values
+              .map((nestedQuery) => {
+                const nestedResult = convertJsonQueriesToAppwriteQueries(
+                  JSON.stringify([nestedQuery]),
+                );
+                return nestedResult[0];
+              })
+              .filter(Boolean);
             if (nestedQueries.length > 0) {
               appwriteQueries.push(Query.and(nestedQueries));
             }
@@ -150,7 +178,9 @@ export const convertJsonQueriesToAppwriteQueries = (jsonQueries: string): string
     return appwriteQueries;
   } catch (error) {
     console.error("Error parsing queries:", error);
-    throw new Error(`Invalid JSON format: ${error instanceof Error ? error.message : "Unknown error"}`);
+    throw new Error(
+      `Invalid JSON format: ${error instanceof Error ? error.message : "Unknown error"}`,
+    );
   }
 };
 

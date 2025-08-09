@@ -1,7 +1,10 @@
-import { convertJsonQueriesToAppwriteQueries, validateJsonQueries } from '../utils/queryConverter';
+import {
+  convertJsonQueriesToAppwriteQueries,
+  validateJsonQueries,
+} from "../utils/queryConverter";
 
-describe('Query Converter', () => {
-  test('converts valid JSON queries to Appwrite queries', () => {
+describe("Query Converter", () => {
+  test("converts valid JSON queries to Appwrite queries", () => {
     const jsonQueries = `[
       {
         "method": "equal",
@@ -16,20 +19,22 @@ describe('Query Converter', () => {
 
     const result = convertJsonQueriesToAppwriteQueries(jsonQueries);
     expect(result).toHaveLength(2);
-    expect(result[0]).toContain('equal');
-    expect(result[1]).toContain('limit');
+    expect(result[0]).toContain("equal");
+    expect(result[1]).toContain("limit");
   });
 
-  test('validates JSON queries correctly', () => {
+  test("validates JSON queries correctly", () => {
     const validJson = `[{"method": "limit", "values": [25]}]`;
     const invalidJson = `{"invalid": "format"}`;
 
     expect(validateJsonQueries(validJson)).toBeNull();
-    expect(validateJsonQueries(invalidJson)).toContain('Queries must be an array');
+    expect(validateJsonQueries(invalidJson)).toContain(
+      "Queries must be an array",
+    );
   });
 
-  test('handles invalid JSON format', () => {
+  test("handles invalid JSON format", () => {
     const invalidJson = `{invalid json`;
-    expect(validateJsonQueries(invalidJson)).toContain('Invalid JSON format');
+    expect(validateJsonQueries(invalidJson)).toContain("Invalid JSON format");
   });
 });

@@ -1,4 +1,10 @@
-import { FormControl, FormLabel, FormErrorMessage, Text, Textarea } from "@chakra-ui/react";
+import {
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  Text,
+  Textarea,
+} from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
 import React, { ReactElement, useState, useEffect } from "react";
 
@@ -21,7 +27,9 @@ export const QueriesJsonEditor = ({
     onChange(newValue || "");
   };
 
-  const handleTextareaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleTextareaChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+  ) => {
     onChange(event.target.value);
   };
 
@@ -29,18 +37,13 @@ export const QueriesJsonEditor = ({
     setIsLoading(false);
   };
 
-  const handleEditorError = (error: any) => {
-    setLoadError("Failed to load Monaco editor, using fallback textarea");
-    setIsLoading(false);
-    setUseFallback(true);
-    console.error("Monaco editor error:", error);
-  };
-
   useEffect(() => {
     // Auto-fallback after 5 seconds if Monaco hasn't loaded
     const timeout = setTimeout(() => {
       if (isLoading) {
-        setLoadError("Monaco editor took too long to load, using fallback textarea");
+        setLoadError(
+          "Monaco editor took too long to load, using fallback textarea",
+        );
         setIsLoading(false);
         setUseFallback(true);
       }

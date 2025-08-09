@@ -22,7 +22,10 @@ import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
 import { QueriesJsonEditor } from "../components/inputs/QueriesJsonEditor";
-import { convertJsonQueriesToAppwriteQueries, validateJsonQueries } from "../utils/queryConverter";
+import {
+  convertJsonQueriesToAppwriteQueries,
+  validateJsonQueries,
+} from "../utils/queryConverter";
 
 interface IFormInput {
   database: string;
@@ -52,7 +55,6 @@ export const Databases = (): ReactElement => {
 ]`;
 
   const {
-    control,
     handleSubmit,
     register,
     watch,
@@ -73,10 +75,10 @@ export const Databases = (): ReactElement => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (values) => {
     const { database, collection, queries: queriesJson, ...rest } = values;
-    
+
     // Clear any existing query errors
     clearErrors("queries");
-    
+
     // Validate JSON format
     const validationError = validateJsonQueries(queriesJson);
     if (validationError) {
@@ -86,7 +88,7 @@ export const Databases = (): ReactElement => {
 
     try {
       const appwriteQueries = convertJsonQueriesToAppwriteQueries(queriesJson);
-      
+
       setDatabaseId(database);
       setCollectionId(collection);
       setOptions((prevState) => {
@@ -97,8 +99,9 @@ export const Databases = (): ReactElement => {
         };
       });
     } catch (error) {
-      setError("queries", { 
-        message: error instanceof Error ? error.message : "Invalid query format" 
+      setError("queries", {
+        message:
+          error instanceof Error ? error.message : "Invalid query format",
       });
     }
   };

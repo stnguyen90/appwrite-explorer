@@ -20,7 +20,7 @@ import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
-import { DatabaseTable } from "../components/tables/DatabaseTable";
+import { DatabasesTable } from "../components/tables/DatabaseTable";
 import { QueriesInput } from "../components/inputs/QueriesInput";
 
 interface IFormInput {
@@ -28,7 +28,7 @@ interface IFormInput {
   collection: string;
   queries: { value: string }[];
 }
-export const Database = (): ReactElement => {
+export const Databases = (): ReactElement => {
   const [databaseId, setDatabaseId] = useState(
     localStorage.getItem(LocalStorageKey.DATABASE) || "",
   );
@@ -220,7 +220,7 @@ export const Database = (): ReactElement => {
             </AlertDescription>
           </Alert>
         ) : (
-          <DatabaseTable
+          <DatabasesTable
             documents={data?.documents || []}
             total={data?.total || 0}
           />

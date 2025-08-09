@@ -23,7 +23,7 @@ interface Data {
   data: string;
 }
 
-export const DatabaseTable = (
+export const DatabasesTable = (
   props: Models.DocumentList<Models.Document>,
 ): ReactElement => {
   const data = props.documents.map((f) => {

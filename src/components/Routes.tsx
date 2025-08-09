@@ -9,7 +9,7 @@ import {
 import { Login } from "../pages/Login";
 import { Layout } from "./Layout";
 import { useAppwrite } from "../contexts/appwrite";
-import { Database } from "../pages/Database";
+import { Databases } from "../pages/Database";
 import { Storage } from "../pages/Storage";
 import { Teams } from "../pages/Teams";
 import { Functions } from "../pages/Functions";
@@ -42,7 +42,7 @@ export const Routes = (): ReactElement => {
           <Route path="/teams" element={<Teams />} />
           <Route path="/functions" element={<Functions />} />
           <Route path="/realtime" element={<Realtime />} />
-          <Route path="/" element={<Database />} />
+          <Route path="/" element={<Databases />} />
         </RouterRoutes>
       </Layout>
     </Router>

@@ -15,18 +15,19 @@ import {
   AlertTitle,
 } from "@chakra-ui/react";
 import React, { ReactElement, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
-import { QueriesInput } from "../components/inputs/QueriesInput";
+import { QueriesJsonEditor } from "../components/inputs/QueriesJsonEditor";
+import { convertJsonQueriesToAppwriteQueries, validateJsonQueries } from "../utils/queryConverter";
 
 interface IFormInput {
   database: string;
   collection: string;
-  queries: { value: string }[];
+  queries: string;
 }
 export const Databases = (): ReactElement => {
   const [databaseId, setDatabaseId] = useState(
@@ -43,50 +44,63 @@ export const Databases = (): ReactElement => {
     orderType: "ASC",
   });
 
+  const defaultQueriesJson = `[
+  {
+    "method": "limit",
+    "values": [25]
+  }
+]`;
+
   const {
     control,
     handleSubmit,
     register,
+    watch,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<IFormInput>({
     mode: "all",
     defaultValues: {
       database: databaseId,
       collection: collectionId,
-      queries: [{ value: "" }],
+      queries: defaultQueriesJson,
     },
   });
 
-  const { fields, append, remove } = useFieldArray<IFormInput, "queries", "id">(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "queries", // unique name for your Field Array
-      // keyName: "id", default to "id", you can change the key name
-    },
-  );
+  const queriesValue = watch("queries");
 
-  const onRemoveClick = (index: number) => {
-    remove(index);
-  };
+  const onSubmit: SubmitHandler<IFormInput> = async (values) => {
+    const { database, collection, queries: queriesJson, ...rest } = values;
+    
+    // Clear any existing query errors
+    clearErrors("queries");
+    
+    // Validate JSON format
+    const validationError = validateJsonQueries(queriesJson);
+    if (validationError) {
+      setError("queries", { message: validationError });
+      return;
+    }
 
-  const onAddClick = () => {
-    append({ value: "" });
-  };
-
-  const onSubmit: SubmitHandler<IFormInput> = (values) => {
-    return new Promise<void>((resolve) => {
-      const { database, collection, queries: queries, ...rest } = values;
+    try {
+      const appwriteQueries = convertJsonQueriesToAppwriteQueries(queriesJson);
+      
       setDatabaseId(database);
       setCollectionId(collection);
       setOptions((prevState) => {
         return {
           ...prevState,
           ...rest,
-          queries: queries.filter((q) => q.value != "").map((q) => q.value),
+          queries: appwriteQueries,
         };
       });
-      resolve();
-    });
+    } catch (error) {
+      setError("queries", { 
+        message: error instanceof Error ? error.message : "Invalid query format" 
+      });
+    }
   };
 
   const { isLoading, isError, error, data } = useDocuments(
@@ -101,19 +115,9 @@ export const Databases = (): ReactElement => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const getQueryOnChange = (index: number) => {
-    const q = register(`queries.${index}.value`);
-    return q.onChange;
-  };
-
-  const getQueryOnBlur = (index: number) => {
-    const q = register(`queries.${index}.value`);
-    return q.onBlur;
-  };
-
-  const getQueryRef = (index: number) => {
-    const q = register(`queries.${index}.value`);
-    return q.ref;
+  const handleQueriesChange = (value: string) => {
+    setValue("queries", value);
+    clearErrors("queries");
   };
 
   return (
@@ -160,14 +164,20 @@ export const Databases = (): ReactElement => {
           </GridItem>
 
           <GridItem colSpan={2}>
-            <QueriesInput
-              fields={fields}
-              getQueryOnChange={getQueryOnChange}
-              getQueryOnBlur={getQueryOnBlur}
-              getQueryRef={getQueryRef}
-              onRemoveClick={onRemoveClick}
-              onAddClick={onAddClick}
-            ></QueriesInput>
+            <QueriesJsonEditor
+              value={queriesValue}
+              onChange={handleQueriesChange}
+              error={errors.queries?.message}
+            />
+            <input
+              {...register("queries", {
+                validate: (value) => {
+                  const error = validateJsonQueries(value);
+                  return error || true;
+                },
+              })}
+              type="hidden"
+            />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

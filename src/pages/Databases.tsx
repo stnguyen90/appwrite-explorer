@@ -20,7 +20,7 @@ import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
-import { DatabasesTable } from "../components/tables/DatabaseTable";
+import { DatabasesTable } from "../components/tables/DatabasesTable";
 import { QueriesInput } from "../components/inputs/QueriesInput";
 
 interface IFormInput {

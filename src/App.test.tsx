@@ -27,9 +27,12 @@ test("App component returns expected JSX structure", () => {
   expect(React.isValidElement(result)).toBe(true);
 
   // The App should return a ChakraProvider as the root element
-  const typeToCheck = typeof result.type === "function" 
-    ? (result.type as any).displayName || (result.type as any).name || result.type.toString()
-    : result.type;
+  const typeToCheck =
+    typeof result.type === "function"
+      ? (result.type as any).displayName ||
+        (result.type as any).name ||
+        result.type.toString()
+      : result.type;
   expect(typeToCheck).toMatch(/ChakraProvider|Provider/i);
   expect(result.props).toBeTruthy();
 });

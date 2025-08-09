@@ -23,7 +23,6 @@ import { OffsetInput } from "../components/inputs/OffsetInput";
 import { ExecuteNowModal } from "../components/modals/ExecuteNowModal";
 import { ExecutionsTable } from "../components/tables/ExecutionsTable";
 import { LocalStorageKey } from "../constants";
-import { useAccount } from "../hooks/useAccount";
 import { useFunctionExecutions } from "../hooks/useFunctionExecutions";
 import type { CommonListOptions } from "../interfaces";
 
@@ -34,7 +33,6 @@ export interface IFormInput {
 }
 
 export const Functions = (): ReactElement => {
-  const { data: user } = useAccount();
   const [functionId, setFunctionId] = useState(
     localStorage.getItem(LocalStorageKey.FUNCTION) || "",
   );
@@ -118,24 +116,22 @@ export const Functions = (): ReactElement => {
             List Executions
           </Button>
 
-          {!!user?.$id && (
-            <>
-              <Button
-                leftIcon={<AddIcon />}
-                variant="outline"
-                mt={4}
-                colorScheme="pink"
-                onClick={onOpen}
-              >
-                Execute Now
-              </Button>
-              <ExecuteNowModal
-                functionId={functionId}
-                isOpen={isOpen}
-                onClose={onClose}
-              />
-            </>
-          )}
+          <>
+            <Button
+              leftIcon={<AddIcon />}
+              variant="outline"
+              mt={4}
+              colorScheme="pink"
+              onClick={onOpen}
+            >
+              Execute Now
+            </Button>
+            <ExecuteNowModal
+              functionId={functionId}
+              isOpen={isOpen}
+              onClose={onClose}
+            />
+          </>
         </Flex>
       </form>
 

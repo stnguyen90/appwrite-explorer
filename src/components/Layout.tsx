@@ -41,7 +41,7 @@ interface LinkItemProps {
   to: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: "Database", icon: FaDatabase, to: "/" },
+  { name: "Databases", icon: FaDatabase, to: "/" },
   { name: "Storage", icon: FaFile, to: "/storage" },
   { name: "Teams", icon: BsPeopleFill, to: "/teams" },
   { name: "Functions", icon: BsLightningFill, to: "/functions" },

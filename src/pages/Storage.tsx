@@ -19,7 +19,6 @@ import { OffsetInput } from "../components/inputs/OffsetInput";
 import { NewUploadModal } from "../components/modals/NewUploadModal";
 import { StorageTable } from "../components/tables/StorageTable";
 import { LocalStorageKey } from "../constants";
-import { useAccount } from "../hooks/useAccount";
 import { ListFilesOptions, useStorage } from "../hooks/useStorage";
 
 export interface IFormInput {
@@ -29,7 +28,6 @@ export interface IFormInput {
 }
 
 export const Storage = (): ReactElement => {
-  const { data: user } = useAccount();
   const [bucketId, setBucketId] = useState(
     localStorage.getItem(LocalStorageKey.BUCKET) || "",
   );
@@ -114,24 +112,22 @@ export const Storage = (): ReactElement => {
             List Files
           </Button>
 
-          {!!user?.$id && (
-            <>
-              <Button
-                leftIcon={<AddIcon />}
-                variant="outline"
-                mt={4}
-                colorScheme="pink"
-                onClick={onOpen}
-              >
-                Upload
-              </Button>
-              <NewUploadModal
-                bucketId={bucketId}
-                isOpen={isOpen}
-                onClose={onClose}
-              />
-            </>
-          )}
+          <>
+            <Button
+              leftIcon={<AddIcon />}
+              variant="outline"
+              mt={4}
+              colorScheme="pink"
+              onClick={onOpen}
+            >
+              Upload
+            </Button>
+            <NewUploadModal
+              bucketId={bucketId}
+              isOpen={isOpen}
+              onClose={onClose}
+            />
+          </>
         </Flex>
       </form>
 

@@ -21,7 +21,6 @@ import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabaseTable } from "../components/tables/DatabaseTable";
-import { useAccount } from "../hooks/useAccount";
 import { QueriesInput } from "../components/inputs/QueriesInput";
 
 interface IFormInput {
@@ -30,7 +29,6 @@ interface IFormInput {
   queries: { value: string }[];
 }
 export const Database = (): ReactElement => {
-  const { data: user } = useAccount();
   const [databaseId, setDatabaseId] = useState(
     localStorage.getItem(LocalStorageKey.DATABASE) || "",
   );
@@ -183,25 +181,23 @@ export const Database = (): ReactElement => {
             List Documents
           </Button>
 
-          {!!user?.$id && (
-            <>
-              <Button
-                leftIcon={<AddIcon />}
-                variant="outline"
-                mt={4}
-                colorScheme="pink"
-                onClick={onOpen}
-              >
-                New Document
-              </Button>
-              <NewDocumentModal
-                databaseId={databaseId}
-                collectionId={collectionId}
-                isOpen={isOpen}
-                onClose={onClose}
-              />
-            </>
-          )}
+          <>
+            <Button
+              leftIcon={<AddIcon />}
+              variant="outline"
+              mt={4}
+              colorScheme="pink"
+              onClick={onOpen}
+            >
+              New Document
+            </Button>
+            <NewDocumentModal
+              databaseId={databaseId}
+              collectionId={collectionId}
+              isOpen={isOpen}
+              onClose={onClose}
+            />
+          </>
         </Flex>
       </form>
 

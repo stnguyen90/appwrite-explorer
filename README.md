@@ -1,6 +1,6 @@
 # Appwrite Explorer
 
-**This app is best used with Appwrite version 1.2.X.**
+**This app is best used with Appwrite version 1.7.x.**
 
 Appwrite Explorer is a tool that let's you explore different aspects of an [Appwrite](https://appwrite.io) project from the front end.
 

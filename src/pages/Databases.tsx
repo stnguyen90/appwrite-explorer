@@ -15,18 +15,19 @@ import {
   AlertTitle,
 } from "@chakra-ui/react";
 import React, { ReactElement, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
-import { QueriesInput } from "../components/inputs/QueriesInput";
+import { QueriesEditor } from "../components/inputs/QueriesEditor";
+import { parseQueries } from "../utils/queryParser";
 
 interface IFormInput {
   database: string;
   collection: string;
-  queries: { value: string }[];
+  queries: string;
 }
 export const Databases = (): ReactElement => {
   const [databaseId, setDatabaseId] = useState(
@@ -42,49 +43,48 @@ export const Databases = (): ReactElement => {
     orderField: "",
     orderType: "ASC",
   });
+  const [queriesError, setQueriesError] = useState<string | undefined>();
 
   const {
-    control,
     handleSubmit,
     register,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<IFormInput>({
     mode: "all",
     defaultValues: {
       database: databaseId,
       collection: collectionId,
-      queries: [{ value: "" }],
+      queries: `[
+  Query.limit(25)
+]`,
     },
   });
 
-  const { fields, append, remove } = useFieldArray<IFormInput, "queries", "id">(
-    {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "queries", // unique name for your Field Array
-      // keyName: "id", default to "id", you can change the key name
-    },
-  );
-
-  const onRemoveClick = (index: number) => {
-    remove(index);
-  };
-
-  const onAddClick = () => {
-    append({ value: "" });
-  };
+  const watchedQueries = watch("queries");
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {
-      const { database, collection, queries: queries, ...rest } = values;
+      const { database, collection, queries: queriesCode, ...rest } = values;
+
+      // Parse the queries from Monaco editor
+      const parseResult = parseQueries(queriesCode);
+
+      if (parseResult.error) {
+        setQueriesError(parseResult.error);
+        resolve();
+        return;
+      }
+
+      setQueriesError(undefined);
       setDatabaseId(database);
       setCollectionId(collection);
-      setOptions((prevState) => {
-        return {
-          ...prevState,
-          ...rest,
-          queries: queries.filter((q) => q.value != "").map((q) => q.value),
-        };
-      });
+      setOptions((prevState) => ({
+        ...prevState,
+        ...rest,
+        queries: parseResult.queries,
+      }));
       resolve();
     });
   };
@@ -101,21 +101,6 @@ export const Databases = (): ReactElement => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const getQueryOnChange = (index: number) => {
-    const q = register(`queries.${index}.value`);
-    return q.onChange;
-  };
-
-  const getQueryOnBlur = (index: number) => {
-    const q = register(`queries.${index}.value`);
-    return q.onBlur;
-  };
-
-  const getQueryRef = (index: number) => {
-    const q = register(`queries.${index}.value`);
-    return q.ref;
-  };
-
   return (
     <VStack w="full">
       <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
@@ -128,10 +113,6 @@ export const Databases = (): ReactElement => {
                 placeholder="Database ID"
                 {...register("database", {
                   required: "This is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4",
-                  },
                 })}
               />
               <FormErrorMessage>
@@ -147,10 +128,6 @@ export const Databases = (): ReactElement => {
                 placeholder="Collection ID"
                 {...register("collection", {
                   required: "This is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4",
-                  },
                 })}
               />
               <FormErrorMessage>
@@ -160,14 +137,11 @@ export const Databases = (): ReactElement => {
           </GridItem>
 
           <GridItem colSpan={2}>
-            <QueriesInput
-              fields={fields}
-              getQueryOnChange={getQueryOnChange}
-              getQueryOnBlur={getQueryOnBlur}
-              getQueryRef={getQueryRef}
-              onRemoveClick={onRemoveClick}
-              onAddClick={onAddClick}
-            ></QueriesInput>
+            <QueriesEditor
+              value={watchedQueries}
+              onChange={(value) => setValue("queries", value)}
+              error={queriesError}
+            />
           </GridItem>
         </SimpleGrid>
         <Flex w="full" justifyContent="space-between">

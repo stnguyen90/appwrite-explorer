@@ -113,10 +113,6 @@ export const Databases = (): ReactElement => {
                 placeholder="Database ID"
                 {...register("database", {
                   required: "This is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4",
-                  },
                 })}
               />
               <FormErrorMessage>
@@ -132,10 +128,6 @@ export const Databases = (): ReactElement => {
                 placeholder="Collection ID"
                 {...register("collection", {
                   required: "This is required",
-                  minLength: {
-                    value: 4,
-                    message: "Minimum length should be 4",
-                  },
                 })}
               />
               <FormErrorMessage>

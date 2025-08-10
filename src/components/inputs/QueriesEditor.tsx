@@ -9,7 +9,7 @@ import {
 import Editor from "@monaco-editor/react";
 import React, { ReactElement } from "react";
 
-interface MonacoQueriesInputProps {
+interface QueriesEditorProps {
   value: string;
   onChange: (value: string) => void;
   error?: string;
@@ -21,11 +21,11 @@ type MonacoEditor = any;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Monaco = any;
 
-export const MonacoQueriesInput = ({
+export const QueriesEditor = ({
   value,
   onChange,
   error,
-}: MonacoQueriesInputProps): ReactElement => {
+}: QueriesEditorProps): ReactElement => {
   const handleEditorDidMount = (editor: MonacoEditor, monaco: Monaco) => {
     // Disable default JavaScript suggestions to only show Query methods
     monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
@@ -314,8 +314,7 @@ export const MonacoQueriesInput = ({
       </Box>
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
       <Text fontSize="xs" color="gray.500" mt={1}>
-        Examples: Query.equal("name", "value"), Query.limit(10),
-        Query.orderAsc("createdAt") | Refer to{" "}
+        Refer to{" "}
         <Link
           href="https://appwrite.io/docs/products/databases/queries"
           target="_blank"

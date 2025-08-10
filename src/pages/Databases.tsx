@@ -21,7 +21,7 @@ import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
 import { NewDocumentModal } from "../components/modals/NewDocumentModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
-import { MonacoQueriesInput } from "../components/inputs/MonacoQueriesInput";
+import { QueriesEditor } from "../components/inputs/QueriesEditor";
 import { parseQueries } from "../utils/queryParser";
 
 interface IFormInput {
@@ -145,7 +145,7 @@ export const Databases = (): ReactElement => {
           </GridItem>
 
           <GridItem colSpan={2}>
-            <MonacoQueriesInput
+            <QueriesEditor
               value={watchedQueries}
               onChange={(value) => setValue("queries", value)}
               error={queriesError}

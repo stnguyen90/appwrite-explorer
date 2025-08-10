@@ -4,7 +4,7 @@ import {
   FormErrorMessage,
   Box,
   Text,
-  Textarea,
+  Link,
 } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
 import React, { ReactElement } from "react";
@@ -27,60 +27,87 @@ export const MonacoQueriesInput = ({
   Query.orderDesc("createdAt")
 ]`,
 }: MonacoQueriesInputProps): ReactElement => {
-  const handleEditorDidMount = () => {
-    // Monaco editor loaded successfully
+  const handleEditorDidMount = (editor: any, monaco: any) => {
+    // Add autocomplete for Query methods
+    monaco.languages.registerCompletionItemProvider("javascript", {
+      provideCompletionItems: (model: any, position: any) => {
+        const word = model.getWordUntilPosition(position);
+        const range = {
+          startLineNumber: position.lineNumber,
+          endLineNumber: position.lineNumber,
+          startColumn: word.startColumn,
+          endColumn: word.endColumn,
+        };
+
+        const queryMethods = [
+          "equal",
+          "notEqual",
+          "lessThan",
+          "lessThanEqual",
+          "greaterThan",
+          "greaterThanEqual",
+          "isNull",
+          "isNotNull",
+          "between",
+          "startsWith",
+          "endsWith",
+          "select",
+          "search",
+          "orderDesc",
+          "orderAsc",
+          "cursorAfter",
+          "cursorBefore",
+          "limit",
+          "offset",
+          "contains",
+          "or",
+          "and",
+        ];
+
+        const suggestions = queryMethods.map((method) => ({
+          label: `Query.${method}`,
+          kind: monaco.languages.CompletionItemKind.Method,
+          insertText: `Query.${method}($1)`,
+          insertTextRules:
+            monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+          range: range,
+          documentation: `Query.${method} method for building database queries`,
+        }));
+
+        return { suggestions };
+      },
+    });
   };
 
   return (
     <FormControl isInvalid={!!error}>
       <FormLabel>Queries</FormLabel>
-      <Text fontSize="sm" color="gray.600" mb={2}>
-        Enter a JavaScript array of Query objects. Use Query.equal(),
-        Query.limit(), etc.
-      </Text>
-      <Box
-        border="1px"
-        borderColor="gray.200"
-        borderRadius="md"
-        overflow="hidden"
-      >
+      <Box borderWidth={1} w="full">
         <Editor
           height="200px"
           defaultLanguage="javascript"
           value={value}
           onChange={(val) => onChange(val || "")}
           onMount={handleEditorDidMount}
-          loading={
-            <Textarea
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              placeholder={placeholder}
-              height="200px"
-              resize="vertical"
-              fontFamily="monospace"
-              fontSize="14px"
-              border="none"
-              borderRadius="0"
-              _focus={{ boxShadow: "none" }}
-            />
-          }
           options={{
-            minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            fontSize: 14,
-            lineNumbers: "on",
-            wordWrap: "on",
-            automaticLayout: true,
-            tabSize: 2,
-            insertSpaces: true,
+            minimap: {
+              enabled: false,
+            },
           }}
-          theme="vs-light"
         />
       </Box>
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
       <Text fontSize="xs" color="gray.500" mt={1}>
         Examples: Query.equal("name", "value"), Query.limit(10),
-        Query.orderAsc("createdAt")
+        Query.orderAsc("createdAt") |{" "}
+        <Link
+          href="https://appwrite.io/docs/products/databases/queries"
+          target="_blank"
+          color="blue.500"
+          textDecoration="underline"
+        >
+          Documentation
+        </Link>
       </Text>
     </FormControl>
   );

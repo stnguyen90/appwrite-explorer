@@ -77,7 +77,7 @@ export const DatabasesTable = (
     <Box overflowX="auto" width="full">
       <Table variant="striped">
         <TableCaption>
-          Showing {data.length} out of {props.total} documents
+          Showing {data.length} out of {props.total} rows
         </TableCaption>
 
         <Thead>

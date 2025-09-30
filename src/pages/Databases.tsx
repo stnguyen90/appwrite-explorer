@@ -122,10 +122,10 @@ export const Databases = (): ReactElement => {
           </GridItem>
           <GridItem>
             <FormControl isInvalid={!!errors.collection}>
-              <FormLabel htmlFor="collection">Collection ID</FormLabel>
+              <FormLabel htmlFor="collection">Table ID</FormLabel>
               <Input
                 id="collection"
-                placeholder="Collection ID"
+                placeholder="Table ID"
                 {...register("collection", {
                   required: "This is required",
                 })}
@@ -152,7 +152,7 @@ export const Databases = (): ReactElement => {
             isLoading={isLoading}
             type="submit"
           >
-            List Documents
+            List Rows
           </Button>
 
           <>
@@ -163,7 +163,7 @@ export const Databases = (): ReactElement => {
               colorScheme="pink"
               onClick={onOpen}
             >
-              New Document
+              New Row
             </Button>
             <NewDocumentModal
               databaseId={databaseId}

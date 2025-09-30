@@ -57,7 +57,7 @@ export const NewDocumentModal = (props: {
       onError: (error: unknown) => {
         // An error happened!
         toast({
-          title: "Error creating document.",
+          title: "Error creating row.",
           description: `${error}`,
           status: "error",
           duration: 9000,
@@ -67,7 +67,7 @@ export const NewDocumentModal = (props: {
       },
       onSuccess: () => {
         toast({
-          title: "Document created.",
+          title: "Row created.",
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -87,15 +87,15 @@ export const NewDocumentModal = (props: {
     <Modal isOpen={props.isOpen} onClose={props.onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>New Document</ModalHeader>
+        <ModalHeader>New Row</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
             <Text>
-              Enter an ID, the JSON for the new document, and click "Create".
+              Enter an ID, the JSON for the new row, and click "Create".
             </Text>
             <FormControl>
-              <FormLabel htmlFor="document-id">Document ID</FormLabel>
+              <FormLabel htmlFor="document-id">Row ID</FormLabel>
               <Input
                 id="document-id"
                 value={documentId}

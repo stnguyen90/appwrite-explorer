@@ -59,7 +59,7 @@ export const UpdateDocumentModal = (props: {
       onError: (error: unknown) => {
         // An error happened!
         toast({
-          title: "Error updating document.",
+          title: "Error updating row.",
           description: `${error}`,
           status: "error",
           duration: 9000,
@@ -69,7 +69,7 @@ export const UpdateDocumentModal = (props: {
       },
       onSuccess: () => {
         toast({
-          title: "Document updated.",
+          title: "Row updated.",
           status: "success",
           duration: 9000,
           isClosable: true,
@@ -94,10 +94,10 @@ export const UpdateDocumentModal = (props: {
         <ModalBody>
           <VStack align="start" spacing={5}>
             <Text>
-              To update the document, edit the JSON below, and click "Update".
+              To update the row, edit the JSON below, and click "Update".
             </Text>
             <FormControl>
-              <FormLabel htmlFor="document-id">Document ID</FormLabel>
+              <FormLabel htmlFor="document-id">Row ID</FormLabel>
               <Input id="document-id" value={$id} readOnly />
             </FormControl>
             <FormLabel htmlFor="document-id">Data</FormLabel>

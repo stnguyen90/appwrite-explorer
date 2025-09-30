@@ -24,9 +24,9 @@ interface Data {
 }
 
 export const DatabasesTable = (
-  props: Models.DocumentList<Models.Document>,
+  props: Models.RowList<Models.Row>,
 ): ReactElement => {
-  const data = props.documents.map((f) => {
+  const data = props.rows.map((f) => {
     const { $id, $createdAt, $updatedAt, $permissions } = f;
     return {
       $id,
@@ -99,14 +99,9 @@ export const DatabasesTable = (
                           variant="link"
                           color="pink.500"
                           onClick={() => {
-                            const document = props.documents[i];
-                            if (!document) return;
-                            // Convert Document to Row format for the modal
-                            const row: Models.Row = {
-                              ...document,
-                              $tableId: document.$collectionId,
-                            };
-                            setRow(row);
+                            const currentRow = props.rows[i];
+                            if (!currentRow) return;
+                            setRow(currentRow);
                             onOpen();
                           }}
                         >

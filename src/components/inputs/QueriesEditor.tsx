@@ -34,125 +34,124 @@ const QUERY_METHODS: QueryMethodDefinition[] = [
   {
     method: "equal",
     signature:
-      "Query.equal(attribute: string, value: string | number | boolean | Array<string | number | boolean>)",
+      "Query.equal(column: string, value: string | number | boolean | Array<string | number | boolean>)",
     documentation: "Filter resources where column is equal to value",
-    insertText: 'Query.equal("${1:attribute}", "${2:value}")',
+    insertText: 'Query.equal("${1:column}", "${2:value}")',
     parameters:
-      "attribute: string, value: string | number | boolean | Array<string | number | boolean>",
+      "column: string, value: string | number | boolean | Array<string | number | boolean>",
   },
   {
     method: "notEqual",
     signature:
-      "Query.notEqual(attribute: string, value: string | number | boolean | Array<string | number | boolean>)",
+      "Query.notEqual(column: string, value: string | number | boolean | Array<string | number | boolean>)",
     documentation: "Filter resources where column is not equal to value",
-    insertText: 'Query.notEqual("${1:attribute}", "${2:value}")',
+    insertText: 'Query.notEqual("${1:column}", "${2:value}")',
     parameters:
-      "attribute: string, value: string | number | boolean | Array<string | number | boolean>",
+      "column: string, value: string | number | boolean | Array<string | number | boolean>",
   },
   {
     method: "lessThan",
     signature:
-      "Query.lessThan(attribute: string, value: string | number | boolean | Array<string | number | boolean>)",
+      "Query.lessThan(column: string, value: string | number | boolean | Array<string | number | boolean>)",
     documentation: "Filter resources where column is less than value",
-    insertText: 'Query.lessThan("${1:attribute}", ${2:value})',
+    insertText: 'Query.lessThan("${1:column}", ${2:value})',
     parameters:
-      "attribute: string, value: string | number | boolean | Array<string | number | boolean>",
+      "column: string, value: string | number | boolean | Array<string | number | boolean>",
   },
   {
     method: "lessThanEqual",
     signature:
-      "Query.lessThanEqual(attribute: string, value: string | number | boolean | Array<string | number | boolean>)",
+      "Query.lessThanEqual(column: string, value: string | number | boolean | Array<string | number | boolean>)",
     documentation:
       "Filter resources where column is less than or equal to value",
-    insertText: 'Query.lessThanEqual("${1:attribute}", ${2:value})',
+    insertText: 'Query.lessThanEqual("${1:column}", ${2:value})',
     parameters:
-      "attribute: string, value: string | number | boolean | Array<string | number | boolean>",
+      "column: string, value: string | number | boolean | Array<string | number | boolean>",
   },
   {
     method: "greaterThan",
     signature:
-      "Query.greaterThan(attribute: string, value: string | number | boolean | Array<string | number | boolean>)",
+      "Query.greaterThan(column: string, value: string | number | boolean | Array<string | number | boolean>)",
     documentation: "Filter resources where column is greater than value",
-    insertText: 'Query.greaterThan("${1:attribute}", ${2:value})',
+    insertText: 'Query.greaterThan("${1:column}", ${2:value})',
     parameters:
-      "attribute: string, value: string | number | boolean | Array<string | number | boolean>",
+      "column: string, value: string | number | boolean | Array<string | number | boolean>",
   },
   {
     method: "greaterThanEqual",
     signature:
-      "Query.greaterThanEqual(attribute: string, value: string | number | boolean | Array<string | number | boolean>)",
+      "Query.greaterThanEqual(column: string, value: string | number | boolean | Array<string | number | boolean>)",
     documentation:
       "Filter resources where column is greater than or equal to value",
-    insertText: 'Query.greaterThanEqual("${1:attribute}", ${2:value})',
+    insertText: 'Query.greaterThanEqual("${1:column}", ${2:value})',
     parameters:
-      "attribute: string, value: string | number | boolean | Array<string | number | boolean>",
+      "column: string, value: string | number | boolean | Array<string | number | boolean>",
   },
   {
     method: "isNull",
-    signature: "Query.isNull(attribute: string)",
+    signature: "Query.isNull(column: string)",
     documentation: "Filter resources where column is null",
-    insertText: 'Query.isNull("${1:attribute}")',
-    parameters: "attribute: string",
+    insertText: 'Query.isNull("${1:column}")',
+    parameters: "column: string",
   },
   {
     method: "isNotNull",
-    signature: "Query.isNotNull(attribute: string)",
+    signature: "Query.isNotNull(column: string)",
     documentation: "Filter resources where column is not null",
-    insertText: 'Query.isNotNull("${1:attribute}")',
-    parameters: "attribute: string",
+    insertText: 'Query.isNotNull("${1:column}")',
+    parameters: "column: string",
   },
   {
     method: "between",
     signature:
-      "Query.between(attribute: string, start: string | number, end: string | number)",
+      "Query.between(column: string, start: string | number, end: string | number)",
     documentation:
       "Filter resources where column is between start and end (inclusive)",
-    insertText: 'Query.between("${1:attribute}", ${2:start}, ${3:end})',
-    parameters:
-      "attribute: string, start: string | number, end: string | number",
+    insertText: 'Query.between("${1:column}", ${2:start}, ${3:end})',
+    parameters: "column: string, start: string | number, end: string | number",
   },
   {
     method: "startsWith",
-    signature: "Query.startsWith(attribute: string, value: string)",
+    signature: "Query.startsWith(column: string, value: string)",
     documentation: "Filter resources where column starts with value",
-    insertText: 'Query.startsWith("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string",
+    insertText: 'Query.startsWith("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string",
   },
   {
     method: "endsWith",
-    signature: "Query.endsWith(attribute: string, value: string)",
+    signature: "Query.endsWith(column: string, value: string)",
     documentation: "Filter resources where column ends with value",
-    insertText: 'Query.endsWith("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string",
+    insertText: 'Query.endsWith("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string",
   },
   {
     method: "select",
     signature: "Query.select(attributes: string[])",
     documentation: "Specify which columns should be returned by the API call",
-    insertText: 'Query.select([${1:"attribute1", "attribute2"}])',
+    insertText: 'Query.select([${1:"column1", "column2"}])',
     parameters: "attributes: string[]",
   },
   {
     method: "search",
-    signature: "Query.search(attribute: string, value: string)",
+    signature: "Query.search(column: string, value: string)",
     documentation:
       "Filter resources by searching column for value. A fulltext index on column is required for this query to work",
-    insertText: 'Query.search("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string",
+    insertText: 'Query.search("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string",
   },
   {
     method: "orderDesc",
-    signature: "Query.orderDesc(attribute: string)",
+    signature: "Query.orderDesc(column: string)",
     documentation: "Sort results by column descending",
-    insertText: 'Query.orderDesc("${1:attribute}")',
-    parameters: "attribute: string",
+    insertText: 'Query.orderDesc("${1:column}")',
+    parameters: "column: string",
   },
   {
     method: "orderAsc",
-    signature: "Query.orderAsc(attribute: string)",
+    signature: "Query.orderAsc(column: string)",
     documentation: "Sort results by column ascending",
-    insertText: 'Query.orderAsc("${1:attribute}")',
-    parameters: "attribute: string",
+    insertText: 'Query.orderAsc("${1:column}")',
+    parameters: "column: string",
   },
   {
     method: "cursorAfter",
@@ -184,10 +183,10 @@ const QUERY_METHODS: QueryMethodDefinition[] = [
   },
   {
     method: "contains",
-    signature: "Query.contains(attribute: string, value: string | string[])",
+    signature: "Query.contains(column: string, value: string | string[])",
     documentation: "Filter resources where column contains the specified value",
-    insertText: 'Query.contains("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string | string[]",
+    insertText: 'Query.contains("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string | string[]",
   },
   {
     method: "or",
@@ -205,43 +204,42 @@ const QUERY_METHODS: QueryMethodDefinition[] = [
   },
   {
     method: "notContains",
-    signature: "Query.notContains(attribute: string, value: string | string[])",
+    signature: "Query.notContains(column: string, value: string | string[])",
     documentation:
       "Filter resources where column does not contain the specified value",
-    insertText: 'Query.notContains("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string | string[]",
+    insertText: 'Query.notContains("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string | string[]",
   },
   {
     method: "notSearch",
-    signature: "Query.notSearch(attribute: string, value: string)",
+    signature: "Query.notSearch(column: string, value: string)",
     documentation:
       "Filter resources by searching column for value (inverse of search). A fulltext index on column is required for this query to work",
-    insertText: 'Query.notSearch("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string",
+    insertText: 'Query.notSearch("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string",
   },
   {
     method: "notBetween",
     signature:
-      "Query.notBetween(attribute: string, start: string | number, end: string | number)",
+      "Query.notBetween(column: string, start: string | number, end: string | number)",
     documentation:
       "Filter resources where column is not between start and end (exclusive)",
-    insertText: 'Query.notBetween("${1:attribute}", ${2:start}, ${3:end})',
-    parameters:
-      "attribute: string, start: string | number, end: string | number",
+    insertText: 'Query.notBetween("${1:column}", ${2:start}, ${3:end})',
+    parameters: "column: string, start: string | number, end: string | number",
   },
   {
     method: "notStartsWith",
-    signature: "Query.notStartsWith(attribute: string, value: string)",
+    signature: "Query.notStartsWith(column: string, value: string)",
     documentation: "Filter resources where column does not start with value",
-    insertText: 'Query.notStartsWith("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string",
+    insertText: 'Query.notStartsWith("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string",
   },
   {
     method: "notEndsWith",
-    signature: "Query.notEndsWith(attribute: string, value: string)",
+    signature: "Query.notEndsWith(column: string, value: string)",
     documentation: "Filter resources where column does not end with value",
-    insertText: 'Query.notEndsWith("${1:attribute}", "${2:value}")',
-    parameters: "attribute: string, value: string",
+    insertText: 'Query.notEndsWith("${1:column}", "${2:value}")',
+    parameters: "column: string, value: string",
   },
   {
     method: "orderRandom",
@@ -295,108 +293,108 @@ const QUERY_METHODS: QueryMethodDefinition[] = [
   {
     method: "distanceEqual",
     signature:
-      "Query.distanceEqual(attribute: string, values: any[], distance: number, meters: boolean = true)",
+      "Query.distanceEqual(column: string, values: any[], distance: number, meters: boolean = true)",
     documentation:
       "Filter resources where column is at a specific distance from the given coordinates",
     insertText:
-      'Query.distanceEqual("${1:attribute}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
+      'Query.distanceEqual("${1:column}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
     parameters:
-      "attribute: string, values: any[], distance: number, meters: boolean",
+      "column: string, values: any[], distance: number, meters: boolean",
   },
   {
     method: "distanceNotEqual",
     signature:
-      "Query.distanceNotEqual(attribute: string, values: any[], distance: number, meters: boolean = true)",
+      "Query.distanceNotEqual(column: string, values: any[], distance: number, meters: boolean = true)",
     documentation:
       "Filter resources where column is not at a specific distance from the given coordinates",
     insertText:
-      'Query.distanceNotEqual("${1:attribute}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
+      'Query.distanceNotEqual("${1:column}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
     parameters:
-      "attribute: string, values: any[], distance: number, meters: boolean",
+      "column: string, values: any[], distance: number, meters: boolean",
   },
   {
     method: "distanceGreaterThan",
     signature:
-      "Query.distanceGreaterThan(attribute: string, values: any[], distance: number, meters: boolean = true)",
+      "Query.distanceGreaterThan(column: string, values: any[], distance: number, meters: boolean = true)",
     documentation:
       "Filter resources where column is at a distance greater than the specified value from the given coordinates",
     insertText:
-      'Query.distanceGreaterThan("${1:attribute}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
+      'Query.distanceGreaterThan("${1:column}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
     parameters:
-      "attribute: string, values: any[], distance: number, meters: boolean",
+      "column: string, values: any[], distance: number, meters: boolean",
   },
   {
     method: "distanceLessThan",
     signature:
-      "Query.distanceLessThan(attribute: string, values: any[], distance: number, meters: boolean = true)",
+      "Query.distanceLessThan(column: string, values: any[], distance: number, meters: boolean = true)",
     documentation:
       "Filter resources where column is at a distance less than the specified value from the given coordinates",
     insertText:
-      'Query.distanceLessThan("${1:attribute}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
+      'Query.distanceLessThan("${1:column}", [${2:lat}, ${3:lng}], ${4:distance}, ${5:true})',
     parameters:
-      "attribute: string, values: any[], distance: number, meters: boolean",
+      "column: string, values: any[], distance: number, meters: boolean",
   },
   {
     method: "intersects",
-    signature: "Query.intersects(attribute: string, values: any[])",
+    signature: "Query.intersects(column: string, values: any[])",
     documentation:
       "Filter resources where column intersects with the given geometry",
-    insertText: 'Query.intersects("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.intersects("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "notIntersects",
-    signature: "Query.notIntersects(attribute: string, values: any[])",
+    signature: "Query.notIntersects(column: string, values: any[])",
     documentation:
       "Filter resources where column does not intersect with the given geometry",
-    insertText: 'Query.notIntersects("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.notIntersects("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "crosses",
-    signature: "Query.crosses(attribute: string, values: any[])",
+    signature: "Query.crosses(column: string, values: any[])",
     documentation: "Filter resources where column crosses the given geometry",
-    insertText: 'Query.crosses("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.crosses("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "notCrosses",
-    signature: "Query.notCrosses(attribute: string, values: any[])",
+    signature: "Query.notCrosses(column: string, values: any[])",
     documentation:
       "Filter resources where column does not cross the given geometry",
-    insertText: 'Query.notCrosses("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.notCrosses("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "overlaps",
-    signature: "Query.overlaps(attribute: string, values: any[])",
+    signature: "Query.overlaps(column: string, values: any[])",
     documentation:
       "Filter resources where column overlaps with the given geometry",
-    insertText: 'Query.overlaps("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.overlaps("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "notOverlaps",
-    signature: "Query.notOverlaps(attribute: string, values: any[])",
+    signature: "Query.notOverlaps(column: string, values: any[])",
     documentation:
       "Filter resources where column does not overlap with the given geometry",
-    insertText: 'Query.notOverlaps("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.notOverlaps("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "touches",
-    signature: "Query.touches(attribute: string, values: any[])",
+    signature: "Query.touches(column: string, values: any[])",
     documentation: "Filter resources where column touches the given geometry",
-    insertText: 'Query.touches("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.touches("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
   {
     method: "notTouches",
-    signature: "Query.notTouches(attribute: string, values: any[])",
+    signature: "Query.notTouches(column: string, values: any[])",
     documentation:
       "Filter resources where column does not touch the given geometry",
-    insertText: 'Query.notTouches("${1:attribute}", [${2:geometry}])',
-    parameters: "attribute: string, values: any[]",
+    insertText: 'Query.notTouches("${1:column}", [${2:geometry}])',
+    parameters: "column: string, values: any[]",
   },
 ];
 

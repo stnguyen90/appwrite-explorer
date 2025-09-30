@@ -195,7 +195,12 @@ export const Databases = (): ReactElement => {
           </Alert>
         ) : (
           <DatabasesTable
-            documents={data?.documents || []}
+            rows={
+              data?.documents.map((doc) => ({
+                ...doc,
+                $tableId: doc.$collectionId,
+              })) || []
+            }
             total={data?.total || 0}
           />
         ))}

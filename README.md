@@ -1,6 +1,6 @@
 # Appwrite Explorer
 
-**This app is best used with Appwrite version 1.7.x.**
+**This app is best used with Appwrite version 1.8.x.**
 
 Appwrite Explorer is a tool that let's you explore different aspects of an [Appwrite](https://appwrite.io) project from the front end.
 
@@ -26,12 +26,12 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 
 ![Database List](docs/database-list.png)
 
-- [x] Create Document
-- [x] List Documents
-- [x] Update Document
-- [x] Filter Documents List
-- [x] Search Documents
-- [ ] Delete Document
+- [x] Create Row
+- [x] List Rows
+- [x] Update Row
+- [x] Filter Rows List
+- [x] Search Rows
+- [ ] Delete Row
 
 ## Storage
 

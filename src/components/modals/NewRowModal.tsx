@@ -16,27 +16,20 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
-import { Databases, Models } from "appwrite";
+import { TablesDB } from "appwrite";
 import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
 
-export const UpdateDocumentModal = (props: {
-  document: Models.Document;
+export const NewRowModal = (props: {
+  databaseId: string;
+  tableId: string;
   isOpen: boolean;
   onClose: () => void;
 }): ReactElement => {
-  const {
-    $databaseId,
-    $collectionId,
-    $id,
-    $permissions,
-    $createdAt,
-    $updatedAt,
-    ...data
-  } = props.document;
-  const [value, setValue] = useState(JSON.stringify(data, null, 2));
+  const [rowId, setRowId] = useState("unique()");
+  const [value, setValue] = useState("{}");
   const appwriteClient = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
@@ -51,15 +44,20 @@ export const UpdateDocumentModal = (props: {
     async () => {
       if (!appwriteClient) return;
 
-      const data = JSON.parse(value);
-      const db = new Databases(appwriteClient);
-      await db.updateDocument($databaseId, $collectionId, $id, data);
+      const tablesDB = new TablesDB(appwriteClient);
+
+      await tablesDB.createRow({
+        databaseId: props.databaseId,
+        tableId: props.tableId,
+        rowId: rowId,
+        data: JSON.parse(value),
+      });
     },
     {
       onError: (error: unknown) => {
         // An error happened!
         toast({
-          title: "Error updating document.",
+          title: "Error creating row.",
           description: `${error}`,
           status: "error",
           duration: 9000,
@@ -69,19 +67,19 @@ export const UpdateDocumentModal = (props: {
       },
       onSuccess: () => {
         toast({
-          title: "Document updated.",
+          title: "Row created.",
           status: "success",
           duration: 9000,
           isClosable: true,
           position: "top",
         });
-        queryClient.invalidateQueries([QueryKey.DOCUMENTS, $collectionId]);
+        queryClient.invalidateQueries([QueryKey.DOCUMENTS, props.tableId]);
         props.onClose();
       },
     },
   );
 
-  const updateDocument = () => {
+  const onCreateClick = () => {
     mutation.mutate();
   };
 
@@ -89,29 +87,35 @@ export const UpdateDocumentModal = (props: {
     <Modal isOpen={props.isOpen} onClose={props.onClose} size="xl">
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Data</ModalHeader>
+        <ModalHeader>New Row</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
             <Text>
-              To update the document, edit the JSON below, and click "Update".
+              Enter an ID, the JSON for the new row, and click "Create".
             </Text>
             <FormControl>
-              <FormLabel htmlFor="document-id">Document ID</FormLabel>
-              <Input id="document-id" value={$id} readOnly />
+              <FormLabel htmlFor="row-id">Row ID</FormLabel>
+              <Input
+                id="row-id"
+                value={rowId}
+                onChange={(e) => {
+                  setRowId(e.target.value);
+                }}
+              />
             </FormControl>
-            <FormLabel htmlFor="document-id">Data</FormLabel>
+            <FormLabel htmlFor="row-data">Data</FormLabel>
             <Box borderWidth={1} w="full">
               <Editor
                 height="50vh"
                 defaultLanguage="json"
                 onChange={onEditorChange}
+                value={value}
                 options={{
                   minimap: {
                     enabled: false,
                   },
                 }}
-                value={value}
               />
             </Box>
           </VStack>
@@ -119,10 +123,14 @@ export const UpdateDocumentModal = (props: {
 
         <ModalFooter>
           <Button variant="ghost" mr={3} onClick={props.onClose}>
-            Close
+            Cancel
           </Button>
-          <Button colorScheme="pink" mr={3} onClick={updateDocument}>
-            Update
+          <Button
+            colorScheme="pink"
+            onClick={onCreateClick}
+            isLoading={mutation.isLoading}
+          >
+            Create
           </Button>
         </ModalFooter>
       </ModalContent>

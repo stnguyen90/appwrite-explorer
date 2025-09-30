@@ -17,8 +17,8 @@ import {
 import React, { ReactElement, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
-import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
-import { NewDocumentModal } from "../components/modals/NewDocumentModal";
+import { ListRowsOptions, useRows } from "../hooks/useRows";
+import { NewRowModal } from "../components/modals/NewRowModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
 import { QueriesEditor } from "../components/inputs/QueriesEditor";
@@ -26,17 +26,19 @@ import { parseQueries } from "../utils/queryParser";
 
 interface IFormInput {
   database: string;
-  collection: string;
+  table: string;
   queries: string;
 }
 export const Databases = (): ReactElement => {
   const [databaseId, setDatabaseId] = useState(
     localStorage.getItem(LocalStorageKey.DATABASE) || "",
   );
-  const [collectionId, setCollectionId] = useState(
-    localStorage.getItem(LocalStorageKey.COLLECTION) || "",
+  const [tableId, setTableId] = useState(
+    localStorage.getItem(LocalStorageKey.TABLE) ||
+      localStorage.getItem(LocalStorageKey.COLLECTION) ||
+      "",
   );
-  const [options, setOptions] = useState<ListDocumentsOptions>({
+  const [options, setOptions] = useState<ListRowsOptions>({
     limit: 25,
     offset: 0,
     queries: [],
@@ -55,7 +57,7 @@ export const Databases = (): ReactElement => {
     mode: "all",
     defaultValues: {
       database: databaseId,
-      collection: collectionId,
+      table: tableId,
       queries: `[
   Query.limit(25)
 ]`,
@@ -66,7 +68,7 @@ export const Databases = (): ReactElement => {
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {
-      const { database, collection, queries: queriesCode, ...rest } = values;
+      const { database, table, queries: queriesCode, ...rest } = values;
 
       // Parse the queries from Monaco editor
       const parseResult = parseQueries(queriesCode);
@@ -79,7 +81,7 @@ export const Databases = (): ReactElement => {
 
       setQueriesError(undefined);
       setDatabaseId(database);
-      setCollectionId(collection);
+      setTableId(table);
       setOptions((prevState) => ({
         ...prevState,
         ...rest,
@@ -89,9 +91,9 @@ export const Databases = (): ReactElement => {
     });
   };
 
-  const { isLoading, isError, error, data } = useDocuments(
+  const { isLoading, isError, error, data } = useRows(
     databaseId,
-    collectionId,
+    tableId,
     options,
   );
 
@@ -121,17 +123,17 @@ export const Databases = (): ReactElement => {
             </FormControl>
           </GridItem>
           <GridItem>
-            <FormControl isInvalid={!!errors.collection}>
-              <FormLabel htmlFor="collection">Collection ID</FormLabel>
+            <FormControl isInvalid={!!errors.table}>
+              <FormLabel htmlFor="table">Table ID</FormLabel>
               <Input
-                id="collection"
-                placeholder="Collection ID"
-                {...register("collection", {
+                id="table"
+                placeholder="Table ID"
+                {...register("table", {
                   required: "This is required",
                 })}
               />
               <FormErrorMessage>
-                {errors.collection && errors.collection.message}
+                {errors.table && errors.table.message}
               </FormErrorMessage>
             </FormControl>
           </GridItem>
@@ -152,7 +154,7 @@ export const Databases = (): ReactElement => {
             isLoading={isLoading}
             type="submit"
           >
-            List Documents
+            List Rows
           </Button>
 
           <>
@@ -163,11 +165,11 @@ export const Databases = (): ReactElement => {
               colorScheme="pink"
               onClick={onOpen}
             >
-              New Document
+              New Row
             </Button>
-            <NewDocumentModal
+            <NewRowModal
               databaseId={databaseId}
-              collectionId={collectionId}
+              tableId={tableId}
               isOpen={isOpen}
               onClose={onClose}
             />
@@ -194,10 +196,7 @@ export const Databases = (): ReactElement => {
             </AlertDescription>
           </Alert>
         ) : (
-          <DatabasesTable
-            documents={data?.documents || []}
-            total={data?.total || 0}
-          />
+          <DatabasesTable rows={data?.rows || []} total={data?.total || 0} />
         ))}
     </VStack>
   );

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { ReactElement, useState } from "react";
 import { Models } from "appwrite";
-import { UpdateDocumentModal } from "../modals/UpdateDocumentModal";
+import { UpdateRowModal } from "../modals/UpdateRowModal";
 
 interface Data {
   $id: string;
@@ -24,9 +24,9 @@ interface Data {
 }
 
 export const DatabasesTable = (
-  props: Models.DocumentList<Models.Document>,
+  props: Models.RowList<Models.Row>,
 ): ReactElement => {
-  const data = props.documents.map((f) => {
+  const data = props.rows.map((f) => {
     const { $id, $createdAt, $updatedAt, $permissions } = f;
     return {
       $id,
@@ -36,7 +36,7 @@ export const DatabasesTable = (
       data: JSON.stringify(f, null, 2),
     };
   });
-  const [document, setDocument] = useState<Models.Document | null>(null);
+  const [row, setRow] = useState<Models.Row | null>(null);
 
   const columns = React.useMemo<
     { header: string; accessor: keyof Data; isNumeric?: boolean }[]
@@ -69,7 +69,7 @@ export const DatabasesTable = (
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const closeAndClear = () => {
-    setDocument(null);
+    setRow(null);
     onClose();
   };
 
@@ -77,7 +77,7 @@ export const DatabasesTable = (
     <Box overflowX="auto" width="full">
       <Table variant="striped">
         <TableCaption>
-          Showing {data.length} out of {props.total} documents
+          Showing {data.length} out of {props.total} rows
         </TableCaption>
 
         <Thead>
@@ -99,9 +99,9 @@ export const DatabasesTable = (
                           variant="link"
                           color="pink.500"
                           onClick={() => {
-                            const document = props.documents[i];
-                            if (!document) return;
-                            setDocument(document);
+                            const currentRow = props.rows[i];
+                            if (!currentRow) return;
+                            setRow(currentRow);
                             onOpen();
                           }}
                         >
@@ -121,12 +121,8 @@ export const DatabasesTable = (
         </Tbody>
       </Table>
 
-      {document && (
-        <UpdateDocumentModal
-          document={document}
-          isOpen={isOpen}
-          onClose={closeAndClear}
-        />
+      {row && (
+        <UpdateRowModal row={row} isOpen={isOpen} onClose={closeAndClear} />
       )}
     </Box>
   );

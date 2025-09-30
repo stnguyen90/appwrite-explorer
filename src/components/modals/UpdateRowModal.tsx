@@ -16,26 +16,27 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
-import { Databases, Models } from "appwrite";
+import { TablesDB, Models } from "appwrite";
 import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
 
-export const UpdateDocumentModal = (props: {
-  document: Models.Document;
+export const UpdateRowModal = (props: {
+  row: Models.Row;
   isOpen: boolean;
   onClose: () => void;
 }): ReactElement => {
   const {
     $databaseId,
-    $collectionId,
+    $tableId,
     $id,
     $permissions,
     $createdAt,
     $updatedAt,
+    $sequence,
     ...data
-  } = props.document;
+  } = props.row;
   const [value, setValue] = useState(JSON.stringify(data, null, 2));
   const appwriteClient = useAppwrite();
   const toast = useToast();
@@ -52,8 +53,13 @@ export const UpdateDocumentModal = (props: {
       if (!appwriteClient) return;
 
       const data = JSON.parse(value);
-      const db = new Databases(appwriteClient);
-      await db.updateDocument($databaseId, $collectionId, $id, data);
+      const tablesDB = new TablesDB(appwriteClient);
+      await tablesDB.updateRow({
+        databaseId: $databaseId,
+        tableId: $tableId,
+        rowId: $id,
+        data: data,
+      });
     },
     {
       onError: (error: unknown) => {
@@ -75,13 +81,13 @@ export const UpdateDocumentModal = (props: {
           isClosable: true,
           position: "top",
         });
-        queryClient.invalidateQueries([QueryKey.DOCUMENTS, $collectionId]);
+        queryClient.invalidateQueries([QueryKey.DOCUMENTS, $tableId]);
         props.onClose();
       },
     },
   );
 
-  const updateDocument = () => {
+  const updateRow = () => {
     mutation.mutate();
   };
 
@@ -97,10 +103,10 @@ export const UpdateDocumentModal = (props: {
               To update the row, edit the JSON below, and click "Update".
             </Text>
             <FormControl>
-              <FormLabel htmlFor="document-id">Row ID</FormLabel>
-              <Input id="document-id" value={$id} readOnly />
+              <FormLabel htmlFor="row-id">Row ID</FormLabel>
+              <Input id="row-id" value={$id} readOnly />
             </FormControl>
-            <FormLabel htmlFor="document-id">Data</FormLabel>
+            <FormLabel htmlFor="row-data">Data</FormLabel>
             <Box borderWidth={1} w="full">
               <Editor
                 height="50vh"
@@ -121,7 +127,7 @@ export const UpdateDocumentModal = (props: {
           <Button variant="ghost" mr={3} onClick={props.onClose}>
             Close
           </Button>
-          <Button colorScheme="pink" mr={3} onClick={updateDocument}>
+          <Button colorScheme="pink" mr={3} onClick={updateRow}>
             Update
           </Button>
         </ModalFooter>

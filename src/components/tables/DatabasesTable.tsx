@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { ReactElement, useState } from "react";
 import { Models } from "appwrite";
-import { UpdateDocumentModal } from "../modals/UpdateDocumentModal";
+import { UpdateRowModal } from "../modals/UpdateRowModal";
 
 interface Data {
   $id: string;
@@ -36,7 +36,7 @@ export const DatabasesTable = (
       data: JSON.stringify(f, null, 2),
     };
   });
-  const [document, setDocument] = useState<Models.Document | null>(null);
+  const [row, setRow] = useState<Models.Row | null>(null);
 
   const columns = React.useMemo<
     { header: string; accessor: keyof Data; isNumeric?: boolean }[]
@@ -69,7 +69,7 @@ export const DatabasesTable = (
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const closeAndClear = () => {
-    setDocument(null);
+    setRow(null);
     onClose();
   };
 
@@ -101,7 +101,12 @@ export const DatabasesTable = (
                           onClick={() => {
                             const document = props.documents[i];
                             if (!document) return;
-                            setDocument(document);
+                            // Convert Document to Row format for the modal
+                            const row: Models.Row = {
+                              ...document,
+                              $tableId: document.$collectionId,
+                            };
+                            setRow(row);
                             onOpen();
                           }}
                         >
@@ -121,12 +126,8 @@ export const DatabasesTable = (
         </Tbody>
       </Table>
 
-      {document && (
-        <UpdateDocumentModal
-          document={document}
-          isOpen={isOpen}
-          onClose={closeAndClear}
-        />
+      {row && (
+        <UpdateRowModal row={row} isOpen={isOpen} onClose={closeAndClear} />
       )}
     </Box>
   );

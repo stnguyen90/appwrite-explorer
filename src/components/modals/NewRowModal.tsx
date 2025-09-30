@@ -16,19 +16,19 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
-import { Databases } from "appwrite";
+import { TablesDB } from "appwrite";
 import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
 
-export const NewDocumentModal = (props: {
+export const NewRowModal = (props: {
   databaseId: string;
-  collectionId: string;
+  tableId: string;
   isOpen: boolean;
   onClose: () => void;
 }): ReactElement => {
-  const [documentId, setDocumentId] = useState("unique()");
+  const [rowId, setRowId] = useState("unique()");
   const [value, setValue] = useState("{}");
   const appwriteClient = useAppwrite();
   const toast = useToast();
@@ -44,14 +44,14 @@ export const NewDocumentModal = (props: {
     async () => {
       if (!appwriteClient) return;
 
-      const db = new Databases(appwriteClient);
+      const tablesDB = new TablesDB(appwriteClient);
 
-      await db.createDocument(
-        props.databaseId,
-        props.collectionId,
-        documentId,
-        JSON.parse(value),
-      );
+      await tablesDB.createRow({
+        databaseId: props.databaseId,
+        tableId: props.tableId,
+        rowId: rowId,
+        data: JSON.parse(value),
+      });
     },
     {
       onError: (error: unknown) => {
@@ -73,7 +73,7 @@ export const NewDocumentModal = (props: {
           isClosable: true,
           position: "top",
         });
-        queryClient.invalidateQueries([QueryKey.DOCUMENTS, props.collectionId]);
+        queryClient.invalidateQueries([QueryKey.DOCUMENTS, props.tableId]);
         props.onClose();
       },
     },
@@ -95,16 +95,16 @@ export const NewDocumentModal = (props: {
               Enter an ID, the JSON for the new row, and click "Create".
             </Text>
             <FormControl>
-              <FormLabel htmlFor="document-id">Row ID</FormLabel>
+              <FormLabel htmlFor="row-id">Row ID</FormLabel>
               <Input
-                id="document-id"
-                value={documentId}
+                id="row-id"
+                value={rowId}
                 onChange={(e) => {
-                  setDocumentId(e.target.value);
+                  setRowId(e.target.value);
                 }}
               />
             </FormControl>
-            <FormLabel htmlFor="document-id">Data</FormLabel>
+            <FormLabel htmlFor="row-data">Data</FormLabel>
             <Box borderWidth={1} w="full">
               <Editor
                 height="50vh"

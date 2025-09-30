@@ -18,7 +18,7 @@ import React, { ReactElement, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
 import { ListDocumentsOptions, useDocuments } from "../hooks/useDocuments";
-import { NewDocumentModal } from "../components/modals/NewDocumentModal";
+import { NewRowModal } from "../components/modals/NewRowModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
 import { QueriesEditor } from "../components/inputs/QueriesEditor";
@@ -165,9 +165,9 @@ export const Databases = (): ReactElement => {
             >
               New Row
             </Button>
-            <NewDocumentModal
+            <NewRowModal
               databaseId={databaseId}
-              collectionId={collectionId}
+              tableId={collectionId}
               isOpen={isOpen}
               onClose={onClose}
             />

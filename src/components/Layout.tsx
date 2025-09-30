@@ -71,7 +71,11 @@ export const Layout = ({ children }: { children: ReactNode }): ReactElement => {
       </Drawer>
       {/* mobilenav */}
       <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <Box
+        ml={{ base: 0, md: 60 }}
+        p="4"
+        bg={useColorModeValue("gray.100", "gray.900")}
+      >
         {children}
       </Box>
     </Box>

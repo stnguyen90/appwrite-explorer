@@ -71,7 +71,7 @@ export const RealtimeTable = (props: {
   const [modalBody, setModalBody] = useState("");
 
   return (
-    <Box overflowX="auto" width="full">
+    <Box overflowX="auto" width="full" bg="white">
       <Table variant="striped">
         <TableCaption>Showing {data.length} events</TableCaption>
 

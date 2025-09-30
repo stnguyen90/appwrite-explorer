@@ -17,7 +17,7 @@ import {
 import React, { ReactElement, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
-import { ListRowsOptions, useRows } from "../hooks/useRows";
+import { ListRowsOptions, useRows } from "../hooks/useDocuments";
 import { NewRowModal } from "../components/modals/NewRowModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";
@@ -34,7 +34,9 @@ export const Databases = (): ReactElement => {
     localStorage.getItem(LocalStorageKey.DATABASE) || "",
   );
   const [tableId, setTableId] = useState(
-    localStorage.getItem(LocalStorageKey.COLLECTION) || "",
+    localStorage.getItem(LocalStorageKey.TABLE) ||
+      localStorage.getItem(LocalStorageKey.COLLECTION) ||
+      "",
   );
   const [options, setOptions] = useState<ListRowsOptions>({
     limit: 25,

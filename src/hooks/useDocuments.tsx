@@ -1,9 +1,9 @@
-import { AppwriteException, Databases, Models } from "appwrite";
+import { AppwriteException, TablesDB, Models } from "appwrite";
 import { useQuery, UseQueryResult } from "react-query";
 import { LocalStorageKey, QueryKey } from "../constants";
 import { useAppwrite } from "../contexts/appwrite";
 
-export interface ListDocumentsOptions {
+export interface ListRowsOptions {
   limit: number;
   offset: number;
   queries: string[];
@@ -11,33 +11,30 @@ export interface ListDocumentsOptions {
   orderType: "ASC" | "DESC";
 }
 
-export const useDocuments = (
+export const useRows = (
   databaseId: string,
-  collectionId: string,
-  options: ListDocumentsOptions,
-): UseQueryResult<
-  Models.DocumentList<Models.Document> | null,
-  AppwriteException
-> => {
+  tableId: string,
+  options: ListRowsOptions,
+): UseQueryResult<Models.RowList<Models.Row> | null, AppwriteException> => {
   const client = useAppwrite();
 
   return useQuery(
-    [QueryKey.DOCUMENTS, collectionId, options],
+    [QueryKey.DOCUMENTS, tableId, options],
     async () => {
-      if (!client || !collectionId) return null;
+      if (!client || !tableId) return null;
 
-      const db = new Databases(client);
+      const tablesDB = new TablesDB(client);
 
-      const result = await db.listDocuments(
-        databaseId,
-        collectionId,
-        options.queries,
-      );
+      const result = await tablesDB.listRows({
+        databaseId: databaseId,
+        tableId: tableId,
+        queries: options.queries,
+      });
 
       localStorage.setItem(LocalStorageKey.DATABASE, databaseId);
-      localStorage.setItem(LocalStorageKey.COLLECTION, collectionId);
+      localStorage.setItem(LocalStorageKey.TABLE, tableId);
       return result;
     },
-    { enabled: !!client || !collectionId },
+    { enabled: !!client || !tableId },
   );
 };

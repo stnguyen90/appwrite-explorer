@@ -17,7 +17,7 @@ import {
 import React, { ReactElement, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LocalStorageKey } from "../constants";
-import { ListRowsOptions, useRows } from "../hooks/useDocuments";
+import { ListRowsOptions, useRows } from "../hooks/useRows";
 import { NewRowModal } from "../components/modals/NewRowModal";
 import { AddIcon, SearchIcon } from "@chakra-ui/icons";
 import { DatabasesTable } from "../components/tables/DatabasesTable";

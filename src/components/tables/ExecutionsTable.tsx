@@ -74,7 +74,7 @@ export const ExecutionsTable = (props: Models.ExecutionList): ReactElement => {
   );
 
   return (
-    <Box overflowX="auto" width="full">
+    <Box overflowX="auto" width="full" bg="white">
       <Table variant="striped">
         <TableCaption>
           Showing {data.length} out of {props.total} executions

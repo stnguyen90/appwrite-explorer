@@ -1,0 +1,1 @@
+Support Sign in with Magic URL — Add support for Magic URL authentication to the Account features; users should be able to request a sign-in link sent to their email and use it to access their account.

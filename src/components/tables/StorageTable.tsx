@@ -114,7 +114,8 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
     } catch (error) {
       toast({
         title: "Error downloading file.",
-        description: `${error}`,
+        description:
+          error instanceof Error ? error.message : "Unable to download file.",
         status: "error",
         duration: 9000,
         isClosable: true,

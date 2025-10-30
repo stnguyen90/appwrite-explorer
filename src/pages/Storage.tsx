@@ -137,6 +137,7 @@ export const Storage = (): ReactElement => {
         <StorageTable
           files={data?.files || []}
           total={data?.total || 0}
+          bucketId={bucketId}
         ></StorageTable>
       )}
     </VStack>

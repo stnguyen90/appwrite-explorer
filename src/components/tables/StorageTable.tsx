@@ -1,5 +1,6 @@
 import {
   Box,
+  IconButton,
   Table,
   TableCaption,
   Tbody,
@@ -8,8 +9,10 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Models } from "appwrite";
+import { DownloadIcon } from "@chakra-ui/icons";
+import { Models, Storage } from "appwrite";
 import React, { ReactElement } from "react";
+import { useAppwrite } from "../../contexts/appwrite";
 
 interface Data {
   $id: string;
@@ -21,7 +24,11 @@ interface Data {
   sizeOriginal: number;
 }
 
-export const StorageTable = (props: Models.FileList): ReactElement => {
+interface StorageTableProps extends Models.FileList {
+  bucketId: string;
+}
+
+export const StorageTable = (props: StorageTableProps): ReactElement => {
   const data = props.files.map((f) => {
     const { $permissions, $createdAt, sizeOriginal, ...rest } = f;
     return {
@@ -70,6 +77,26 @@ export const StorageTable = (props: Models.FileList): ReactElement => {
     [],
   );
 
+  const client = useAppwrite();
+
+  const handleDownload = (fileId: string) => {
+    if (!client) return;
+
+    const storage = new Storage(client);
+    const url = storage.getFileDownload({
+      bucketId: props.bucketId,
+      fileId: fileId,
+    });
+
+    // Create a temporary anchor element to trigger download
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = ""; // Let the browser determine the filename from Content-Disposition header
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Box overflowX="auto" width="full" bg="white">
       <Table variant="striped">
@@ -82,6 +109,7 @@ export const StorageTable = (props: Models.FileList): ReactElement => {
             {columns.map((column) => (
               <Th key={column.header}>{column.header}</Th>
             ))}
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -91,6 +119,16 @@ export const StorageTable = (props: Models.FileList): ReactElement => {
                 {columns.map((column) => (
                   <Td key={column.accessor}>{row[column.accessor]}</Td>
                 ))}
+                <Td>
+                  <IconButton
+                    aria-label="Download file"
+                    icon={<DownloadIcon />}
+                    size="sm"
+                    colorScheme="pink"
+                    variant="ghost"
+                    onClick={() => handleDownload(row.$id)}
+                  />
+                </Td>
               </Tr>
             );
           })}

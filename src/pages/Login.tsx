@@ -217,7 +217,7 @@ export const Login = (props: { client: Client }): ReactElement => {
                 <Button
                   colorScheme="pink"
                   isLoading={isSubmitting}
-                  type="submit"
+                  type="button"
                   size="lg"
                   onClick={handleSubmit(onContinueAsGuest)}
                 >
@@ -226,7 +226,7 @@ export const Login = (props: { client: Client }): ReactElement => {
                 <Button
                   colorScheme="teal"
                   isLoading={isSubmitting}
-                  type="submit"
+                  type="button"
                   size="lg"
                   onClick={handleSubmit(onSignInAnonymously)}
                 >

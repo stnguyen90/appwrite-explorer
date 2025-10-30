@@ -8,6 +8,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from "@chakra-ui/react";
 import { DownloadIcon } from "@chakra-ui/icons";
 import { Models, Storage } from "appwrite";
@@ -78,23 +79,48 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
   );
 
   const client = useAppwrite();
+  const toast = useToast();
 
   const handleDownload = (fileId: string) => {
     if (!client) return;
 
-    const storage = new Storage(client);
-    const url = storage.getFileDownload({
-      bucketId: props.bucketId,
-      fileId: fileId,
-    });
+    // Validate parameters
+    if (!props.bucketId || !fileId) {
+      toast({
+        title: "Error downloading file.",
+        description: "Bucket ID and File ID are required.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
+      return;
+    }
 
-    // Create a temporary anchor element to trigger download
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = ""; // Let the browser determine the filename from Content-Disposition header
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const storage = new Storage(client);
+      const url = storage.getFileDownload({
+        bucketId: props.bucketId,
+        fileId,
+      });
+
+      // Create a temporary anchor element to trigger download
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = ""; // Let the browser determine the filename from Content-Disposition header
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      toast({
+        title: "Error downloading file.",
+        description: `${error}`,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
+    }
   };
 
   return (

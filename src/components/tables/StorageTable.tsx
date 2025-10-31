@@ -8,7 +8,6 @@ import {
   Th,
   Thead,
   Tr,
-  useToast,
 } from "@chakra-ui/react";
 import { DownloadIcon } from "@chakra-ui/icons";
 import { Models, Storage } from "appwrite";
@@ -79,49 +78,15 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
   );
 
   const client = useAppwrite();
-  const toast = useToast();
 
-  const handleDownload = (fileId: string) => {
-    if (!client) return;
+  const getDownloadUrl = (fileId: string): string | null => {
+    if (!client || !props.bucketId || !fileId) return null;
 
-    // Validate parameters
-    if (!props.bucketId || !fileId) {
-      toast({
-        title: "Error downloading file.",
-        description: "Bucket ID and File ID are required.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-        position: "top",
-      });
-      return;
-    }
-
-    try {
-      const storage = new Storage(client);
-      const url = storage.getFileDownload({
-        bucketId: props.bucketId,
-        fileId,
-      });
-
-      // Create a temporary anchor element to trigger download
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = ""; // Let the browser determine the filename from Content-Disposition header
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      toast({
-        title: "Error downloading file.",
-        description:
-          error instanceof Error ? error.message : "Unable to download file.",
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-        position: "top",
-      });
-    }
+    const storage = new Storage(client);
+    return storage.getFileDownload({
+      bucketId: props.bucketId,
+      fileId,
+    });
   };
 
   return (
@@ -146,14 +111,16 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
                 {columns.map((column) => (
                   <Td key={column.accessor}>{row[column.accessor]}</Td>
                 ))}
-                <Td>
+                <Td textAlign="center">
                   <IconButton
+                    as="a"
+                    href={getDownloadUrl(row.$id) || undefined}
                     aria-label="Download file"
                     icon={<DownloadIcon />}
                     size="sm"
                     colorScheme="pink"
                     variant="ghost"
-                    onClick={() => handleDownload(row.$id)}
+                    isDisabled={!getDownloadUrl(row.$id)}
                   />
                 </Td>
               </Tr>

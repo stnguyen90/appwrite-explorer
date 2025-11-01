@@ -21,6 +21,7 @@ import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
+import { PermissionsInput } from "../inputs/PermissionsInput";
 
 export const NewRowModal = (props: {
   databaseId: string;
@@ -29,6 +30,7 @@ export const NewRowModal = (props: {
   onClose: () => void;
 }): ReactElement => {
   const [rowId, setRowId] = useState("unique()");
+  const [permissions, setPermissions] = useState<string[]>([]);
   const [value, setValue] = useState("{}");
   const appwriteClient = useAppwrite();
   const toast = useToast();
@@ -46,11 +48,15 @@ export const NewRowModal = (props: {
 
       const tablesDB = new TablesDB(appwriteClient);
 
+      // Filter out empty permissions
+      const validPermissions = permissions.filter((p) => p.trim() !== "");
+
       await tablesDB.createRow({
         databaseId: props.databaseId,
         tableId: props.tableId,
         rowId: rowId,
         data: JSON.parse(value),
+        permissions: validPermissions.length > 0 ? validPermissions : undefined,
       });
     },
     {
@@ -92,7 +98,8 @@ export const NewRowModal = (props: {
         <ModalBody>
           <VStack align="start" spacing={5}>
             <Text>
-              Enter an ID, the JSON for the new row, and click "Create".
+              Enter an ID, optional permissions, the JSON for the new row, and
+              click "Create".
             </Text>
             <FormControl>
               <FormLabel htmlFor="row-id">Row ID</FormLabel>
@@ -104,6 +111,10 @@ export const NewRowModal = (props: {
                 }}
               />
             </FormControl>
+            <PermissionsInput
+              permissions={permissions}
+              onChange={setPermissions}
+            />
             <FormLabel htmlFor="row-data">Data</FormLabel>
             <Box borderWidth={1} w="full">
               <Editor

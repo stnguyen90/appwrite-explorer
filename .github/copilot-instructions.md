@@ -181,3 +181,283 @@ docker run --rm -p 8080:80 <image-name>    # Run containerized app on :8080
 3. Verify no TypeScript compilation errors
 
 **ALWAYS** perform these validation steps after making changes to ensure the application remains functional.
+
+## CI/CD Workflows
+
+The repository uses GitHub Actions for continuous integration and deployment:
+
+### Test Workflow (`.github/workflows/test.yml`)
+
+- Triggers on: push to main, pull requests to main
+- Node version: 20.x
+- Steps:
+  1. Checkout code
+  2. Setup Node.js with npm cache
+  3. Install dependencies with `npm i --force`
+  4. Run tests with `npm test`
+  5. Build project with `npm run build`
+- **Duration**: ~1-2 minutes total
+
+### Docker Image Publishing (`.github/workflows/publish-docker-image.yml`)
+
+- Triggers on: new release published
+- Builds multi-platform Docker images (linux/amd64, linux/arm64)
+- Publishes to Docker Hub: `stnguyen90/appwrite-explorer`
+- Uses semantic versioning tags
+- **Duration**: ~5-10 minutes
+
+### OSV-Scanner (`.github/workflows/osv-scanner.yml`)
+
+- Scans for security vulnerabilities using Google's OSV-Scanner
+- Triggers on: push to main, PRs to main, weekly schedule (Mondays at 8:31 AM)
+- Uploads results to GitHub Security tab
+- **Important**: Address any security findings before merging PRs
+
+## Security and Dependencies
+
+### Security Best Practices
+
+- **NEVER** commit secrets, API keys, or credentials to the repository
+- Use environment variables for sensitive configuration
+- The Appwrite endpoint and project ID should be user-configurable at runtime
+- Review OSV-Scanner results in the Security tab regularly
+- Keep dependencies up to date, but test thoroughly after updates
+
+### Dependency Management
+
+- **Current React Version**: 19.1.1 (with legacy package peer dependency warnings)
+- **Package Manager**: npm with `--force` flag required
+- **Known Compatibility Issues**:
+  - `react-query@3.39.3` - legacy package, works but shows peer dependency warnings
+  - `react-table@7.8.0` - legacy package, works but shows peer dependency warnings
+- **Before Adding Dependencies**:
+  - Check if functionality exists in current dependencies
+  - Verify compatibility with React 19
+  - Consider bundle size impact (current bundle: ~795KB)
+  - Run `npm install --force` after adding
+
+### Handling Security Vulnerabilities
+
+- Run `npm audit` to check for known vulnerabilities
+- For critical vulnerabilities, update dependencies immediately
+- For moderate vulnerabilities, assess impact and update in next release
+- Document any exceptions in PR description
+
+## Architecture and Design Patterns
+
+### Application Architecture
+
+```
+App (ChakraProvider + React Query)
+├── AppwriteProvider (Appwrite Client context)
+│   └── Routes (React Router)
+│       ├── Login/Guest Access
+│       └── Main Interface
+│           ├── Database (CRUD operations)
+│           ├── Storage (File management)
+│           ├── Functions (Execution management)
+│           ├── Teams (Team management)
+│           └── Realtime (WebSocket subscriptions)
+```
+
+### Key Technologies
+
+- **UI Framework**: Chakra UI v2.8.2 - Component library with theme support
+- **State Management**: React Query v3.39.3 - Server state management and caching
+- **Routing**: React Router DOM v7.8.0 - Client-side routing
+- **Backend SDK**: Appwrite v20.1.0 - Official Appwrite JavaScript SDK
+- **Form Handling**: React Hook Form v7.65.0 - Form validation and management
+- **Code Editor**: Monaco Editor v4.6.0 - For JSON/code editing
+
+### Design Patterns
+
+- **Custom Hooks**: Each Appwrite service has a dedicated hook (e.g., `useAccount`, `useRows`, `useStorage`)
+- **Context Pattern**: `AppwriteProvider` provides Appwrite client instance throughout the app
+- **React Query Pattern**: API calls wrapped in React Query hooks for caching and state management
+- **Component Composition**: Reusable components in `src/components/` directory
+
+### State Management Guidelines
+
+- Use React Query for server state (API data, caching)
+- Use React Context for global app state (Appwrite client)
+- Use local component state for UI state
+- Avoid prop drilling - use context when needed
+
+## Code Style and Conventions
+
+### TypeScript Guidelines
+
+- Use TypeScript strict mode (enabled in `tsconfig.json`)
+- Define interfaces in `src/interfaces.ts` for shared types
+- Use type inference where possible, explicit types for function signatures
+- Avoid `any` type - use `unknown` if type is truly unknown
+
+### React Component Guidelines
+
+- Use functional components with hooks (no class components)
+- Use `ReactElement` return type for components
+- Follow React Hook rules (don't call hooks conditionally)
+- Keep components focused and single-responsibility
+- Extract reusable logic into custom hooks
+
+### File Organization
+
+- **Components**: Place in `src/components/` (inputs, modals, tables, layout)
+- **Pages**: Place in `src/pages/` (main views like Database, Storage)
+- **Hooks**: Place in `src/hooks/` (API integration hooks)
+- **Contexts**: Place in `src/contexts/` (global state providers)
+- **Utilities**: Place in `src/utils/` (helper functions)
+- **Tests**: Co-locate with source files using `.test.tsx` or `.test.ts` suffix
+
+### Naming Conventions
+
+- **Components**: PascalCase (e.g., `DatabasePage.tsx`, `LoginForm.tsx`)
+- **Hooks**: camelCase with `use` prefix (e.g., `useAccount.tsx`, `useRows.tsx`)
+- **Utilities**: camelCase (e.g., `queryParser.ts`)
+- **Constants**: UPPER_SNAKE_CASE in `constants.tsx`
+- **Interfaces**: PascalCase (e.g., `AppwriteConfig`, `RowData`)
+
+### Formatting and Linting
+
+- **Prettier**: Configured for automatic formatting
+- **ESLint**: TypeScript and Prettier integration
+- **IMPORTANT**: ESLint 9.x requires new config format
+  - Current `.eslintrc` uses legacy format
+  - When running linting, you may see migration warnings
+  - Existing linting errors are documented; only fix NEW errors you introduce
+- Always run `npm run format` before committing
+
+## Pull Request and Code Review Guidelines
+
+### Before Submitting a PR
+
+1. Run all validation checks:
+   - `npm run format` - Format code
+   - `npm test` - Run tests
+   - `npm run build` - Verify build succeeds
+2. Test functionality manually (follow Application Functionality Test)
+3. Check for console errors or warnings
+4. Update relevant documentation if needed
+5. Write clear commit messages describing changes
+
+### PR Description Template
+
+```markdown
+## Description
+
+Brief description of what this PR does
+
+## Type of Change
+
+- [ ] Bug fix
+- [ ] New feature
+- [ ] Documentation update
+- [ ] Refactoring
+
+## Testing Done
+
+- [ ] Tested manually in browser
+- [ ] Added/updated tests
+- [ ] Verified build succeeds
+- [ ] Checked for console errors
+
+## Screenshots (if applicable)
+
+Add screenshots for UI changes
+```
+
+### Code Review Expectations
+
+- Reviews focus on: functionality, code quality, security, performance
+- Address all review comments or explain why changes aren't needed
+- Keep PRs focused and small (< 400 lines changed when possible)
+- Be open to feedback and iterate on suggestions
+
+## Troubleshooting Extended
+
+### ESLint Configuration Issues
+
+- **Issue**: ESLint 9.x expects `eslint.config.js` but project has `.eslintrc`
+- **Workaround**: Use legacy format for now, migration to flat config planned
+- **Alternative**: Run Prettier instead: `npm run format`
+
+### Build Warnings About Bundle Size
+
+- **Warning**: "Some chunks are larger than 500 kB after minification"
+- **Status**: Known issue, bundle is ~795KB
+- **Future**: Consider code splitting with dynamic imports
+- **Current**: Safe to ignore, application loads acceptably
+
+### React Query DevTools
+
+- Not currently installed but can be added for development
+- Add `@tanstack/react-query-devtools` if needed for debugging
+
+### Monaco Editor Issues
+
+- Monaco Editor is used for JSON/code editing
+- If editor doesn't load, check browser console for module loading errors
+- May need to adjust Vite config for Monaco worker files
+
+### Appwrite Connection Issues
+
+- Verify Appwrite endpoint URL is correct (e.g., `https://cloud.appwrite.io/v1`)
+- Check CORS settings in Appwrite console
+- Verify project ID is correct
+- Check browser console for API errors
+
+### Hot Module Reload Issues
+
+- If changes don't reflect, try hard refresh (Ctrl+Shift+R)
+- Check Vite dev server console for errors
+- Restart dev server if HMR stops working: `Ctrl+C` then `npm start`
+
+## Completing Work and Final Verification
+
+Before finalizing your session and completing any task, you **MUST** perform the following steps:
+
+### Required Final Steps
+
+1. **Run all critical commands successfully:**
+
+   ```bash
+   npm install --force
+   npm run test
+   npm run build
+   ```
+
+   - All three commands must complete successfully with no errors
+   - `npm install --force`: Must install all dependencies (typically 640+ packages)
+   - `npm run test`: All tests must pass (currently 7 tests in 2 test suites)
+   - `npm run build`: Build must complete successfully (typically in 4-5 seconds)
+
+2. **Take screenshots of all changes:**
+   - If you made code changes, capture screenshots showing the impact
+   - For UI changes, always take screenshots of the application running
+   - For documentation changes, capture screenshots showing the updated content
+   - Include screenshots in the PR description or comments
+
+3. **Verify changes work correctly:**
+   - Test the application manually if UI/functionality was changed
+   - Verify documentation is accurate and complete
+   - Check that no unintended files were modified
+
+### Verification Checklist
+
+Before you report completion:
+
+- [ ] `npm install --force` completed successfully
+- [ ] `npm run test` all tests passed
+- [ ] `npm run build` completed successfully
+- [ ] Screenshots taken and documented
+- [ ] Manual testing completed (if applicable)
+- [ ] All changes have been committed via `report_progress`
+
+**IMPORTANT**: Do not consider your work complete until all items in this checklist are verified.
+
+## Additional Resources
+
+- [Appwrite Documentation](https://appwrite.io/docs) - Official Appwrite docs
+- [Chakra UI Documentation](https://chakra-ui.com/docs/getting-started) - UI component library
+- [React Query Documentation](https://tanstack.com/query/v3/docs/react/overview) - Server state management
+- [Vite Documentation](https://vite.dev/) - Build tool and dev server

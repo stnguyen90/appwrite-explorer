@@ -1,5 +1,6 @@
 import {
   Box,
+  IconButton,
   Table,
   TableCaption,
   Tbody,
@@ -8,8 +9,10 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { Models } from "appwrite";
+import { DownloadIcon } from "@chakra-ui/icons";
+import { Models, Storage } from "appwrite";
 import React, { ReactElement } from "react";
+import { useAppwrite } from "../../contexts/appwrite";
 
 interface Data {
   $id: string;
@@ -21,7 +24,11 @@ interface Data {
   sizeOriginal: number;
 }
 
-export const StorageTable = (props: Models.FileList): ReactElement => {
+interface StorageTableProps extends Models.FileList {
+  bucketId: string;
+}
+
+export const StorageTable = (props: StorageTableProps): ReactElement => {
   const data = props.files.map((f) => {
     const { $permissions, $createdAt, sizeOriginal, ...rest } = f;
     return {
@@ -70,6 +77,18 @@ export const StorageTable = (props: Models.FileList): ReactElement => {
     [],
   );
 
+  const client = useAppwrite();
+
+  const getDownloadUrl = (fileId: string): string | null => {
+    if (!client || !props.bucketId || !fileId) return null;
+
+    const storage = new Storage(client);
+    return storage.getFileDownload({
+      bucketId: props.bucketId,
+      fileId,
+    });
+  };
+
   return (
     <Box overflowX="auto" width="full" bg="white">
       <Table variant="striped">
@@ -82,6 +101,7 @@ export const StorageTable = (props: Models.FileList): ReactElement => {
             {columns.map((column) => (
               <Th key={column.header}>{column.header}</Th>
             ))}
+            <Th>Actions</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -91,6 +111,18 @@ export const StorageTable = (props: Models.FileList): ReactElement => {
                 {columns.map((column) => (
                   <Td key={column.accessor}>{row[column.accessor]}</Td>
                 ))}
+                <Td textAlign="center">
+                  <IconButton
+                    as="a"
+                    href={getDownloadUrl(row.$id) || undefined}
+                    aria-label="Download file"
+                    icon={<DownloadIcon />}
+                    size="sm"
+                    colorScheme="pink"
+                    variant="ghost"
+                    isDisabled={!getDownloadUrl(row.$id)}
+                  />
+                </Td>
               </Tr>
             );
           })}

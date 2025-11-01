@@ -40,7 +40,7 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 - [x] Create File
 - [x] List Files
 - [ ] Create File with Permissions
-- [ ] Download File
+- [x] Download File
 - [ ] Search Files
 - [ ] Update File
 - [ ] Delete File

@@ -412,6 +412,49 @@ Add screenshots for UI changes
 - Check Vite dev server console for errors
 - Restart dev server if HMR stops working: `Ctrl+C` then `npm start`
 
+## Completing Work and Final Verification
+
+Before finalizing your session and completing any task, you **MUST** perform the following steps:
+
+### Required Final Steps
+
+1. **Run all critical commands successfully:**
+
+   ```bash
+   npm install --force
+   npm run test
+   npm run build
+   ```
+
+   - All three commands must complete successfully with no errors
+   - `npm install --force`: Must install all dependencies (typically 640+ packages)
+   - `npm run test`: All tests must pass (currently 7 tests in 2 test suites)
+   - `npm run build`: Build must complete successfully (typically in 4-5 seconds)
+
+2. **Take screenshots of all changes:**
+   - If you made code changes, capture screenshots showing the impact
+   - For UI changes, always take screenshots of the application running
+   - For documentation changes, capture screenshots showing the updated content
+   - Include screenshots in the PR description or comments
+
+3. **Verify changes work correctly:**
+   - Test the application manually if UI/functionality was changed
+   - Verify documentation is accurate and complete
+   - Check that no unintended files were modified
+
+### Verification Checklist
+
+Before you report completion:
+
+- [ ] `npm install --force` completed successfully
+- [ ] `npm run test` all tests passed
+- [ ] `npm run build` completed successfully
+- [ ] Screenshots taken and documented
+- [ ] Manual testing completed (if applicable)
+- [ ] All changes have been committed via `report_progress`
+
+**IMPORTANT**: Do not consider your work complete until all items in this checklist are verified.
+
 ## Additional Resources
 
 - [Appwrite Documentation](https://appwrite.io/docs) - Official Appwrite docs

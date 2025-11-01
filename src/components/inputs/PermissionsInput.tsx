@@ -43,7 +43,7 @@ export const PermissionsInput = ({
           <HStack key={index} spacing={2}>
             <Input
               id={`permission-${index}`}
-              placeholder='e.g., read("user:123") or write("team:456")'
+              placeholder={'e.g., read("user:123") or write("team:456")'}
               value={permission}
               onChange={(e) => handlePermissionChange(index, e.target.value)}
             />

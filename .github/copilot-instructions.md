@@ -159,6 +159,20 @@ docker build .                              # Build Docker image (5-10 min)
 docker run --rm -p 8080:80 <image-name>    # Run containerized app on :8080
 ```
 
+## Key Features
+
+### Database Operations
+
+The application supports full CRUD operations for database rows:
+
+- **Create Row**: Use the "New Row" button to create a new row with custom ID, permissions, and JSON data
+- **List Rows**: Query rows using the Appwrite Query syntax with filters, limits, and ordering
+- **Update Row**: Click on a row's data to open the UpdateRowModal and edit permissions or JSON data
+- **Delete Row**: In the UpdateRowModal, click the red "Delete" button to remove a row
+  - A confirmation dialog appears to prevent accidental deletions
+  - On successful deletion, the row is removed and the table refreshes automatically
+  - Error handling with toast notifications for failed operations
+
 ## Testing Instructions
 
 ### Manual Application Test

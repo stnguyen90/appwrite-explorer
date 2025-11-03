@@ -31,7 +31,7 @@ Appwrite Explorer is a tool that let's you explore different aspects of an [Appw
 - [x] Update Row
 - [x] Filter Rows List
 - [x] Search Rows
-- [ ] Delete Row
+- [x] Delete Row
 
 ## Storage
 

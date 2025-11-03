@@ -21,6 +21,7 @@ import React, { ReactElement, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
+import { PermissionsInput } from "../inputs/PermissionsInput";
 
 export const UpdateRowModal = (props: {
   row: Models.Row;
@@ -37,6 +38,7 @@ export const UpdateRowModal = (props: {
     $sequence,
     ...data
   } = props.row;
+  const [permissions, setPermissions] = useState<string[]>($permissions || []);
   const [value, setValue] = useState(JSON.stringify(data, null, 2));
   const appwriteClient = useAppwrite();
   const toast = useToast();
@@ -54,11 +56,16 @@ export const UpdateRowModal = (props: {
 
       const data = JSON.parse(value);
       const tablesDB = new TablesDB(appwriteClient);
+
+      // Filter out empty permissions
+      const validPermissions = permissions.filter((p) => p.trim() !== "");
+
       await tablesDB.updateRow({
         databaseId: $databaseId,
         tableId: $tableId,
         rowId: $id,
         data: data,
+        permissions: validPermissions.length > 0 ? validPermissions : undefined,
       });
     },
     {
@@ -100,12 +107,17 @@ export const UpdateRowModal = (props: {
         <ModalBody>
           <VStack align="start" spacing={5}>
             <Text>
-              To update the row, edit the JSON below, and click "Update".
+              To update the row, edit the permissions and JSON below, and click
+              "Update".
             </Text>
             <FormControl>
               <FormLabel htmlFor="row-id">Row ID</FormLabel>
               <Input id="row-id" value={$id} readOnly />
             </FormControl>
+            <PermissionsInput
+              permissions={permissions}
+              onChange={setPermissions}
+            />
             <FormLabel htmlFor="row-data">Data</FormLabel>
             <Box borderWidth={1} w="full">
               <Editor

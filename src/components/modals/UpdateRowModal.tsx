@@ -196,6 +196,7 @@ export const UpdateRowModal = (props: {
             mr="auto"
             onClick={onDeleteAlertOpen}
             isLoading={deleteMutation.isLoading}
+            isDisabled={mutation.isLoading}
           >
             Delete
           </Button>
@@ -207,6 +208,7 @@ export const UpdateRowModal = (props: {
             mr={3}
             onClick={updateRow}
             isLoading={mutation.isLoading}
+            isDisabled={deleteMutation.isLoading}
           >
             Update
           </Button>

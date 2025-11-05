@@ -1,4 +1,10 @@
 import {
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
   Box,
   Button,
   FormControl,
@@ -12,12 +18,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  useDisclosure,
   useToast,
   VStack,
 } from "@chakra-ui/react";
 import Editor, { OnChange } from "@monaco-editor/react";
 import { TablesDB, Models } from "appwrite";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useRef, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
@@ -43,6 +50,12 @@ export const UpdateRowModal = (props: {
   const appwriteClient = useAppwrite();
   const toast = useToast();
   const queryClient = useQueryClient();
+  const {
+    isOpen: isDeleteAlertOpen,
+    onOpen: onDeleteAlertOpen,
+    onClose: onDeleteAlertClose,
+  } = useDisclosure();
+  const cancelRef = useRef<HTMLButtonElement>(null);
 
   const onEditorChange: OnChange = (newValue) => {
     if (newValue) {
@@ -98,6 +111,48 @@ export const UpdateRowModal = (props: {
     mutation.mutate();
   };
 
+  const deleteMutation = useMutation(
+    async () => {
+      if (!appwriteClient) return;
+
+      const tablesDB = new TablesDB(appwriteClient);
+
+      await tablesDB.deleteRow({
+        databaseId: $databaseId,
+        tableId: $tableId,
+        rowId: $id,
+      });
+    },
+    {
+      onError: (error: unknown) => {
+        toast({
+          title: "Error deleting row.",
+          description: `${error}`,
+          status: "error",
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
+      },
+      onSuccess: () => {
+        toast({
+          title: "Row deleted.",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+          position: "top",
+        });
+        queryClient.invalidateQueries([QueryKey.DOCUMENTS, $tableId]);
+        onDeleteAlertClose();
+        props.onClose();
+      },
+    },
+  );
+
+  const deleteRow = () => {
+    deleteMutation.mutate();
+  };
+
   return (
     <Modal isOpen={props.isOpen} onClose={props.onClose} size="xl">
       <ModalOverlay />
@@ -136,14 +191,62 @@ export const UpdateRowModal = (props: {
         </ModalBody>
 
         <ModalFooter>
+          <Button
+            colorScheme="red"
+            mr="auto"
+            onClick={onDeleteAlertOpen}
+            isLoading={deleteMutation.isLoading}
+            isDisabled={mutation.isLoading}
+          >
+            Delete
+          </Button>
           <Button variant="ghost" mr={3} onClick={props.onClose}>
             Close
           </Button>
-          <Button colorScheme="pink" mr={3} onClick={updateRow}>
+          <Button
+            colorScheme="pink"
+            mr={3}
+            onClick={updateRow}
+            isLoading={mutation.isLoading}
+            isDisabled={deleteMutation.isLoading}
+          >
             Update
           </Button>
         </ModalFooter>
       </ModalContent>
+
+      <AlertDialog
+        isOpen={isDeleteAlertOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onDeleteAlertClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Row
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure you want to delete this row? This action cannot be
+              undone.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onDeleteAlertClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={deleteRow}
+                ml={3}
+                isLoading={deleteMutation.isLoading}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Modal>
   );
 };

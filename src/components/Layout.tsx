@@ -33,6 +33,7 @@ import { FaDatabase, FaFile } from "react-icons/fa";
 import { BsLightningFill, BsPeopleFill } from "react-icons/bs";
 import { BiTime } from "react-icons/bi";
 import { UpdateNameModal } from "./modals/UpdateNameModal";
+import { UpdateEmailModal } from "./modals/UpdateEmailModal";
 import { Account } from "appwrite";
 
 interface LinkItemProps {
@@ -169,6 +170,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const queryClient = useQueryClient();
   const { data } = useAccount();
   const [isUpdateNameModalOpen, setUpdateNameModalOpen] = useState(false);
+  const [isUpdateEmailModalOpen, setUpdateEmailModalOpen] = useState(false);
 
   const onSignOutClick = async () => {
     if (data?.$id != "" && client) {
@@ -253,6 +255,17 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   <UpdateNameModal
                     isOpen={isUpdateNameModalOpen}
                     onClose={() => setUpdateNameModalOpen(false)}
+                  />
+                  <MenuItem
+                    onClick={() => {
+                      setUpdateEmailModalOpen(true);
+                    }}
+                  >
+                    Update Email
+                  </MenuItem>
+                  <UpdateEmailModal
+                    isOpen={isUpdateEmailModalOpen}
+                    onClose={() => setUpdateEmailModalOpen(false)}
                   />
                 </>
               )}

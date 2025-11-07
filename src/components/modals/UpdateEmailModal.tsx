@@ -16,7 +16,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { Account } from "appwrite";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
@@ -77,6 +77,7 @@ export const UpdateEmailModal = (props: {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<IFormInput>({
     mode: "all",
@@ -85,6 +86,16 @@ export const UpdateEmailModal = (props: {
       password: "",
     },
   });
+
+  // Reset password field when modal closes
+  useEffect(() => {
+    if (!props.isOpen) {
+      reset({
+        email: data?.email || "",
+        password: "",
+      });
+    }
+  }, [props.isOpen, data?.email, reset]);
 
   const onSubmit: SubmitHandler<IFormInput> = (values) => {
     return new Promise<void>((resolve) => {

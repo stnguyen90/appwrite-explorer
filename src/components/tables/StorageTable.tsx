@@ -11,7 +11,7 @@ import {
   useDisclosure,
   HStack,
 } from "@chakra-ui/react";
-import { DownloadIcon, ViewIcon } from "@chakra-ui/icons";
+import { DownloadIcon, SearchIcon } from "@chakra-ui/icons";
 import { Models, Storage } from "appwrite";
 import React, { ReactElement, useState } from "react";
 import { useAppwrite } from "../../contexts/appwrite";
@@ -160,9 +160,9 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
                     {isViewableMediaType(row.mimeType) && (
                       <IconButton
                         aria-label="View file"
-                        icon={<ViewIcon />}
+                        icon={<SearchIcon />}
                         size="sm"
-                        colorScheme="blue"
+                        colorScheme="pink"
                         variant="ghost"
                         onClick={(e) => {
                           e.stopPropagation();

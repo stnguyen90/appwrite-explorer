@@ -9,12 +9,14 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  HStack,
 } from "@chakra-ui/react";
-import { DownloadIcon } from "@chakra-ui/icons";
+import { DownloadIcon, SearchIcon } from "@chakra-ui/icons";
 import { Models, Storage } from "appwrite";
 import React, { ReactElement, useState } from "react";
 import { useAppwrite } from "../../contexts/appwrite";
 import { UpdateFileModal } from "../modals/UpdateFileModal";
+import { isViewableMediaType } from "../../utils/mediaTypeDetector";
 
 interface Data {
   $id: string;
@@ -94,6 +96,23 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
     });
   };
 
+  const getViewUrl = (fileId: string): string | null => {
+    if (!client || !props.bucketId || !fileId) return null;
+
+    const storage = new Storage(client);
+    return storage.getFileView({
+      bucketId: props.bucketId,
+      fileId,
+    });
+  };
+
+  const handleViewFile = (fileId: string) => {
+    const viewUrl = getViewUrl(fileId);
+    if (viewUrl) {
+      window.open(viewUrl, "_blank", "noopener,noreferrer");
+    }
+  };
+
   const handleFileClick = (fileId: string) => {
     const file = props.files.find((f) => f.$id === fileId);
     if (file) {
@@ -137,17 +156,33 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
                   </Td>
                 ))}
                 <Td textAlign="center">
-                  <IconButton
-                    as="a"
-                    href={getDownloadUrl(row.$id) || undefined}
-                    aria-label="Download file"
-                    icon={<DownloadIcon />}
-                    size="sm"
-                    colorScheme="pink"
-                    variant="ghost"
-                    isDisabled={!getDownloadUrl(row.$id)}
-                    onClick={(e) => e.stopPropagation()}
-                  />
+                  <HStack spacing={2} justify="center">
+                    {isViewableMediaType(row.mimeType) && (
+                      <IconButton
+                        aria-label="View file"
+                        icon={<SearchIcon />}
+                        size="sm"
+                        colorScheme="pink"
+                        variant="ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleViewFile(row.$id);
+                        }}
+                        isDisabled={!getViewUrl(row.$id)}
+                      />
+                    )}
+                    <IconButton
+                      as="a"
+                      href={getDownloadUrl(row.$id) || undefined}
+                      aria-label="Download file"
+                      icon={<DownloadIcon />}
+                      size="sm"
+                      colorScheme="pink"
+                      variant="ghost"
+                      isDisabled={!getDownloadUrl(row.$id)}
+                      onClick={(e) => e.stopPropagation()}
+                    />
+                  </HStack>
                 </Td>
               </Tr>
             );

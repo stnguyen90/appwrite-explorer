@@ -24,6 +24,7 @@ import { FiFile } from "react-icons/fi";
 import { useQueryClient } from "react-query";
 import { QueryKey } from "../../constants";
 import { useAppwrite } from "../../contexts/appwrite";
+import { PermissionsInput } from "../inputs/PermissionsInput";
 
 export const NewUploadModal = (props: {
   bucketId: string;
@@ -31,6 +32,7 @@ export const NewUploadModal = (props: {
   onClose: () => void;
 }): ReactElement => {
   const [fileId, setFileId] = useState("unique()");
+  const [permissions, setPermissions] = useState<string[]>([]);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState("");
   const [error, setError] = useState("");
@@ -60,7 +62,16 @@ export const NewUploadModal = (props: {
     try {
       setSubmitting(true);
       const storage = new Storage(client);
-      await storage.createFile(props.bucketId, fileId, files[0]);
+
+      // Filter out empty permissions
+      const validPermissions = permissions.filter((p) => p.trim() !== "");
+
+      await storage.createFile({
+        bucketId: props.bucketId,
+        fileId,
+        file: files[0],
+        permissions: validPermissions.length > 0 ? validPermissions : undefined,
+      });
       toast({
         title: "File uploaded.",
         status: "success",
@@ -70,6 +81,7 @@ export const NewUploadModal = (props: {
       });
       queryClient.invalidateQueries([QueryKey.STORAGE]);
       setValue("");
+      setPermissions([]);
       if (fileRef?.current?.files) {
         fileRef.current.files = null;
       }
@@ -96,7 +108,10 @@ export const NewUploadModal = (props: {
         <ModalCloseButton />
         <ModalBody>
           <VStack align="start" spacing={5}>
-            <Text>Enter an ID, select a file, and click "Upload".</Text>
+            <Text>
+              Enter an ID, optional permissions, select a file, and click
+              "Upload".
+            </Text>
             <FormControl>
               <FormLabel htmlFor="file-id">File ID</FormLabel>
               <Input
@@ -107,6 +122,10 @@ export const NewUploadModal = (props: {
                 }}
               />
             </FormControl>
+            <PermissionsInput
+              permissions={permissions}
+              onChange={setPermissions}
+            />
             <FormControl isInvalid={!!error}>
               <FormLabel htmlFor="file">File</FormLabel>
               <InputGroup>

@@ -8,11 +8,13 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { DownloadIcon } from "@chakra-ui/icons";
 import { Models, Storage } from "appwrite";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import { useAppwrite } from "../../contexts/appwrite";
+import { UpdateFileModal } from "../modals/UpdateFileModal";
 
 interface Data {
   $id: string;
@@ -29,6 +31,9 @@ interface StorageTableProps extends Models.FileList {
 }
 
 export const StorageTable = (props: StorageTableProps): ReactElement => {
+  const [selectedFile, setSelectedFile] = useState<Models.File | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const data = props.files.map((f) => {
     const { $permissions, $createdAt, sizeOriginal, ...rest } = f;
     return {
@@ -89,6 +94,19 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
     });
   };
 
+  const handleFileClick = (fileId: string) => {
+    const file = props.files.find((f) => f.$id === fileId);
+    if (file) {
+      setSelectedFile(file);
+      onOpen();
+    }
+  };
+
+  const handleModalClose = () => {
+    setSelectedFile(null);
+    onClose();
+  };
+
   return (
     <Box overflowX="auto" width="full" bg="white">
       <Table variant="striped">
@@ -109,7 +127,14 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
             return (
               <Tr key={row.$id}>
                 {columns.map((column) => (
-                  <Td key={column.accessor}>{row[column.accessor]}</Td>
+                  <Td
+                    key={column.accessor}
+                    cursor="pointer"
+                    onClick={() => handleFileClick(row.$id)}
+                    _hover={{ bg: "gray.50" }}
+                  >
+                    {row[column.accessor]}
+                  </Td>
                 ))}
                 <Td textAlign="center">
                   <IconButton
@@ -121,6 +146,7 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
                     colorScheme="pink"
                     variant="ghost"
                     isDisabled={!getDownloadUrl(row.$id)}
+                    onClick={(e) => e.stopPropagation()}
                   />
                 </Td>
               </Tr>
@@ -128,6 +154,14 @@ export const StorageTable = (props: StorageTableProps): ReactElement => {
           })}
         </Tbody>
       </Table>
+      {selectedFile && (
+        <UpdateFileModal
+          file={selectedFile}
+          bucketId={props.bucketId}
+          isOpen={isOpen}
+          onClose={handleModalClose}
+        />
+      )}
     </Box>
   );
 };

@@ -108,7 +108,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       </Flex>
       {LinkItems.filter((link) => link.name != "Teams" || !!data?.$id).map(
         (link) => (
-          <NavItem key={link.name} icon={link.icon} to={link.to}>
+          <NavItem
+            key={link.name}
+            icon={link.icon}
+            to={link.to}
+            onClose={onClose}
+          >
             {link.name}
           </NavItem>
         ),
@@ -121,8 +126,9 @@ interface NavItemProps extends FlexProps {
   icon: IconType;
   to: string;
   children: string | number;
+  onClose: () => void;
 }
-const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, to, onClose, ...rest }: NavItemProps) => {
   const location = useLocation();
   const current = location.pathname == to;
   const highlight = {
@@ -130,7 +136,12 @@ const NavItem = ({ icon, children, to, ...rest }: NavItemProps) => {
     color: "white",
   };
   return (
-    <Link as={RouterLink} to={to} style={{ textDecoration: "none" }}>
+    <Link
+      as={RouterLink}
+      to={to}
+      style={{ textDecoration: "none" }}
+      onClick={onClose}
+    >
       <Flex
         align="center"
         p="3"

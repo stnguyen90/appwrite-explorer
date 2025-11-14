@@ -15,6 +15,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
+  HStack,
   IconButton,
   Input,
   InputGroup,
@@ -125,6 +126,41 @@ export const Login = (props: { client: Client }): ReactElement => {
     );
   };
 
+  const onSignInAnonymously = async (values: IFormInput) => {
+    const { endpoint, project } = values;
+
+    const { client } = props;
+
+    client.setEndpoint(endpoint);
+    client.setProject(project);
+
+    const account = new Account(client);
+
+    try {
+      await account.createAnonymousSession();
+      localStorage.setItem(LocalStorageKey.ENDPOINT, endpoint);
+      localStorage.setItem(LocalStorageKey.PROJECT, project);
+      queryClient.invalidateQueries(QueryKey.USER);
+      toast({
+        title: "Anonymous session created.",
+        description: "You are now signed in anonymously.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+    } catch (error) {
+      toast({
+        title: "Error creating anonymous session.",
+        description: `${error}`,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+        position: "top",
+      });
+    }
+  };
+
   return (
     <Center minH="100vh" p={2}>
       <Container
@@ -177,18 +213,26 @@ export const Login = (props: { client: Client }): ReactElement => {
                 </InputGroup>
                 <FormErrorMessage>{errors.project?.message}</FormErrorMessage>
               </FormControl>
-              <Box>
+              <HStack spacing={4} marginTop={4}>
                 <Button
                   colorScheme="pink"
                   isLoading={isSubmitting}
-                  type="submit"
+                  type="button"
                   size="lg"
-                  marginTop={4}
                   onClick={handleSubmit(onContinueAsGuest)}
                 >
                   Continue as Guest
                 </Button>
-              </Box>
+                <Button
+                  colorScheme="teal"
+                  isLoading={isSubmitting}
+                  type="button"
+                  size="lg"
+                  onClick={handleSubmit(onSignInAnonymously)}
+                >
+                  Sign in anonymously
+                </Button>
+              </HStack>
               <FormControl isInvalid={!!errors.email}>
                 <FormLabel htmlFor="email">Email</FormLabel>
                 <InputGroup>

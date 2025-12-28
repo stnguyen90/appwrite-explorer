@@ -57,10 +57,8 @@ export const Realtime = (): ReactElement => {
     const realtime = new RealtimeService(client);
     
     // Subscribe using the new Realtime service (returns a Promise)
-    // Use a ref-like pattern to track the subscription across async boundaries
-    let subscriptionPromise: Promise<{ close: () => Promise<void> } | null> | null = null;
-    
-    subscriptionPromise = realtime.subscribe<Record<string, unknown>>(
+    // Track the subscription Promise to handle async cleanup properly
+    const subscriptionPromise = realtime.subscribe<Record<string, unknown>>(
       channels, 
       (response) => {
         scopedEvents.push(response);
@@ -72,16 +70,16 @@ export const Realtime = (): ReactElement => {
     });
     
     // Return cleanup function
+    // Note: React cleanup functions must be synchronous, so we can't await here.
+    // We fire off the async close operation and handle errors appropriately.
     return () => {
-      if (subscriptionPromise) {
-        subscriptionPromise.then((subscription) => {
-          if (subscription) {
-            subscription.close().catch((error) => {
-              console.error("Failed to close subscription:", error);
-            });
-          }
-        });
-      }
+      subscriptionPromise.then((subscription) => {
+        if (subscription) {
+          subscription.close().catch((error) => {
+            console.error("Failed to close subscription:", error);
+          });
+        }
+      });
     };
   }, [channels]);
 

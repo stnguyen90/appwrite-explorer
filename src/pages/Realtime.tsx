@@ -57,24 +57,30 @@ export const Realtime = (): ReactElement => {
     const realtime = new RealtimeService(client);
     
     // Subscribe using the new Realtime service (returns a Promise)
-    let subscription: { close: () => Promise<void> } | null = null;
+    // Use a ref-like pattern to track the subscription across async boundaries
+    let subscriptionPromise: Promise<{ close: () => Promise<void> } | null> | null = null;
     
-    realtime.subscribe<Record<string, unknown>>(
+    subscriptionPromise = realtime.subscribe<Record<string, unknown>>(
       channels, 
       (response) => {
         scopedEvents.push(response);
         setEvents([...scopedEvents]);
       }
-    ).then((sub) => {
-      subscription = sub;
-    }).catch((error) => {
+    ).catch((error) => {
       console.error("Failed to subscribe to realtime:", error);
+      return null;
     });
     
     // Return cleanup function
     return () => {
-      if (subscription) {
-        subscription.close();
+      if (subscriptionPromise) {
+        subscriptionPromise.then((subscription) => {
+          if (subscription) {
+            subscription.close().catch((error) => {
+              console.error("Failed to close subscription:", error);
+            });
+          }
+        });
       }
     };
   }, [channels]);

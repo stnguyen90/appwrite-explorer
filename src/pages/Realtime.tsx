@@ -18,7 +18,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { RealtimeResponseEvent } from "appwrite";
+import { Realtime as RealtimeService } from "appwrite";
+import { RealtimeResponseEvent } from "appwrite/types/services/realtime";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { RealtimeTable } from "../components/tables/RealtimeTable";
 import { useAppwrite } from "../contexts/appwrite";
@@ -51,13 +52,31 @@ export const Realtime = (): ReactElement => {
     // events from the outside scope doesn't update in the subscription callback
     // so we create the scopedEvents so that we can update and persist the data
     const scopedEvents: RealtimeResponseEvent<Record<string, unknown>>[] = [];
-    const unsubscribe = client?.subscribe<
-      RealtimeResponseEvent<Record<string, unknown>>
-    >(channels, (response) => {
-      scopedEvents.push(response);
-      setEvents([...scopedEvents]);
+    
+    // Create Realtime service instance
+    const realtime = new RealtimeService(client);
+    
+    // Subscribe using the new Realtime service (returns a Promise)
+    let subscription: { close: () => Promise<void> } | null = null;
+    
+    realtime.subscribe<Record<string, unknown>>(
+      channels, 
+      (response) => {
+        scopedEvents.push(response);
+        setEvents([...scopedEvents]);
+      }
+    ).then((sub) => {
+      subscription = sub;
+    }).catch((error) => {
+      console.error("Failed to subscribe to realtime:", error);
     });
-    return unsubscribe;
+    
+    // Return cleanup function
+    return () => {
+      if (subscription) {
+        subscription.close();
+      }
+    };
   }, [channels]);
 
   return (

@@ -19,7 +19,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
-import { RealtimeResponseEvent } from "appwrite";
+import { RealtimeResponseEvent } from "appwrite/types/services/realtime";
 import React, { ReactElement, useState } from "react";
 
 interface Data {

@@ -224,7 +224,8 @@ export const Login = (props: { client: Client }): ReactElement => {
                   Continue as Guest
                 </Button>
                 <Button
-                  colorScheme="teal"
+                  colorScheme="pink"
+                  variant="outline"
                   isLoading={isSubmitting}
                   type="button"
                   size="lg"
